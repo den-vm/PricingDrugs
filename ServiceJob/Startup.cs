@@ -18,7 +18,13 @@ namespace ServiceJob
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            var mvc = services.AddMvc();
+            mvc.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            mvc.AddRazorPagesOptions(options =>
+            {
+                options.Conventions.AddPageRoute("/Home", @""); // route Index = RazorPage "Home.cshtml" (default search RazorPage = "Pages/")
+            });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,17 +39,16 @@ namespace ServiceJob
                 app.UseExceptionHandler("/Views/Error");
                 app.UseHsts();
             }
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
-                    "default",
-                    "{controller}/{action=Index}");
-                routes.MapRoute("default2", "Jvnlp/", new { controller = "Views", action = "Jvnlp" });
-
+                //routes.MapRoute(
+                //    name: "jvnlp",
+                //    template: "/Jvnlp",
+                //    defaults: new { controller = "Views", action = "Jvnlp" }
+                //    );
             });
         }
     }
