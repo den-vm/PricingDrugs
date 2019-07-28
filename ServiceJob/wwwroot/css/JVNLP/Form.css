@@ -48,7 +48,7 @@ section, footer, header, aside { display: block; }
 #drop {
     background-color: #2E3134;
     border: 20px solid rgba(0, 0, 0, 0);
-    border-image: url('~/images/JVNLP/border_image_fileDownload.png') 25 repeat;
+    border-image: url('../../images/JVNLP/border_image_fileDownload.png') 25 repeat;
     border-radius: 3px;
     color: #7f858a;
     font-size: 16px;
@@ -141,7 +141,7 @@ section, footer, header, aside { display: block; }
 }
 
     #upload .infoFile li span.del_fileDelete_working {
-        background: url(~/images/JVNLP/delete_fileDownload_working.png) no-repeat;
+        background: url(../../images/JVNLP/delete_fileDownload_working.png) no-repeat;
         height: 13px;
         left: 49px;
         margin-top: -6.5px;
@@ -151,7 +151,7 @@ section, footer, header, aside { display: block; }
     }
 
     #upload .infoFile li span.del_fileDelete_complete {
-        background: url(~/images/JVNLP/delete_fileDownload_complete.png) no-repeat;
+        background: url(../../images/JVNLP/delete_fileDownload_complete.png) no-repeat;
         background-size: contain;
         cursor: pointer;
         height: 18px;
