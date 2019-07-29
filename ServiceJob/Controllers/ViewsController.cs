@@ -1,5 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using ServiceJob.Models;
 
 namespace ServiceJob.Controllers
@@ -9,8 +13,10 @@ namespace ServiceJob.Controllers
         private const string Path = "Pages";
 
         [Route("/Jvnlp")]
-        public IActionResult Jvnlp()
+        public IActionResult Jvnlp(IFormCollection file)
         {
+            
+           
             return View($"~/{Path}/Jvnlp.cshtml");
         }
 
