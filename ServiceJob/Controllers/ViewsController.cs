@@ -6,10 +6,12 @@ namespace ServiceJob.Controllers
 {
     public class ViewsController : Controller
     {
+        private const string Path = "Pages";
+
         [Route("/Jvnlp")]
         public IActionResult Jvnlp()
         {
-            return View("~/Pages/Jvnlp.cshtml");
+            return View($"~/{Path}/Jvnlp.cshtml");
         }
 
         //public IActionResult About()
