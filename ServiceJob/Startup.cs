@@ -26,10 +26,10 @@ namespace ServiceJob
                 options.Conventions.AddPageRoute("/Home",
                     @""); // route Index = RazorPage "Home.cshtml" (default search RazorPage = "Pages/")
             });
-            services.Configure<MvcViewOptions>(options =>
-            {
-                options.ViewEngines.Insert(options.ViewEngines.Count, new CustomViewEngine());
-            });
+            //services.Configure<MvcViewOptions>(options =>
+            //{
+            //    options.ViewEngines.Insert(options.ViewEngines.Count, new CustomViewEngine());
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
