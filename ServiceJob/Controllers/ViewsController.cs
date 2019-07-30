@@ -15,8 +15,6 @@ namespace ServiceJob.Controllers
         [Route("/Jvnlp")]
         public IActionResult Jvnlp(IFormCollection file)
         {
-            
-           
             return View($"~/{Path}/Jvnlp.cshtml");
         }
 
