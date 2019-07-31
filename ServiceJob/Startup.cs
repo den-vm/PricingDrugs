@@ -50,6 +50,8 @@ namespace ServiceJob
             app.UseMvc();
         }
     }
+
+
     public class ViewLocationExpander : IViewLocationExpander
     {
 

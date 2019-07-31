@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
@@ -10,12 +11,18 @@ namespace ServiceJob.Controllers
 {
     public class ViewsController : Controller
     {
-        private const string Path = "Pages";
-
         [Route("/Jvnlp")]
-        public IActionResult Jvnlp(IFormCollection file)
+        public IActionResult Jvnlp(IFormCollection uploadedFile)
         {
-            //$"~/{Path}/Jvnlp.cshtml"
+            if (uploadedFile.Files.Count == 1)
+            {
+                var size = uploadedFile.Files[0].Length;
+                var type = uploadedFile.Files[0].ContentType;
+                if (uploadedFile.Files[0].Length > 25000000 && uploadedFile.Files[0].ContentType.Equals("application/vnd.ms-excel"))
+                {
+
+                }
+            }
             return View();
         }
 
