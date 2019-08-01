@@ -14,11 +14,9 @@ namespace ServiceJob.Controllers
         [Route("/Jvnlp")]
         public IActionResult Jvnlp(IFormCollection uploadedFile)
         {
-            if (uploadedFile.Files.Count == 1)
+            if (uploadedFile.Files.Count == 1) // complite download file
             {
-                var size = uploadedFile.Files[0].Length;
-                var type = uploadedFile.Files[0].ContentType;
-                if (uploadedFile.Files[0].Length > 25000000 && uploadedFile.Files[0].ContentType.Equals("application/vnd.ms-excel"))
+                if (uploadedFile.Files[0].Length > 25000000 && uploadedFile.Files[0].ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
                 {
 
                 }

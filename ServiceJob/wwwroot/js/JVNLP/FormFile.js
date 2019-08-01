@@ -59,7 +59,7 @@ $(function() {
                 $.ajax({
                     url: this.action,
                     type: this.method,
-                    data: $(this).serialize(),
+                    data: new FormData().append('jvnlpFile', $("input[name='jvnlpFile']").prop('files')[0]), /*$(this).serialize()*/
                     success: function (data) {
                         console.log(data); // the object returned from your Action will be displayed here.
                     }
