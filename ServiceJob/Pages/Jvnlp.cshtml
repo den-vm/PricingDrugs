@@ -7,29 +7,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <!-- Google web fonts -->
-    <link href="~/css/JVNLP/Font.css" rel="stylesheet" />
-    <link href="~/css/JVNLP/Form.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/JVNLP/Font.css"/>
+    <link rel="stylesheet" href="~/css/JVNLP/Form.css"/>
     <link rel="shortcut icon" href="">
 </head>
 <body>
-    <form id="upload" method="post" enctype="multipart/form-data" asp-controller="Views" asp-action="Jvnlp">
-        <div id="drop">
-            Выберите файл реестра ЖВНЛП или перетащите его сюда
-            <a>Загрузить</a><input type="file" name="jvnlpFile" />
-        </div>
-        <ul class="infoFile"></ul>
-    </form>
+<form id="upload" method="post" enctype="multipart/form-data" asp-controller="Views" asp-action="Jvnlp">
+    <div id="drop">
+        Выберите файл реестра ЖВНЛП или перетащите его сюда
+        <a>Загрузить</a><input type="file" name="jvnlpFile"/>
+    </div>
+    <ul class="infoFile"></ul>
+</form>
+<script>
+    if (!('@ViewBag?.ErrorMassageFile' === "")) {
+        alertify
+            .alert('@ViewBag?.ErrorMassageFile', null);
+    }
+</script>
+<!-- JavaScript Includes -->
+<script src="~/lib/jquery/jquery.min.js" type="text/javascript"></script>
+<script src="~/lib/jquery-knob/jquery.knob.js"></script>
 
-    <!-- JavaScript Includes -->
-    <script src="~/lib/jquery/jquery.min.js" type="text/javascript"></script>
-    <script src="~/lib/jquery-knob/jquery.knob.js"></script>
+<!-- jQuery File Upload Dependencies -->
+<script src="~/lib/jquery-ui-widget/jquery.ui.widget.js" type="text/javascript"></script>
+<script src="~/lib/jquery-iframe-transport/jquery.iframe-transport.js" type="text/javascript"></script>
+<script src="~/lib/jquery-fileupload/jquery.fileupload.js" type="text/javascript"></script>
 
-    <!-- jQuery File Upload Dependencies -->
-    <script src="~/lib/jquery-ui-widget/jquery.ui.widget.js" type="text/javascript"></script>
-    <script src="~/lib/jquery-iframe-transport/jquery.iframe-transport.js" type="text/javascript"></script>
-    <script src="~/lib/jquery-fileupload/jquery.fileupload.js" type="text/javascript"></script>
-
-    <!-- Our main JS file -->
-    <script src="~/js/JVNLP/FormFile.js" type="text/javascript"></script>
+<!-- Our main JS file -->
+<script src="~/js/JVNLP/FormFile.js" type="text/javascript"></script>
 </body>
 </html>
