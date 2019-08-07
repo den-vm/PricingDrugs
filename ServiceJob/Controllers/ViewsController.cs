@@ -10,8 +10,6 @@ namespace ServiceJob.Controllers
         [Route("/Jvnlp")]
         public IActionResult Jvnlp(IFormCollection uploadedFile)
         {
-            ViewBag.ErrorMassageFile =
-                $"Файл  не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!";
             if (uploadedFile.Files.Count == 1) // complite download file
                 if (uploadedFile.Files[0].Length > 25000000 &&
                     uploadedFile.Files[0].ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
@@ -20,8 +18,9 @@ namespace ServiceJob.Controllers
                 }
                 else
                 {
+                    ViewBag.testsms = 1;
                     ViewBag.ErrorMassageFile =
-                        $"Файл {uploadedFile.Files[0].Name} не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!";
+                        $"Файл {uploadedFile.Files[0].FileName} не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!";
                 }
             return View();
         }
