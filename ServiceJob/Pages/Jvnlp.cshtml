@@ -1,4 +1,5 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model int
 @{
     ViewData["Title"] = "ЖВНЛП";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,19 +12,24 @@
     </div>
     <ul class="infoFile"></ul>
 </form>
+
+@using (Ajax.BeginForm("BookSearch", new AjaxOptions { UpdateTargetId = "results" }))
+{
+    <input type="text" name="name" />
+    <input type="submit" value="Поиск" />
+}
+<div id="results"></div>
+
 <script type="text/javascript" src="~/lib/jquery/jquery-knob/jquery.knob.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/lib/jquery/jquery-ui-widget/jquery.ui.widget.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/lib/jquery/jquery-iframe-transport/jquery.iframe-transport.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/lib/jquery/jquery-fileupload/jquery.fileupload.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/js/JVNLP/FormFile.js" asp-append-version="true"></script>
-
-<label>Total Students:</label>  @ViewBag.testsms
-
 @*@if (ViewBag?.ErrorMassageFile != null)
-{
-    <p>@ViewBag?.ErrorMassageFile</p>
-    <script type='text/javascript'>
-            alertify
-            .alert('@ViewBag?.ErrorMassageFile', null);
-        </script>
-}*@
+    {
+        <p>@ViewBag?.ErrorMassageFile</p>
+        <script type='text/javascript'>
+                alertify
+                .alert('@ViewBag?.ErrorMassageFile', null);
+            </script>
+    }*@

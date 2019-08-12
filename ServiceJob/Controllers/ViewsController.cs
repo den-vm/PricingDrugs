@@ -11,17 +11,19 @@ namespace ServiceJob.Controllers
         public IActionResult Jvnlp(IFormCollection uploadedFile)
         {
             if (uploadedFile.Files.Count == 1) // complite download file
+            {
                 if (uploadedFile.Files[0].Length > 25000000 &&
                     uploadedFile.Files[0].ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
                 {
-
+                    return View(2);
                 }
                 else
                 {
-                    ViewBag.testsms = 1;
-                    ViewBag.ErrorMassageFile =
-                        $"Файл {uploadedFile.Files[0].FileName} не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!";
+                    //ViewBag.ErrorMassageFile =
+                    //    $"Файл {uploadedFile.Files[0].FileName} не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!";
+                    return View(1);
                 }
+            }
             return View();
         }
 
