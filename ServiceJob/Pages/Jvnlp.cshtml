@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" asp-href-include="~/css/JVNLP/*.css" asp-append-version="true" />
-<form id="upload" method="post" enctype="multipart/form-data" asp-controller="Views" asp-action="Jvnlp">
+<form id="upload" method="post" enctype="multipart/form-data" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#results" asp-controller="Views" asp-action="Jvnlp">
     <div id="drop">
         Выберите файл реестра ЖВНЛП или перетащите его сюда
         <a>Загрузить</a><input type="file" name="jvnlpFile" />
@@ -13,12 +13,12 @@
     <ul class="infoFile"></ul>
 </form>
 
-@using (Ajax.BeginForm("BookSearch", new AjaxOptions { UpdateTargetId = "results" }))
+@*@using (Ajax.BeginForm("BookSearch", new AjaxOptions { UpdateTargetId = "results" }))
 {
     <input type="text" name="name" />
     <input type="submit" value="Поиск" />
-}
-<div id="results"></div>
+}*@
+<div id="results">@Model</div>
 
 <script type="text/javascript" src="~/lib/jquery/jquery-knob/jquery.knob.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/lib/jquery/jquery-ui-widget/jquery.ui.widget.js" asp-append-version="true"></script>

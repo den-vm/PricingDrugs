@@ -19,8 +19,8 @@ namespace ServiceJob.Controllers
                 }
                 else
                 {
-                    //ViewBag.ErrorMassageFile =
-                    //    $"Файл {uploadedFile.Files[0].FileName} не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!";
+                    ViewBag.ErrorMassageFile =
+                        $"Файл {uploadedFile.Files[0].FileName} не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!";
                     return View(1);
                 }
             }
