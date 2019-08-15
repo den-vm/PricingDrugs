@@ -4,12 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" asp-href-include="~/css/JVNLP/*.css" asp-append-version="true" />
-<form id="upload" enctype="multipart/form-data" asp-controller="Views" asp-action="DownloadFile">
-        <div id="drop">
-            Выберите файл реестра ЖВНЛП или перетащите его сюда
-            <a>Загрузить</a><input type="file" name="jvnlpFile" />
-        </div>
-        <ul class="infoFile"></ul>
+<form method="post" enctype="multipart/form-data" asp-controller="Views" asp-action="DownloadFile" id="upload">
+    <div id="drop">
+        Выберите файл реестра ЖВНЛП или перетащите его сюда
+        <a>Загрузить</a><input type="file" name="jvnlpFile" />
+    </div>
+    <ul class="infoFile"></ul>
 </form>
 <script type="text/javascript" src="~/lib/jquery/jquery-knob/jquery.knob.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/lib/jquery/jquery-ui-widget/jquery.ui.widget.js" asp-append-version="true"></script>
