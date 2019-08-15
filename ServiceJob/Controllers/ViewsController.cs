@@ -9,35 +9,30 @@ namespace ServiceJob.Controllers
     public class ViewsController : Controller
     {
         [Route("/Jvnlp")]
-        public IActionResult Jvnlp()
+        public IActionResult Jvnlp(IFormCollection uploadedFile)
         {
             return View();
         }
 
-        [HttpPost]
-        public IActionResult DownloadFile()
+        public void DownloadFile(IFormCollection uploadedFile)
         {
-            return Content("dfgdfgdfdfg");
-        }
-        //public IActionResult DownloadFile(IFormCollection uploadedFile)
-        //{
-        //    var con = Request;
-        //    if (uploadedFile.Files.Count == 1) // complite download file
-        //    {
-        //        if (uploadedFile.Files[0].Length > 25000000 &&
-        //            uploadedFile.Files[0].ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
-        //        {
+            var con = Request;
+            //if (uploadedFile.Files.Count == 1) // complite download file
+            //{
+            //    if (uploadedFile.Files[0].Length > 25000000 &&
+            //        uploadedFile.Files[0].ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
+            //    {
 
-        //        }
-        //        else
-        //        {
-        //            var errorFile =
-        //                $"Файл {uploadedFile.Files[0].FileName} не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!";
-        //            return Content(errorFile);
-        //        }
-        //    }
-        //    return null;
-        //}
+            //    }
+            //    else
+            //    {
+            //        ViewBag.ErrorMassageFile =
+            //            $"Файл '{uploadedFile.Files[0].FileName}' не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!";
+            //        return View(1);
+            //    }
+            //}
+            //return Json("Привет");
+        }
 
         //public IActionResult About()
         //{

@@ -7,17 +7,17 @@ $(function() {
         // to show the file browser dialog
         $(this).parent().find("input").click();
     });
-    $("#uploads").submit(function (e) {
-        //e.preventDefault(); // stop the standard form submission
-        $.ajax({
-            url: this.action,
-            type: this.method,
-            data: $(this).serialize(),
-            success: function (data) {
-                console.log(data); // the object returned from your Action will be displayed here.
-            }
-        });
-    });
+    //$("#upload").submit(function (e) {
+    //    //e.preventDefault(); // stop the standard form submission
+    //    $.ajax({
+    //        url: this.action,
+    //        type: this.method,
+    //        data: $(this).serialize(),
+    //        success: function (data) {
+    //            console.log(data); // the object returned from your Action will be displayed here.
+    //        }
+    //    });
+    //});
     // Initialize the jQuery File Upload plugin
     $("#upload").fileupload({
 
@@ -57,11 +57,10 @@ $(function() {
             var jqXhr = data.submit(function (e) {
                 e.preventDefault(); // stop the standard form submission
                 $.ajax({
-                    url: this.action,
-                    type: this.method,
-                    data: new FormData().append('jvnlpFile', $("input[name='jvnlpFile']").prop('files')[0]), /*$(this).serialize()*/
+                    type: "POST",
+                    data: $(this).serialize(),
                     success: function (data) {
-                        console.log(data); // the object returned from your Action will be displayed here.
+                        console.log(data);
                     }
                 });
             });

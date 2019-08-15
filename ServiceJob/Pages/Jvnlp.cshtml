@@ -1,43 +1,18 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model string
 @{
     ViewData["Title"] = "ЖВНЛП";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" asp-href-include="~/css/JVNLP/*.css" asp-append-version="true" />
-@*<form id="upload" method="post" enctype="multipart/form-data" asp-controller="Views" asp-action="Jvnlp">
+<form id="upload" enctype="multipart/form-data" asp-controller="Views" asp-action="DownloadFile">
         <div id="drop">
             Выберите файл реестра ЖВНЛП или перетащите его сюда
             <a>Загрузить</a><input type="file" name="jvnlpFile" />
         </div>
         <ul class="infoFile"></ul>
-    </form>*@
-@*<form id="uploads" method="post" enctype="multipart/form-data" asp-controller="Views" asp-action="DownloadFile">
-    
-</form>*@
-<form id="uploads" asp-controller="Views" asp-action="DownloadFile" method="post" enctype="multipart/form-data">
-    <input type="file" name="jvnlpFile" />
-    <input type="submit" name="Отправить" />
 </form>
-@*@using (Ajax.BeginForm("BookSearch", new AjaxOptions { UpdateTargetId = "results" }))
-    {
-        <input type="text" name="name" />
-        <input type="submit" value="Поиск" />
-    }*@
-@if (@Model != null)
-{
-    @Model
-}
 <script type="text/javascript" src="~/lib/jquery/jquery-knob/jquery.knob.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/lib/jquery/jquery-ui-widget/jquery.ui.widget.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/lib/jquery/jquery-iframe-transport/jquery.iframe-transport.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/lib/jquery/jquery-fileupload/jquery.fileupload.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/js/JVNLP/FormFile.js" asp-append-version="true"></script>
-@*@if (ViewBag?.ErrorMassageFile != null)
-    {
-        <p>@ViewBag?.ErrorMassageFile</p>
-        <script type='text/javascript'>
-                alertify
-                .alert('@ViewBag?.ErrorMassageFile', null);
-            </script>
-    }*@
