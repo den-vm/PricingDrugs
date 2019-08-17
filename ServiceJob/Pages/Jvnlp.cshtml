@@ -3,16 +3,12 @@
     ViewData["Title"] = "ЖВНЛП";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link rel="stylesheet" asp-href-include="~/css/JVNLP/*.css" asp-append-version="true" />
-<form method="post" enctype="multipart/form-data" asp-controller="Views" asp-action="DownloadFile" id="upload">
-    <div id="drop">
-        Выберите файл реестра ЖВНЛП или перетащите его сюда
-        <a>Загрузить</a><input type="file" name="jvnlpFile" />
+<link rel="stylesheet" asp-href-include="~/css/JVNLP/*.css" asp-append-version="true"/>
+<form enctype="multipart/form-data" asp-controller="Views" asp-action="DownloadFile" name="jvnlpform">
+    <div class="input-file-container">
+        <input type="file" class="input-file" >
+        <label tabindex="0" class="input-file-trigger">Выберите файл</label>
+        <input type="submit" class="file-send" value="Отправить">
     </div>
-    <ul class="infoFile"></ul>
 </form>
-<script type="text/javascript" src="~/lib/jquery/jquery-knob/jquery.knob.js" asp-append-version="true"></script>
-<script type="text/javascript" src="~/lib/jquery/jquery-ui-widget/jquery.ui.widget.js" asp-append-version="true"></script>
-<script type="text/javascript" src="~/lib/jquery/jquery-iframe-transport/jquery.iframe-transport.js" asp-append-version="true"></script>
-<script type="text/javascript" src="~/lib/jquery/jquery-fileupload/jquery.fileupload.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/js/JVNLP/FormFile.js" asp-append-version="true"></script>

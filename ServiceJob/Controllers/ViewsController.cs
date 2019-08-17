@@ -15,19 +15,20 @@ namespace ServiceJob.Controllers
 
         [Route("/Jvnlp")]
         [HttpPost]
-        public IActionResult DownloadFile(IFormCollection uploadedFile)
+        public IActionResult DownloadFile(IFormFile fileJvnlp)
         {
-            var message = "";
-            if (uploadedFile.Files.Count == 1) // complite download file
-                if (uploadedFile.Files[0].Length > 25000000 &&
-                    uploadedFile.Files[0].ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
-                {
-                }
+            object message = null;
+            if (fileJvnlp != null) // complite download file
+                if (fileJvnlp.Length > 25000000 &&
+                    fileJvnlp.ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
+                    message = new {typemessage = "complite", message = "Успешно загружен и обработан"};
                 else
-                {
-                    message =
-                        $"Файл '{uploadedFile.Files[0].FileName}' не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!";
-                }
+                    message = new
+                    {
+                        typemessage = "error",
+                        message =
+                        $"Файл '{fileJvnlp.FileName}' не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!"
+                    };
             return Json(message);
         }
 

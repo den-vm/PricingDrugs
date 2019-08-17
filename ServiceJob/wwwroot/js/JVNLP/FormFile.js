@@ -1,118 +1,35 @@
-$(function() {
+document.querySelector("html").classList.add("js");
 
-    var ul = $("#upload ul");
+var fileInput = $(".input-file"),
+    filesend = $(".file-send");
 
-    $("#drop a").click(function() {
-        // Simulate a click on the file input button
-        // to show the file browser dialog
-        $(this).parent().find("input").click();
-    });
-    // Initialize the jQuery File Upload plugin
-    $("#upload").fileupload({
-
-        // This element will accept file drag/drop uploading
-        dropZone: $("#drop"),
-
-        // This function is called when a file is added to the queue;
-        // either via the browse button, or via drag/drop:
-        add: function(e, data) {
-
-            var tpl = $(
-                '<li class="working" style="height: 100%;"><input type="text" value="0" data-width="48" data-height="48"' +
-                ' data-fgColor="#0788a5" data-readOnly="1" data-bgColor="#3e4043" /><div class="nameFile">' +
-                data.files[0].name +
-                '</div><i class="sizeFile">' +
-                formatFileSize(data.files[0].size) +
-                "</i></p><span class='del_fileDelete_working'></span></li>");
-            $(".infoFile").html("");
-            // Add the HTML to the UL element
-            data.context = tpl.appendTo(ul);
-
-            // Initialize the knob plugin
-            tpl.find("input").knob();
-
-            // Listen for clicks on the cancel icon
-            tpl.find("span").click(function() {
-
-                if (tpl.hasClass("working")) {
-                    jqXhr.abort();
-                    tpl.fadeOut(function() {
-                        tpl.remove();
-                    });
-                }
-            });
-
-            //// Automatically upload the file once it is added to the queue
-            var jqXhr = data.submit(function (e) {
-                e.preventDefault(); // stop the standard form submission
-                //$.ajax({
-                //    url: this.action,
-                //    type: this.method,
-                //    data: $(this).serialize(),
-                //    complete: function (data) {
-                //        console.log(data);
-                //    }
-                //});
-            });
-        },
-
-        progress: function(e, data) {
-
-            // Calculate the completion percentage of the upload
-            var progress = parseInt(data.loaded / data.total * 100, 10);
-
-            // Update the hidden input field and trigger a change
-            // so that the jQuery knob plugin knows to update the dial
-            data.context.find("input").val(progress).change();
-
-            if (progress === 100) {
-                data.context.removeClass("working");
-                data.context.addClass("complete");
-
-                var spanDelFile = "<span class='del_fileDelete_complete'></span>";
-                //spanDelFile += "<div id='tosend'><a>Отправить</a><input type='submit' value='Отправить' name='sendFileJVNLP'/></div>";
-                data.context.append(spanDelFile);
-                data.context.find($(".del_fileDelete_complete")).on("click",
-                    function(e) {
-                        $(data.context).animate({
-                                opacity: 0
-                            },
-                            300,
-                            function() {
-                                data.context.remove();
-                            });
-                    });
+$("form[name=jvnlpform]").submit(function(event) {
+    event.preventDefault(); //disconnect default event submit form
+    if (fileInput.val() !== "") {
+        var dataForm = new FormData();
+        for (var i = 0; i < fileInput[0].files.length; i++) {
+            dataForm.append("fileJvnlp", fileInput[0].files[i]);
+        }
+        $.ajax({
+            type: "POST",
+            data: dataForm,
+            dataType: "json",
+            processData: false, // отключение преобразования строки запроса по contentType
+            contentType:
+                false, // отключение преобразования контента в тип по умолчанию: "application/x-www-form-urlencoded; charset=UTF-8"
+            success: function(data) {
+                if (data["typemessage"] === "error")
+                    alertify.error(data["message"]);
+                if (data["typemessage"] === "complite")
+                    alertify.message(data["message"]);
             }
-        },
-        fail: function(e, data) {
-            // Something has gone wrong!
-            data.context.addClass("error");
-        }
-
-    });
-
-
-    // Prevent the default action when a file is dropped on the window
-    $(document).on("drop dragover",
-        function(e) {
-            e.preventDefault();
         });
-
-    // Helper function that formats the file sizes
-    function formatFileSize(bytes) {
-        if (typeof bytes !== "number") {
-            return "";
-        }
-
-        if (bytes >= 1000000000) {
-            return (bytes / 1000000000).toFixed(2) + " GB";
-        }
-
-        if (bytes >= 1000000) {
-            return (bytes / 1000000).toFixed(2) + " MB";
-        }
-
-        return (bytes / 1000).toFixed(2) + " KB";
+    } else {
+        alertify.error("Выберите файл для загрузки!");
     }
+});
 
+fileInput.change(function() {
+    $(".input-file-trigger").html("Файл: " + this.files[0].name.toString());
+    filesend.html("Отправить");
 });
