@@ -4,12 +4,13 @@ var fileInput = $(".input-file"),
     filesend = $(".file-send");
 
 $("form[name=jvnlpform]").submit(function(event) {
-    event.preventDefault(); //disconnect default event submit form
+    event.preventDefault(); // отключить форму отправки события по умолчанию
     if (fileInput.val() !== "") {
         var dataForm = new FormData();
         for (var i = 0; i < fileInput[0].files.length; i++) {
             dataForm.append("fileJvnlp", fileInput[0].files[i]);
         }
+        var progressBar = $("#progressbar");
         $.ajax({
             type: "POST",
             data: dataForm,
@@ -17,6 +18,21 @@ $("form[name=jvnlpform]").submit(function(event) {
             processData: false, // отключение преобразования строки запроса по contentType
             contentType:
                 false, // отключение преобразования контента в тип по умолчанию: "application/x-www-form-urlencoded; charset=UTF-8"
+            xhr: function() {
+                var xhr = $.ajaxSettings.xhr(); // получаем объект XMLHttpRequest
+                xhr.upload.addEventListener("progress",
+                    function(evt) { // добавляем обработчик события progress (onprogress)
+                        if (evt.lengthComputable) { // если известно количество байт
+                            // высчитываем процент загруженного
+                            var percentComplete = Math.ceil(evt.loaded / evt.total * 100);
+                            // устанавливаем значение в атрибут value тега <progress>
+                            // и это же значение альтернативным текстом для браузеров, не поддерживающих <progress>
+                            progressBar.val(percentComplete).text("Загружено " + percentComplete + "%");
+                        }
+                    },
+                    false);
+                return xhr;
+            },
             success: function(data) {
                 if (data["typemessage"] === "error")
                     alertify.error(data["message"]);

@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,12 @@ namespace ServiceJob
             });
             services.Configure<RazorViewEngineOptions>(options => {
                 options.ViewLocationExpanders.Add(new ViewLocationExpander());
+            });
+            services.Configure<FormOptions>(options =>
+            {
+                options.ValueLengthLimit = int.MaxValue; // ограничение длины отдельных значений формы
+                options.MultipartBodyLengthLimit = int.MaxValue; // ограничение длины каждой формы
+                options.MultipartHeadersLengthLimit = int.MaxValue; // ограничение длины заголовка формы
             });
         }
 

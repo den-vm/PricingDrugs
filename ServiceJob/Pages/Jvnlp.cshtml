@@ -6,9 +6,10 @@
 <link rel="stylesheet" asp-href-include="~/css/JVNLP/*.css" asp-append-version="true"/>
 <form enctype="multipart/form-data" asp-controller="Views" asp-action="DownloadFile" name="jvnlpform">
     <div class="input-file-container">
-        <input type="file" class="input-file" >
+        <input type="file" class="input-file">
         <label tabindex="0" class="input-file-trigger">Выберите файл</label>
         <input type="submit" class="file-send" value="Отправить">
     </div>
+    <progress id="progressbar" value="0" max="100"></progress>
 </form>
 <script type="text/javascript" src="~/js/JVNLP/FormFile.js" asp-append-version="true"></script>
