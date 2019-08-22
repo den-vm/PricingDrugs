@@ -8,5 +8,6 @@ namespace ServiceJob.Models
 {
     public class UploadFile
     {
+
     }
 }
