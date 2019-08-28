@@ -7,6 +7,8 @@ namespace ServiceJob.Controllers
 {
     public class ViewsController : Controller
     {
+        private readonly UploadFile _fileProcessing = new UploadFile();
+
         [Route("/Jvnlp")]
         public IActionResult Jvnlp()
         {
@@ -21,14 +23,19 @@ namespace ServiceJob.Controllers
             if (fileJvnlp != null) // complite download file
                 if (fileJvnlp.Length > 25000000 &&
                     fileJvnlp.ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
+                {
+                    _fileProcessing.ReaderFileJvnlp(fileJvnlp);
                     message = new {typemessage = "complite", message = "Успешно загружен и обработан"};
+                }
                 else
+                {
                     message = new
                     {
                         typemessage = "error",
                         message =
                         $"Файл '{fileJvnlp.FileName}' не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!"
                     };
+                }
             return Json(message);
         }
 
