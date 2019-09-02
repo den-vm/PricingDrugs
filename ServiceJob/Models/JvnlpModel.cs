@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ServiceJob.Models
 {
-    public class ModelJvnlp
+    public class JvnlpModel
     {
         public string Mnn;
         public string Tradingname;

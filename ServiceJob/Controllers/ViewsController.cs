@@ -7,7 +7,7 @@ namespace ServiceJob.Controllers
 {
     public class ViewsController : Controller
     {
-        private readonly UploadFile _fileProcessing = new UploadFile();
+        private readonly UploadFileModel _fileProcessing = new UploadFileModel();
 
         [Route("/Jvnlp")]
         public IActionResult Jvnlp()

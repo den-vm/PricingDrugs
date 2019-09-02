@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace ServiceJob.Models
 {
-    public class UploadFile
+    public class UploadFileModel
     {
-        public IQueryable<ModelJvnlp> Drugs { get; protected set; }
+        public IQueryable<JvnlpModel> Drugs { get; protected set; }
 
         public void ReaderFileJvnlp(IFormFile file)
         {
