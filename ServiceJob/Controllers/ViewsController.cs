@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceJob.Models;
@@ -8,6 +10,13 @@ namespace ServiceJob.Controllers
     public class ViewsController : Controller
     {
         private readonly UploadFile _fileProcessing = new UploadFile();
+
+        IHostingEnvironment _appEnvironment;
+
+        public ViewsController(IHostingEnvironment appEnvironment)
+        {
+            _appEnvironment = appEnvironment;
+        }
 
         [Route("/Jvnlp")]
         public IActionResult Jvnlp()
@@ -24,7 +33,14 @@ namespace ServiceJob.Controllers
                 if (fileJvnlp.Length > 25000000 &&
                     fileJvnlp.ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
                 {
-                    _fileProcessing.ReaderFileJvnlp(fileJvnlp);
+                    // create path temp file путь к папке Files
+                    var path = "/tempupload/" + fileJvnlp.FileName;
+                    // save temp faile to path catalog wwwroot
+                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    {
+                        fileJvnlp.CopyToAsync(fileStream);
+                    }
+                    _fileProcessing.ReaderFileJvnlp(_appEnvironment.WebRootPath + path);
                     message = new {typemessage = "complite", message = "Успешно загружен и обработан"};
                 }
                 else
