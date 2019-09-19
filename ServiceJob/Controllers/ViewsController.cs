@@ -34,7 +34,7 @@ namespace ServiceJob.Controllers
                     fileJvnlp.ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
                 {
                     // create path temp file путь к папке Files
-                    var path = "/tempupload/" + fileJvnlp.FileName;
+                    var path = @"\tempupload\" + fileJvnlp.FileName;
                     // save temp faile to path catalog wwwroot
                     using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                     {

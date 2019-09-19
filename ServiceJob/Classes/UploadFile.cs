@@ -1,6 +1,5 @@
-﻿using System.IO;
-using System.Linq;
-using Microsoft.AspNetCore.Http;
+﻿using System.Linq;
+using Microsoft.Office.Interop.Excel;
 
 namespace ServiceJob.Models
 {
@@ -11,21 +10,20 @@ namespace ServiceJob.Models
         public void ReaderFileJvnlp(string filePath)
         {
             //Создаём приложение.
-            Microsoft.Office.Interop.Excel.Application ObjExcel = new Microsoft.Office.Interop.Excel.Application();
+            var objExcel = new Application();
             //Открываем книгу.                                                                                                                                                        
-            Microsoft.Office.Interop.Excel.Workbook ObjWorkBook = ObjExcel.Workbooks.Open(filePath, 0, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "", true, false, 0, true, false, false);
+            var objWorkBook = objExcel.Workbooks.Open(filePath, 0, false, 5, "", "", false, XlPlatform.xlWindows, "",
+                true, false, 0, true, false, false);
             //Выбираем таблицу(лист).
-            Microsoft.Office.Interop.Excel.Worksheet ObjWorkSheet;
-            ObjWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets[1];
-            string[] telephons = new string[100];
+            var objWorkSheet = (Worksheet) objWorkBook.Sheets[1];
+            var telephons = new string[100];
             //Выбираем первые сто записей из столбца.
-            for (int i = 1; i < 101; i++)
+            for (var i = 1; i < 101; i++)
             {
                 //Выбираем область таблицы. (в нашем случае просто ячейку)
-                Microsoft.Office.Interop.Excel.Range range = ObjWorkSheet.get_Range("F" + i.ToString(), "F" + i.ToString());
+                var range = objWorkSheet.Range["F" + i, "F" + i];
                 //Добавляем полученный из ячейки текст.
                 telephons[i - 1] = range.Text.ToString();
-
             }
         }
     }
