@@ -33,14 +33,14 @@ namespace ServiceJob.Controllers
                 if (fileJvnlp.Length > 25000000 &&
                     fileJvnlp.ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
                 {
-                    // create path temp file путь к папке Files
+                    // create path temp file
                     var path = @"\tempupload\" + fileJvnlp.FileName;
                     // save temp faile to path catalog wwwroot
                     using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                     {
                         fileJvnlp.CopyToAsync(fileStream);
                     }
-                    _fileProcessing.ReaderFileJvnlp(_appEnvironment.WebRootPath + path);
+                    _fileProcessing.ReadFileJvnlp(_appEnvironment.WebRootPath + path);
                     message = new {typemessage = "complite", message = "Успешно загружен и обработан"};
                 }
                 else
