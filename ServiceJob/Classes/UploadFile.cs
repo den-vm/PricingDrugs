@@ -1,5 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.FileProviders;
+using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
@@ -13,16 +17,27 @@ namespace ServiceJob.Models
 
         public void ReadFileJvnlp(string filePath)
         {
-            XSSFWorkbook bookExcel;
+            HSSFWorkbook bookExcelXls = null;
+            XSSFWorkbook bookExcelXlsx = null;
+            ISheet sheet = null;
+            string fileExt = Path.GetExtension(filePath);
             using (FileStream file = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
-                //D:\Documents\VSProject17\servicejob\ServiceJob\wwwroot\tempupload
-                bookExcel = new XSSFWorkbook(file);
+                if (fileExt == ".xls")
+                    bookExcelXls = new HSSFWorkbook(file);
+                else if (fileExt == ".xlsx")
+                    bookExcelXlsx = new XSSFWorkbook(file);
                 File.Delete(filePath);
             }
+            if (bookExcelXls != null)
+            {
+                sheet = bookExcelXls.GetSheetAt(0);
+            }
+            else if (bookExcelXlsx != null)
+            {
+                sheet = bookExcelXlsx.GetSheetAt(0);
+            }
 
-            //Получаем первый лист книги
-            ISheet sheet = bookExcel.GetSheetAt(0);
 
             ////запускаем цикл по строкам
             //for (int row = 0; row <= sheet.LastRowNum; row++)

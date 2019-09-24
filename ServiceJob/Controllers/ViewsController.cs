@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ namespace ServiceJob.Controllers
 
         [Route("/Jvnlp")]
         [HttpPost]
-        public IActionResult DownloadFile(IFormFile fileJvnlp)
+        public async Task<IActionResult> DownloadFile(IFormFile fileJvnlp)
         {
             object message = null;
             if (fileJvnlp != null) // complite download file
@@ -38,7 +39,7 @@ namespace ServiceJob.Controllers
                     // save temp faile to path catalog wwwroot
                     using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                     {
-                        fileJvnlp.CopyToAsync(fileStream);
+                      await fileJvnlp.CopyToAsync(fileStream);
                     }
                     _fileProcessing.ReadFileJvnlp(_appEnvironment.WebRootPath + path);
                     message = new {typemessage = "complite", message = "Успешно загружен и обработан"};
