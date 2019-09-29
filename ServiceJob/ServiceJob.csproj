@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\JVNLP\" />
+    <Folder Include="wwwroot\TableDrugs\" />
     <Folder Include="wwwroot\tempupload\" />
   </ItemGroup>
 

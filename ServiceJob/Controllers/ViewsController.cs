@@ -10,9 +10,8 @@ namespace ServiceJob.Controllers
 {
     public class ViewsController : Controller
     {
+        private readonly IHostingEnvironment _appEnvironment;
         private readonly UploadFile _fileProcessing = new UploadFile();
-
-        IHostingEnvironment _appEnvironment;
 
         public ViewsController(IHostingEnvironment appEnvironment)
         {
@@ -25,7 +24,6 @@ namespace ServiceJob.Controllers
             return View();
         }
 
-        [Route("/Jvnlp")]
         [HttpPost]
         public async Task<IActionResult> DownloadFile(IFormFile fileJvnlp)
         {
@@ -39,7 +37,7 @@ namespace ServiceJob.Controllers
                     // save temp faile to path catalog wwwroot
                     using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
                     {
-                      await fileJvnlp.CopyToAsync(fileStream);
+                        await fileJvnlp.CopyToAsync(fileStream);
                     }
                     _fileProcessing.ReadFileJvnlp(_appEnvironment.WebRootPath + path);
                     message = new {typemessage = "complite", message = "Успешно загружен и обработан"};
@@ -53,6 +51,27 @@ namespace ServiceJob.Controllers
                         $"Файл '{fileJvnlp.FileName}' не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!"
                     };
                 }
+            return Json(message);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DownloadNarcoticDrugs(JsonResult narcoticDrugs)
+        {
+            object message;
+            if (narcoticDrugs != null) // complite save drugs
+
+                message = new
+                {
+                    typemessage = "complite",
+                    message = "Таблица наркотических препаратов сохранена!"
+                };
+
+            else
+                message = new
+                {
+                    typemessage = "error",
+                    message = "Проверьте заполнение таблицы наркотических препаратов!"
+                };
             return Json(message);
         }
 

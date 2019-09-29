@@ -1,9 +1,9 @@
 document.querySelector("html").classList.add("js");
 
 var fileInput = $(".input-file"),
-    filesend = $(".file-send");
+    fileSend = $(".file-send");
 
-$("form[name=jvnlpform]").submit(function(event) {
+$("form[name=jvnlpForm]").submit(function(event) {
     event.preventDefault(); // отключить форму отправки события по умолчанию
     if (fileInput.val() !== "") {
         var dataForm = new FormData();
@@ -45,7 +45,7 @@ $("form[name=jvnlpform]").submit(function(event) {
     }
 });
 
-fileInput.change(function() {
+fileInput.change(function () {
     $(".input-file-trigger").html("Файл: " + this.files[0].name.toString());
-    filesend.html("Отправить");
+    fileSend.html("Отправить");
 });

@@ -84,3 +84,38 @@ section, footer, header, aside { display: block; }
     background: #34495E;
     color: #39D2B4;
 }
+
+/*----------------------------
+    The table drugs form
+-----------------------------*/
+
+.tableForm input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    display: inline-block;
+    float: left;
+    padding: 3px;
+    height: 29px;
+}
+.add, .del {
+    padding: 5px;
+    text-align: center;
+}
+
+.js .add, .del {
+    background: rgba(0, 188, 218, 0.66);
+    color: rgba(35, 35, 35, 0.9);
+    cursor: pointer;
+    font-size: .8em;
+    font-weight: bold;
+    transition: all .4s;
+    width: 76px;
+    margin: 0;
+}
+
+    .js .add:hover, .del:hover {
+        background: #34495E;
+        color: #39D2B4;
+    }

@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" asp-href-include="~/css/JVNLP/*.css" asp-append-version="true"/>
-<form enctype="multipart/form-data" asp-controller="Views" asp-action="DownloadFile" name="jvnlpform">
+<form enctype="multipart/form-data" action="~/Jvnlp/DownloadFile" name="jvnlpForm">
     <div class="input-file-container">
         <input type="file" class="input-file">
         <label tabindex="0" class="input-file-trigger">Выберите файл</label>
@@ -12,4 +12,29 @@
     </div>
     <progress id="progressbar" value="0" max="100"></progress>
 </form>
+
+<form action="~/Jvnlp/DownloadNarcoticDrugs" name="drugNarcoticForm">
+    <table id="drugNarcotic" width="650" border="1" cellspacing="0" cellpadding="5" class="tableForm">
+        <thead>
+        <tr>
+            <th scope="col">Международное наименование наркотического и психотропного препарата</th>
+            <th scope="col">Функции</th>
+        </tr>
+        </thead>
+        <tbody id="dynamicRowDrugs">
+        <tr>
+            <td style="width: 0">
+                <label>
+                    <input type="text" name="nameDrugs" value="" required placeholder="Введите МНН препарата">
+                </label>
+            </td>
+            <td style="width: 152px;">
+                <button type="button" class="add">Добавить</button><button type="button" class="del">Удалить</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <input type="submit" value="Сохранить">
+</form>
 <script type="text/javascript" src="~/js/JVNLP/FormFile.js" asp-append-version="true"></script>
+<script type="text/javascript" src="~/js/JVNLP/FormTable.js" asp-append-version="true"></script>
