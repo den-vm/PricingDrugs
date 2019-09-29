@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -25,8 +27,9 @@ namespace ServiceJob.Controllers
         }
 
         [HttpPost("Jvnlp")]
-        public async Task<IActionResult> RequestJvnlp()
+        public async Task<IActionResult> RequestJvnlp(IFormCollection form)
         {
+            var a = form.Keys;
             var fileJvnlp = Request?.Form.Files[0];
             object message = null;
             if (fileJvnlp != null) // complite download file
