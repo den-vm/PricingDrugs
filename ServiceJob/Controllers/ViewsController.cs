@@ -24,9 +24,10 @@ namespace ServiceJob.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> DownloadFile(IFormFile fileJvnlp)
+        [HttpPost("Jvnlp")]
+        public async Task<IActionResult> RequestJvnlp()
         {
+            var fileJvnlp = Request?.Form.Files[0];
             object message = null;
             if (fileJvnlp != null) // complite download file
                 if (fileJvnlp.Length > 25000000 &&
@@ -54,11 +55,12 @@ namespace ServiceJob.Controllers
             return Json(message);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> DownloadNarcoticDrugs(JsonResult narcoticDrugs)
+
+        public async Task<IActionResult> DownloadNarcoticDrugs()
         {
+            var res = Request;
             object message;
-            if (narcoticDrugs != null) // complite save drugs
+            if (res != null) // complite save drugs
 
                 message = new
                 {

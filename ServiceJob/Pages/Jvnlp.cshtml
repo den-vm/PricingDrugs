@@ -4,7 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" asp-href-include="~/css/JVNLP/*.css" asp-append-version="true"/>
-<form enctype="multipart/form-data" action="~/Jvnlp/DownloadFile" name="jvnlpForm">
+
+<form enctype="multipart/form-data" asp-action="RequestJvnlp" asp-controller="Views" name="jvnlpForm">
     <div class="input-file-container">
         <input type="file" class="input-file">
         <label tabindex="0" class="input-file-trigger">Выберите файл</label>
@@ -13,7 +14,7 @@
     <progress id="progressbar" value="0" max="100"></progress>
 </form>
 
-<form action="~/Jvnlp/DownloadNarcoticDrugs" name="drugNarcoticForm">
+<form asp-action="RequestJvnlp" asp-controller="Views" name="drugNarcoticForm">
     <table id="drugNarcotic" width="650" border="1" cellspacing="0" cellpadding="5" class="tableForm">
         <thead>
         <tr>
