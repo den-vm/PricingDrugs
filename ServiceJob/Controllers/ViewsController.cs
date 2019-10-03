@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -29,10 +28,12 @@ namespace ServiceJob.Controllers
         [HttpPost("Jvnlp")]
         public async Task<IActionResult> RequestJvnlp(IFormCollection form)
         {
-            var a = form.Keys;
-            var fileJvnlp = Request?.Form.Files[0];
-            object message = null;
-            if (fileJvnlp != null) // complite download file
+            if (form.Equals(null))
+                return Json(new {typemessage = "error", message = "Ошибка обработки формы!"});
+
+            if (form.Files.Count > 0)
+            {
+                var fileJvnlp = form.Files[0];
                 if (fileJvnlp.Length > 25000000 &&
                     fileJvnlp.ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
                 {
@@ -44,40 +45,31 @@ namespace ServiceJob.Controllers
                         await fileJvnlp.CopyToAsync(fileStream);
                     }
                     _fileProcessing.ReadFileJvnlp(_appEnvironment.WebRootPath + path);
-                    message = new {typemessage = "complite", message = "Успешно загружен и обработан"};
+                    return Json(new {typemessage = "complite", message = "Успешно загружен и обработан"});
                 }
-                else
-                {
-                    message = new
-                    {
-                        typemessage = "error",
-                        message =
-                        $"Файл '{fileJvnlp.FileName}' не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!"
-                    };
-                }
-            return Json(message);
-        }
-
-
-        public async Task<IActionResult> DownloadNarcoticDrugs()
-        {
-            var res = Request;
-            object message;
-            if (res != null) // complite save drugs
-
-                message = new
-                {
-                    typemessage = "complite",
-                    message = "Таблица наркотических препаратов сохранена!"
-                };
-
-            else
-                message = new
+                return Json(new
                 {
                     typemessage = "error",
-                    message = "Проверьте заполнение таблицы наркотических препаратов!"
-                };
-            return Json(message);
+                    message =
+                    $"Файл '{fileJvnlp.FileName}' не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!"
+                });
+            }
+            if (form.Keys.Count > 0)
+            {
+                var keyForm = form.ToDictionary(x => x.Key, x => x.Value).ToList()[0];
+                switch (keyForm.Key)
+                {
+                    case "narcoticDrugs":
+                        // модель данных
+                        return Json(new
+                        {
+                            typemessage = "complite",
+                            message = "Таблица наркотических препаратов сохранена!"
+                        });
+                        break;
+                }
+            }
+            return Json(new {typemessage = "error", message = "Проверьте заполнение формы!"});
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

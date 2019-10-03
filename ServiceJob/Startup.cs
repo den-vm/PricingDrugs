@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -38,6 +39,7 @@ namespace ServiceJob
                 options.MultipartBodyLengthLimit = int.MaxValue; // ограничение длины каждой формы
                 options.MultipartHeadersLengthLimit = int.MaxValue; // ограничение длины заголовка формы
             });
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,7 +56,11 @@ namespace ServiceJob
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseMvc();
+            app.UseMvc(); //config =>
+            //{
+            //    config.MapRoute(
+            //        "default", "api/{controller}/{action}");
+            //}
         }
     }
 

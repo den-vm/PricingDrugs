@@ -6,7 +6,8 @@ $("form[name=drugNarcoticForm]").submit(function(event) {
         var dataForm = new FormData();
         var rows = [];
         for (var i = 0; i < drugNarcoticTable.length; i++) {
-            rows.push(`{name: "${drugNarcoticTable[i].value}"`);
+            //rows.push(`{name: "${drugNarcoticTable[i].value}"`);
+            rows.push(drugNarcoticTable[i].value);
         }
         dataForm.append("narcoticDrugs", JSON.stringify(rows));
         $.ajax({
