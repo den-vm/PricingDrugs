@@ -60,7 +60,7 @@ namespace ServiceJob.Controllers
                 switch (keyForm.Key)
                 {
                     case "narcoticDrugs":
-                        // модель данных
+                        var a = new DrugNarcoticsModel().ReadFileDrugs();
                         return Json(new
                         {
                             typemessage = "complite",
