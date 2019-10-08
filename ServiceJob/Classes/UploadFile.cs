@@ -11,7 +11,7 @@ namespace ServiceJob.Models
         public DataTable Drugs { get; protected set; }
         public DataTable RemovedDrugs { get; protected set; }
 
-        public void ReadFileJvnlp(string filePath)
+        public object ReadFileJvnlp(string filePath)
         {
             IExcelDataReader bookExcel = null;
             DataSet tableJvnlp;
@@ -36,6 +36,7 @@ namespace ServiceJob.Models
             }
             File.Delete(filePath);
             CreateTableJvnlp(tableJvnlp);
+            return new { typemessage = "complite", message = "Успешно загружен и обработан" };
         }
 
         private void CreateTableJvnlp(DataSet dataJvnlp)

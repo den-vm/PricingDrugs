@@ -9,7 +9,7 @@ $("form[name=drugNarcoticForm]").submit(function(event) {
             //rows.push(`{name: "${drugNarcoticTable[i].value}"`);
             rows.push(drugNarcoticTable[i].value);
         }
-        dataForm.append("narcoticDrugs", JSON.stringify(rows));
+        dataForm.append("narcoticDrugsAdd", JSON.stringify(rows));
         $.ajax({
             type: "POST",
             data: dataForm,

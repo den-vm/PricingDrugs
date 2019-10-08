@@ -31,7 +31,7 @@ namespace ServiceJob.Controllers
             if (form.Equals(null))
                 return Json(new {typemessage = "error", message = "Ошибка обработки формы!"});
 
-            if (form.Files.Count > 0)
+            if (form.Files.Count == 1)
             {
                 var fileJvnlp = form.Files[0];
                 if (fileJvnlp.Length > 25000000 &&
@@ -44,8 +44,8 @@ namespace ServiceJob.Controllers
                     {
                         await fileJvnlp.CopyToAsync(fileStream);
                     }
-                    _fileProcessing.ReadFileJvnlp(_appEnvironment.WebRootPath + path);
-                    return Json(new {typemessage = "complite", message = "Успешно загружен и обработан"});
+                    var responseRead = _fileProcessing.ReadFileJvnlp(_appEnvironment.WebRootPath + path);
+                    return Json(responseRead);
                 }
                 return Json(new
                 {
@@ -59,7 +59,7 @@ namespace ServiceJob.Controllers
                 var keyForm = form.ToDictionary(x => x.Key, x => x.Value).ToList()[0];
                 switch (keyForm.Key)
                 {
-                    case "narcoticDrugs":
+                    case "narcoticDrugsAdd":
                         var a = new DrugNarcoticsModel().ReadFileDrugs();
                         return Json(new
                         {
