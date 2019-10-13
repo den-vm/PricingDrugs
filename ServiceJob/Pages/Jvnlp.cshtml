@@ -4,38 +4,51 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" asp-href-include="~/css/JVNLP/*.css" asp-append-version="true"/>
+<div class="menuJvnlp">
+    <ul>
+        <li name="openFormFile">Загрузить реестр препаратов</li>
+        <li name="openFormTableDrugs">Таблица нарк. и псих. препаратов</li>
+    </ul>
+</div>
 
-<form enctype="multipart/form-data" asp-action="RequestJvnlp" asp-controller="Views" name="jvnlpForm">
-    <div class="input-file-container">
-        <input type="file" class="input-file">
-        <label tabindex="0" class="input-file-trigger">Выберите файл</label>
-        <input type="submit" class="file-send" value="Отправить">
+<div name="lockbody" style="display: none; position: absolute; top: 66px; bottom: 53px; right: 0px; left: 0px; width: 100%; background: rgba(0, 0, 0, 0.81);">
+    <div class="formfileJvnlp" name="divJvnlp">
+        <form enctype="multipart/form-data" asp-action="RequestJvnlp" asp-controller="Views" name="jvnlpForm" class="formFileJvnlp">
+            <div class="input-file-container">
+                <input type="file" class="input-file">
+                <label tabindex="0" class="input-file-trigger">Выберите файл</label>
+                <input type="submit" class="file-send" value="Отправить">
+                <p id="textProgress" style="position: absolute; text-align: center; top: 103%; width: 100%; z-index: 100000;"></p>
+            </div>
+            <progress id="progressbar" value="0" max="100" style="bottom: 0px; height: 30px; margin-bottom: 5%; position: absolute; width: 89.9%;"></progress>
+        </form>
     </div>
-    <progress id="progressbar" value="0" max="100"></progress>
-</form>
 
-<form asp-action="RequestJvnlp" asp-controller="Views" name="drugNarcoticForm">
-    <table id="drugNarcotic" width="650" border="1" cellspacing="0" cellpadding="5" class="tableForm">
-        <thead>
-        <tr>
-            <th scope="col">Международное наименование наркотического и психотропного препарата</th>
-            <th scope="col">Функции</th>
-        </tr>
-        </thead>
-        <tbody id="dynamicRowDrugs">
-        <tr>
-            <td style="width: 0">
-                <label>
-                    <input type="text" name="nameDrugs" value="" required placeholder="Введите МНН препарата">
-                </label>
-            </td>
-            <td style="width: 152px;">
-                <button type="button" class="add">Добавить</button><button type="button" class="del">Удалить</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <input type="submit" value="Сохранить">
-</form>
+    <div class="formDrugsNarcotic" name="divDrugsDownload">
+        <form asp-action="RequestJvnlp" asp-controller="Views" name="drugNarcoticForm">
+            <table id="drugNarcotic" width="650" border="1" cellspacing="0" cellpadding="5" class="tableForm">
+                <thead>
+                <tr>
+                    <th scope="col">Международное наименование наркотического и психотропного препарата</th>
+                    <th scope="col">Функции</th>
+                </tr>
+                </thead>
+                <tbody id="dynamicRowDrugs">
+                <tr>
+                    <td style="width: 0">
+                        <label>
+                            <input type="text" name="nameDrugs" value="" required placeholder="Введите МНН препарата">
+                        </label>
+                    </td>
+                    <td style="width: 152px;">
+                        <button type="button" class="add">Добавить</button><button type="button" class="del">Удалить</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <input type="submit" value="Сохранить">
+        </form>
+    </div>
+</div>
 <script type="text/javascript" src="~/js/JVNLP/FormFile.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/js/JVNLP/FormTable.js" asp-append-version="true"></script>

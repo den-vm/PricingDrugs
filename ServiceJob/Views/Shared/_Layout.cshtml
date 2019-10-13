@@ -1,14 +1,15 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <link rel="shortcut icon" href="">
+    <link rel="stylesheet" asp-href-include="~/css/Layout.css" asp-append-version="true" />
     <!-- include alertify-->
-    <link rel="stylesheet" asp-href-include="~/lib/alertify/css/**/*.css" asp-append-version="true"/>
+    <link rel="stylesheet" asp-href-include="~/lib/alertify/css/**/*.css" asp-append-version="true" />
 </head>
 <body>
 <nav>
-    <div>
+    <div class="menuLayout">
         <ul>
             <li>
                 <a asp-area="" asp-page="/Home">Главная</a>
@@ -20,7 +21,7 @@
     </div>
 </nav>
 <script type="text/javascript" src="~/lib/jquery/jquery.min.js" asp-append-version="true"></script>
-<script type="text/javascript" src="~/lib/alertify/alertify.min.js" asp-append-version="true"></script>
+<script type="text/javascript" src="~/lib/alertify/alertify.js" asp-append-version="true"></script>
 @RenderBody()
 </body>
 </html>

@@ -1,3 +1,4 @@
+alertify.set('notifier', 'position', 'top-center');
 document.querySelector("html").classList.add("js");
 
 var fileInput = $(".input-file"),
@@ -27,8 +28,14 @@ $("form[name=jvnlpForm]").submit(function(event) {
                             var percentComplete = Math.ceil(evt.loaded / evt.total * 100);
                             // устанавливаем значение в атрибут value тега <progress>
                             // и это же значение альтернативным текстом для браузеров, не поддерживающих <progress>
-                            progressBar.val(percentComplete).text("Загружено " + percentComplete + "%");
+                            $("#textProgress").html("Загружено " + percentComplete + "%");
+                            progressBar.val(percentComplete);
                         }
+                    },
+                    false);
+                xhr.upload.addEventListener("load",
+                    function () { // добавляем обработчик события progress (onprogress)
+                            $("#textProgress").html("Загружен");
                     },
                     false);
                 return xhr;
@@ -41,7 +48,7 @@ $("form[name=jvnlpForm]").submit(function(event) {
             }
         });
     } else {
-        alertify.error("Выберите файл для загрузки!");
+        alertify.error("Выберите файл для загрузки");
     }
 });
 

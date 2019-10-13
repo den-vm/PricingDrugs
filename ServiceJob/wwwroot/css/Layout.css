@@ -1,0 +1,21 @@
+﻿/*-------------------------
+    Menu Layout CSS
+--------------------------*/
+.menuLayout {
+    position: fixed;
+    bottom: 0;
+}
+.menuLayout li {
+    border: 1px solid #000; /* Рамка вокруг текста */
+    display: inline; /* Отображать как строчный элемент */
+    padding: 3px; /* Поля вокруг текста */
+    margin: 10px;
+}
+    .menuLayout ul {
+        display: inline-block;
+        padding-inline-start: 0;
+    }
+    .menuLayout li a {
+        text-decoration: none;
+    }
+

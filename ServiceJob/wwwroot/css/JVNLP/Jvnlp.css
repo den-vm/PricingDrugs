@@ -1,0 +1,51 @@
+﻿/*-------------------------
+    Menu Jvnlp CSS
+--------------------------*/
+.menuJvnlp {
+    position: fixed;
+    top: 0;
+}
+
+.menuJvnlp li {
+    border: 1px solid #000; /* Рамка вокруг текста */
+    cursor: pointer;
+    display: inline-block; /* Отображать как строчный элемент и блок */
+    margin: 10px;
+    padding: 3px; /* Поля вокруг текста */
+    text-align: center;
+    width: 30%;
+}
+
+.menuJvnlp ul {
+    display: inline;
+    padding-inline-start: 0;
+}
+
+/*-------------------------
+    Form File Jvnlp CSS
+--------------------------*/
+
+.formfileJvnlp {
+    background: rgba(255, 255, 255, 0.53);
+    bottom: 0;
+    height: 120px;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 250px;
+    display: none;
+    z-index: 1000;
+    border-radius: 20px;
+}
+
+.formFileJvnlp { margin: 5%; }
+
+/*-------------------------
+    Form Drugs Narcotic CSS
+--------------------------*/
+
+.formDrugsNarcotic {
+    display: none;
+}
