@@ -27,7 +27,9 @@
 
 .formfileJvnlp {
     background: rgba(255, 255, 255, 0.53);
+    border-radius: 20px;
     bottom: 0;
+    display: none;
     height: 120px;
     left: 0;
     margin: auto;
@@ -35,9 +37,7 @@
     right: 0;
     top: 0;
     width: 250px;
-    display: none;
     z-index: 1000;
-    border-radius: 20px;
 }
 
 .formFileJvnlp { margin: 5%; }
@@ -45,7 +45,53 @@
 /*-------------------------
     Form Drugs Narcotic CSS
 --------------------------*/
-
 .formDrugsNarcotic {
+    border-radius: 2px;
+    bottom: 0;
     display: none;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 500px;
+    z-index: 1000;
+    overflow: auto;
 }
+.divScroll {
+    position: absolute;
+    display: block;
+    height: fit-content;
+    background: rgba(255, 255, 255, 0.53);
+    margin-top: 30px;
+}
+input.saveNDrugs {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555555;
+    display: block;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 5px 1px 5px 5px;
+    padding: 3px 6px;
+    text-align: center;
+    text-decoration: none;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    vertical-align: middle;
+    width: 120px;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+}
+
+input.saveNDrugs:hover, input.saveNDrugs:focus {
+    border-color: rgba(82, 168, 236, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(82, 168, 236, 0.6);
+    outline: 0 none;
+}
+    input.saveNDrugs:active {
+        background-color: #5a5a5a;
+        color: #f6f6f6;
+    }

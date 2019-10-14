@@ -5,6 +5,11 @@
         $("div[name=divJvnlp]").slideToggle(200);
     });
 });
+$("li[name=openFormTableDrugs]").click(function () {
+    $("div[name=lockbody]").slideToggle(300, "linear", function () {
+        $("div[name=divDrugsDownload]").slideToggle(200);
+    });
+});
 //$("div[name=lockbody]").css({
 //    "display": "none",
 //    "position": "absolute",
@@ -16,10 +21,7 @@
 //    "height": "82%",
 //    "background": "#000000cf"
 //});
-$("li[name=openFormTableDrugs]").click(function() {
-    $("div[name=divDrugsDownload]").toggle();
-    //alert("Форма загрузки препаратов");
-});
+
 $("form[name=drugNarcoticForm]").submit(function(event) {
     event.preventDefault(); // отключить форму отправки события по умолчанию
     var drugNarcoticTable = $("#dynamicRowDrugs > tr > td > label > input");
