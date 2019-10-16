@@ -1,15 +1,40 @@
-﻿$("li[name=openFormFile]").click(function () {
-    //$("div[name=lockbody]").fadeIn(500);
-    //$("div[name=divJvnlp]").fadeIn(500);
-    $("div[name=lockbody]").slideToggle(300, "linear", function () { 
-        $("div[name=divJvnlp]").slideToggle(200);
-    });
+﻿var visibleFormfile = false;
+var visibleFormTableDrugs = false;
+$("li[name=openFormFile]").click(function() {
+    if (visibleFormTableDrugs)
+        hide_visibleFormTableDrugs(100);
+    hide_visibleFormfile();
 });
-$("li[name=openFormTableDrugs]").click(function () {
-    $("div[name=lockbody]").slideToggle(300, "linear", function () {
-        $("div[name=divDrugsDownload]").slideToggle(200);
-    });
+$("li[name=openFormTableDrugs]").click(function() {
+    if (visibleFormfile)
+        hide_visibleFormfile(100);
+    hide_visibleFormTableDrugs();
 });
+
+function hide_visibleFormfile(speed = 200) {
+
+    $("div[name=lockbody]").slideToggle((speed + 100),
+        "linear",
+        function() {
+            $("div[name=divJvnlp]").slideToggle(speed, "linear", function() {
+                if ($("div[name=divJvnlp]").css("display") === "block") visibleFormfile = true;
+                else visibleFormfile = false;
+            });
+        });
+    
+}
+
+function hide_visibleFormTableDrugs(speed = 200) {
+    $("div[name=lockbody]").slideToggle((speed + 100),
+        "linear",
+        function() {
+            $("div[name=divDrugsDownload]").slideToggle(speed, "linear", function () {
+                if ($("div[name=divDrugsDownload]").css("display") === "block") visibleFormTableDrugs = true;
+                else visibleFormTableDrugs = false;
+            });
+        });
+    
+}
 //$("div[name=lockbody]").css({
 //    "display": "none",
 //    "position": "absolute",
