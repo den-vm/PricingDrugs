@@ -29,8 +29,9 @@ namespace ServiceJob.Controllers
         public async Task<IActionResult> RequestJvnlp(IFormCollection form)
         {
             if (form.Equals(null))
-                return Json(new {typemessage = "error", message = "Ошибка обработки формы!"});
-
+                return Json(new {typemessage = "error", message = "Ошибка обработки формы"});
+            
+            // Form file Jvnlp
             if (form.Files.Count == 1)
             {
                 var fileJvnlp = form.Files[0];
@@ -51,25 +52,52 @@ namespace ServiceJob.Controllers
                 {
                     typemessage = "error",
                     message =
-                    $"Файл '{fileJvnlp.FileName}' не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru!"
+                    $"Файл '{fileJvnlp.FileName}' не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru"
                 });
             }
+            
+            // Form NDrugs
             if (form.Keys.Count > 0)
             {
                 var keyForm = form.ToDictionary(x => x.Key, x => x.Value).ToList()[0];
                 switch (keyForm.Key)
                 {
-                    case "narcoticDrugsAdd":
+                    case "narcoticDrugsView":
                         var a = new DrugNarcoticsModel().ReadFileDrugs();
+
+                        goto case "MessageSaveDrugs";
+
+                    case "narcoticDrugsAdd":
+                        var b = new DrugNarcoticsModel().ReadFileDrugs();
+
+                        goto case "MessageSaveDrugs";
+
+                    case "narcoticDrugsDel":
+                        var c = new DrugNarcoticsModel().ReadFileDrugs();
+
+                        goto case "MessageSaveDrugs";
+
+                    case "narcoticDrugsEdit":
+                        var d = new DrugNarcoticsModel().ReadFileDrugs();
+
+                        goto case "MessageSaveDrugs";
+
+                    case "MessageSaveDrugs":
                         return Json(new
                         {
                             typemessage = "complite",
-                            message = "Таблица наркотических препаратов сохранена!"
+                            message = "Таблица препаратов сохранена"
                         });
-                        break;
+
+                    default:
+                        return Json(new
+                        {
+                            typemessage = "error",
+                            message = "Ошибка сохранения таблицы препаратов"
+                        });
                 }
             }
-            return Json(new {typemessage = "error", message = "Проверьте заполнение формы!"});
+            return Json(new {typemessage = "error", message = "Проверьте заполнение формы"});
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
