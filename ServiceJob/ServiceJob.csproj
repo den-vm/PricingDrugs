@@ -23,9 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="BaseDrugs\" />
     <Folder Include="wwwroot\images\JVNLP\" />
-    <Folder Include="wwwroot\TableDrugs\" />
-    <Folder Include="wwwroot\tempupload\" />
+    <Folder Include="TempUploadsFile\" />
   </ItemGroup>
 
 </Project>

@@ -6,18 +6,19 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceJob.Models;
+using ServiceJob.Classes;
 
 namespace ServiceJob.Controllers
 {
     public class ViewsController : Controller
     {
-        private readonly IHostingEnvironment _appEnvironment;
+        //private readonly IHostingEnvironment _appEnvironment;
         private readonly UploadFile _fileProcessing = new UploadFile();
 
-        public ViewsController(IHostingEnvironment appEnvironment)
-        {
-            _appEnvironment = appEnvironment;
-        }
+        //public ViewsController(IHostingEnvironment appEnvironment)
+        //{
+        //    _appEnvironment = appEnvironment;
+        //}
 
         [Route("/Jvnlp")]
         public IActionResult Jvnlp()
@@ -39,13 +40,13 @@ namespace ServiceJob.Controllers
                     fileJvnlp.ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
                 {
                     // create path temp file
-                    var path = @"\tempupload\" + fileJvnlp.FileName;
+                    var path = "/TempUploadsFile/" + fileJvnlp.FileName;
                     // save temp faile to path catalog wwwroot
-                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    using (var fileStream = new FileStream(Directory.GetCurrentDirectory() + path, FileMode.Create))
                     {
                         await fileJvnlp.CopyToAsync(fileStream);
                     }
-                    var responseRead = _fileProcessing.ReadFileJvnlp(_appEnvironment.WebRootPath + path);
+                    var responseRead = _fileProcessing.ReadFileJvnlp(Directory.GetCurrentDirectory() + path);
                     return Json(responseRead);
                 }
                 return Json(new
@@ -63,22 +64,27 @@ namespace ServiceJob.Controllers
                 switch (keyForm.Key)
                 {
                     case "narcoticDrugsView":
-                        var a = new DrugNarcoticsModel().ReadFileDrugs();
-
-                        goto case "MessageSaveDrugs";
+                        var listdrugs = ProcessingNDrugs.GetNDrugs();
+                        if (listdrugs.Count == 0)
+                            return Json(new
+                            {
+                                typemessage = "complite",
+                                message = "Таблица наркотических препаратов пуста"
+                            });
+                        break;
 
                     case "narcoticDrugsAdd":
-                        var b = new DrugNarcoticsModel().ReadFileDrugs();
+                        //var b = new DrugNarcoticsModel().ReadFileDrugs();
 
                         goto case "MessageSaveDrugs";
 
                     case "narcoticDrugsDel":
-                        var c = new DrugNarcoticsModel().ReadFileDrugs();
+                        //var c = new DrugNarcoticsModel().ReadFileDrugs();
 
                         goto case "MessageSaveDrugs";
 
                     case "narcoticDrugsEdit":
-                        var d = new DrugNarcoticsModel().ReadFileDrugs();
+                        //var d = new DrugNarcoticsModel().ReadFileDrugs();
 
                         goto case "MessageSaveDrugs";
 
@@ -93,7 +99,7 @@ namespace ServiceJob.Controllers
                         return Json(new
                         {
                             typemessage = "error",
-                            message = "Ошибка сохранения таблицы препаратов"
+                            message = "Ошибка при сохранении или загрузке таблицы наркотических препаратов"
                         });
                 }
             }

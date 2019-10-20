@@ -21,7 +21,6 @@ function hide_visibleFormfile(speed = 200) {
                 else visibleFormfile = false;
             });
         });
-    
 }
 
 function hide_visibleFormTableDrugs(speed = 200) {
@@ -29,11 +28,44 @@ function hide_visibleFormTableDrugs(speed = 200) {
         "linear",
         function() {
             $("div[name=divDrugsDownload]").slideToggle(speed, "linear", function () {
-                if ($("div[name=divDrugsDownload]").css("display") === "block") visibleFormTableDrugs = true;
-                else visibleFormTableDrugs = false;
+                if ($("div[name=divDrugsDownload]").css("display") === "block") {
+                    visibleFormTableDrugs = true;
+                    var dataForm = new FormData();
+                    dataForm.append("narcoticDrugsView", null);
+                    $.ajax({
+                        type: "POST",
+                        data: dataForm,
+                        dataType: "json",
+                        processData: false, // отключение преобразования строки запроса по contentType
+                        contentType:
+                            false, // отключение преобразования контента в тип по умолчанию: "application/x-www-form-urlencoded; charset=UTF-8"
+                        success: function(data) {
+                            if (data["typemessage"] === "error")
+                                alertify.error(data["message"]);
+                            if (data["typemessage"] === "complite")
+                                alertify.message(data["message"]);
+                        }
+                    });
+                } else {
+                    visibleFormTableDrugs = false;
+                    cleartbodyDrugs();
+                }
             });
         });
     
+}
+
+function cleartbodyDrugs() {
+    $("#dynamicRowDrugs").html('<tr>' +
+        '<td style = "width: 0" >' +
+        '<label>' +
+        '<input type="text" name="nameDrugs" value="" required placeholder="Введите МНН препарата" title="Международное наименование лекарственного препарата">' +
+        '</label>' +
+        '</td>' +
+        '<td style="width: 152px;">' +
+        '<button type="button" class="add">Добавить</button><button type="button" class="del">Удалить</button>' +
+        '</td>' +
+        '</tr>');
 }
 //$("div[name=lockbody]").css({
 //    "display": "none",
