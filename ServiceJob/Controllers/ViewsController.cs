@@ -74,8 +74,15 @@ namespace ServiceJob.Controllers
                         break;
 
                     case "narcoticDrugsAdd":
-                        //var b = new DrugNarcoticsModel().ReadFileDrugs();
-
+                        var resultAdd = ProcessingNDrugs.AddNDrugs(/*списочек препаратов*/);
+                        if (!resultAdd)
+                        {
+                            return Json(new
+                            {
+                                typemessage = "error",
+                                message = "Ошибка при сохранении наркотических препаратов"
+                            });
+                        }
                         goto case "MessageSaveDrugs";
 
                     case "narcoticDrugsDel":
@@ -99,7 +106,7 @@ namespace ServiceJob.Controllers
                         return Json(new
                         {
                             typemessage = "error",
-                            message = "Ошибка при сохранении или загрузке таблицы наркотических препаратов"
+                            message = "Ошибка чтения запроса от формы наркотических препаратов"
                         });
                 }
             }
