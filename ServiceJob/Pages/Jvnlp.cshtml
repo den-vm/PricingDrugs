@@ -30,17 +30,17 @@
                 <table id="drugNarcotic" border="1" cellspacing="0" cellpadding="5" class="tableForm">
                     <thead>
                     <tr>
-                        <th scope="col">Международное наименование наркотического и психотропного препарата</th>
+                        <th scope="col" colspan="3">Международное наименование наркотического и психотропного препарата</th>
                         <th scope="col">Функции</th>
                     </tr>
                     </thead>
                     <tbody id="dynamicRowDrugs">
                     <tr>
-                        <td style="width: 0">
-                            <label>
-                                <input type="text" name="nameDrugs" value="" required placeholder="Введите МНН препарата" title="Международное наименование лекарственного препарата">
-                            </label>
+                        <td>
+                            <input type="text" name="nameDrugs" value="" required placeholder="Введите МНН препарата" title="Международное наименование лекарственного препарата">
                         </td>
+                        <td name="dataAdd" style="width: 115px;">Дата включения: 24.10.2019</td>
+                        <td name="dataDel" style="width: 123px;">Дата исключения: 24.10.2019</td>
                         <td style="width: 152px;">
                             <button type="button" class="add">Добавить</button><button type="button" class="del">Удалить</button>
                         </td>
