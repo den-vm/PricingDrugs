@@ -5,15 +5,16 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Xml.Linq;
 using Newtonsoft.Json;
+using ServiceJob.Interface;
 using ServiceJob.Models;
 
 namespace ServiceJob.Classes
 {
-    public class ProcessingNDrugs
+    public class ProcessingNDrugs : IReadFileNPDrugs<DrugNarcoticsModel>
     {
         private static readonly string Path = Directory.GetCurrentDirectory() + "/BaseDrugs/NDrugsReestr.xml";
 
-        public static List<DrugNarcoticsModel> GetNDrugs()
+        public List<DrugNarcoticsModel> Get()
         {
             var drugsList = new List<DrugNarcoticsModel>();
 
@@ -32,7 +33,7 @@ namespace ServiceJob.Classes
             return drugsList;
         }
 
-        public static bool AddNDrugs(/*списочек препаратов на включение*/)
+        public bool Add(List<DrugNarcoticsModel> listdrugs)
         {
             var xDoc = new XDocument(Path);
             var drugs = xDoc.Element("drugs");
@@ -64,12 +65,14 @@ namespace ServiceJob.Classes
             return false;
         }
 
-        public static void DeleteNDrugs()
+        public void Delete()
         {
+            throw new NotImplementedException();
         }
 
-        public static void EditNDrugs()
+        public void Edit()
         {
+            throw new NotImplementedException();
         }
     }
 }

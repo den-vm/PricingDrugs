@@ -29,6 +29,7 @@ namespace ServiceJob.Controllers
         [HttpPost("Jvnlp")]
         public async Task<IActionResult> RequestJvnlp(IFormCollection form)
         {
+            var processingNDrugs = new ProcessingNDrugs();
             if (form.Equals(null))
                 return Json(new {typemessage = "error", message = "Ошибка обработки формы"});
             
@@ -64,7 +65,7 @@ namespace ServiceJob.Controllers
                 switch (keyForm.Key)
                 {
                     case "narcoticDrugsView":
-                        var listdrugs = ProcessingNDrugs.GetNDrugs();
+                        var listdrugs = processingNDrugs.Get();
                         if (listdrugs.Count == 0)
                             return Json(new
                             {
@@ -74,7 +75,7 @@ namespace ServiceJob.Controllers
                         break;
 
                     case "narcoticDrugsAdd":
-                        var resultAdd = ProcessingNDrugs.AddNDrugs(/*списочек препаратов*/);
+                        var resultAdd = processingNDrugs.Add(/*списочек препаратов*/);
                         if (!resultAdd)
                         {
                             return Json(new
