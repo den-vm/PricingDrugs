@@ -25,7 +25,7 @@ namespace ServiceJob.Classes
             }
             catch
             {
-                var xDoc = new XDocument(Path);
+                var xDoc = new XDocument();
                 var drugs = new XElement("drugs");
                 xDoc.Add(drugs);
                 xDoc.Save(Path);
