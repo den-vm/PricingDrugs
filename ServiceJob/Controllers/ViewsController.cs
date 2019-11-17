@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -75,7 +76,7 @@ namespace ServiceJob.Controllers
                         break;
 
                     case "narcoticDrugsAdd":
-                        var resultAdd = processingNDrugs.Add(/*списочек препаратов*/);
+                        var resultAdd = processingNDrugs.Add(new List<DrugNarcoticsModel>());
                         if (!resultAdd)
                         {
                             return Json(new

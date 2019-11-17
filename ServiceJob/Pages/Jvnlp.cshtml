@@ -30,19 +30,33 @@
                 <table id="drugNarcotic" border="1" cellspacing="0" cellpadding="5" class="tableForm">
                     <thead>
                     <tr>
-                        <th scope="col" colspan="3">Международное наименование наркотического и психотропного препарата</th>
+                        <th scope="col" colspan="4">Наркотические и психотропные препараты</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Международное наименование</th>
+                        <th scope="col">Дата включения</th>
+                        <th scope="col">Дата исключения</th>
                         <th scope="col">Функции</th>
                     </tr>
                     </thead>
                     <tbody id="dynamicRowDrugs">
                     <tr>
-                        <td>
-                            <input type="text" name="nameDrugs" value="" required placeholder="Введите МНН препарата" title="Международное наименование лекарственного препарата">
+                        <td style="padding: 2px">
+                            <input type="text" name="nameDrugs" value="" required placeholder="Введите МНН препарата" title="" onKeyup="this.title=this.value">
                         </td>
-                        <td name="dataAdd" style="width: 115px;">Дата включения: 24.10.2019</td>
-                        <td name="dataDel" style="width: 123px;">Дата исключения: 24.10.2019</td>
-                        <td style="width: 152px;">
-                            <button type="button" class="add">Добавить</button><button type="button" class="del">Удалить</button>
+                        <td name="dataAdd" style="padding: 2px; width: 115px;" align="center">
+                            <script>
+                                var currentDate = new Date();
+                                $("[name=dataAdd]").html(currentDate.getDate() +
+                                    "." +
+                                    currentDate.getMonth() +
+                                    "." +
+                                    currentDate.getFullYear());
+                            </script>
+                        </td>
+                        <td name="dataDel" style="padding: 2px; width: 123px;" align="center"></td>
+                        <td style="padding: 2px; width: 159px;">
+                            <button type="button" class="add">Добавить</button><button type="button" class="del">Исключить</button>
                         </td>
                     </tr>
                     </tbody>

@@ -16,10 +16,12 @@ function hide_visibleFormfile(speed = 200) {
     $("div[name=lockbody]").slideToggle((speed + 100),
         "linear",
         function() {
-            $("div[name=divJvnlp]").slideToggle(speed, "linear", function() {
-                if ($("div[name=divJvnlp]").css("display") === "block") visibleFormfile = true;
-                else visibleFormfile = false;
-            });
+            $("div[name=divJvnlp]").slideToggle(speed,
+                "linear",
+                function() {
+                    if ($("div[name=divJvnlp]").css("display") === "block") visibleFormfile = true;
+                    else visibleFormfile = false;
+                });
         });
 }
 
@@ -27,45 +29,58 @@ function hide_visibleFormTableDrugs(speed = 200) {
     $("div[name=lockbody]").slideToggle((speed + 100),
         "linear",
         function() {
-            $("div[name=divDrugsDownload]").slideToggle(speed, "linear", function () {
-                if ($("div[name=divDrugsDownload]").css("display") === "block") {
-                    visibleFormTableDrugs = true;
-                    var dataForm = new FormData();
-                    dataForm.append("narcoticDrugsView", null);
-                    $.ajax({
-                        type: "POST",
-                        data: dataForm,
-                        dataType: "json",
-                        processData: false, // отключение преобразования строки запроса по contentType
-                        contentType:
-                            false, // отключение преобразования контента в тип по умолчанию: "application/x-www-form-urlencoded; charset=UTF-8"
-                        success: function(data) {
-                            if (data["typemessage"] === "error")
-                                alertify.error(data["message"]);
-                            if (data["typemessage"] === "complite")
-                                alertify.message(data["message"]);
-                        }
-                    });
-                } else {
-                    visibleFormTableDrugs = false;
-                    cleartbodyDrugs();
-                }
-            });
+            $("div[name=divDrugsDownload]").slideToggle(speed,
+                "linear",
+                function() {
+                    //получить список препаратов из сервера если форма открыта
+                    if ($("div[name=divDrugsDownload]").css("display") === "block") {
+                        visibleFormTableDrugs = true;
+                        var dataForm = new FormData();
+                        dataForm.append("narcoticDrugsView", null);
+                        $.ajax({
+                            type: "POST",
+                            data: dataForm,
+                            dataType: "json",
+                            processData: false, // отключение преобразования строки запроса по contentType
+                            contentType:
+                                false, // отключение преобразования контента в тип по умолчанию: "application/x-www-form-urlencoded; charset=UTF-8"
+                            success: function(data) {
+                                if (data["typemessage"] === "error")
+                                    alertify.error(data["message"]);
+                                if (data["typemessage"] === "complite")
+                                    alertify.message(data["message"]);
+                            }
+                        });
+                    } else {
+                        visibleFormTableDrugs = false;
+                        cleartbodyDrugs();
+                    }
+                });
         });
-    
+
 }
 
 function cleartbodyDrugs() {
-    $("#dynamicRowDrugs").html('<tr>' +
-        '<td style = "width: 0" >' +
-        '<label>' +
-        '<input type="text" name="nameDrugs" value="" required placeholder="Введите МНН препарата" title="Международное наименование лекарственного препарата">' +
-        '</label>' +
-        '</td>' +
-        '<td style="width: 152px;">' +
-        '<button type="button" class="add">Добавить</button><button type="button" class="del">Удалить</button>' +
-        '</td>' +
-        '</tr>');
+    $("#dynamicRowDrugs").html(
+        "<tr>" +
+        '<td style="padding: 2px">' +
+        '<input type="text" name="nameDrugs" value="" required placeholder="Введите МНН препарата" title="" onKeyup="this.title=this.value">' +
+        "</td>" +
+        '<td name="dataAdd" style="padding: 2px; width: 115px;" align="center">' +
+        "<script>" +
+        "var currentDate = new Date();" +
+        '$("[name=dataAdd]").html(currentDate.getDate() +' +
+        '"." +' +
+        "currentDate.getMonth() +" +
+        '"." +' +
+        "currentDate.getFullYear());" +
+        "</script>" +
+        "</td>" +
+        '<td name="dataDel" style="padding: 2px; width: 123px;" align="center"></td>' +
+        '<td style="padding: 2px; width: 159px;">' +
+        '<button type="button" class="add">Добавить</button><button type="button" class="del">Исключить</button>' +
+        "</td>" +
+        "</tr>");
 }
 //$("div[name=lockbody]").css({
 //    "display": "none",
