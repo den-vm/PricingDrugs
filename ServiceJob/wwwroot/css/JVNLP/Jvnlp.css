@@ -179,7 +179,7 @@ input.saveNDrugs:active {
 }
 
 
-.tableForm input[type="text"] {
+.tableForm input[type="text"], input[type="date"] {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;

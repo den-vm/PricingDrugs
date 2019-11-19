@@ -64,7 +64,7 @@ function cleartbodyDrugs() {
     $("#dynamicRowDrugs").html(
         "<tr>" +
         '<td style="padding: 2px">' +
-        '<input type="text" name="nameDrugs" value="" required placeholder="Введите МНН препарата" title="" onKeyup="this.title=this.value">' +
+        '<input type="text" name="nameDrug" value="" required placeholder="Введите МНН препарата" title="" onKeyup="this.title=this.value">' +
         "</td>" +
         '<td name="dataAdd" style="padding: 2px; width: 115px;" align="center">' +
         "<script>" +

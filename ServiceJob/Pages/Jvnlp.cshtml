@@ -42,7 +42,7 @@
                     <tbody id="dynamicRowDrugs">
                     <tr>
                         <td style="padding: 2px">
-                            <input type="text" name="nameDrugs" value="" required placeholder="Введите МНН препарата" title="" onKeyup="this.title=this.value">
+                            <input type="text" name="nameDrug" value="" required placeholder="Введите МНН препарата" title="" onKeyup="this.title=this.value">
                         </td>
                         <td name="dataAdd" style="padding: 2px; width: 115px;" align="center">
                             <script>
@@ -54,7 +54,7 @@
                                     currentDate.getFullYear());
                             </script>
                         </td>
-                        <td name="dataDel" style="padding: 2px; width: 123px;" align="center"></td>
+                        <td name="dataDel" style="padding: 2px; width: 123px;" align="center"><input type="date" name="excludeDrug" /></td>
                         <td style="padding: 2px; width: 159px;">
                             <button type="button" class="add">Добавить</button><button type="button" class="del">Исключить</button>
                         </td>
