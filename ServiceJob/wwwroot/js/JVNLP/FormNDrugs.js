@@ -76,7 +76,7 @@ function cleartbodyDrugs() {
         "currentDate.getFullYear());" +
         "</script>" +
         "</td>" +
-        '<td name="dataDel" style="padding: 2px; width: 123px;" align="center"></td>' +
+        '<td name="dataDel" style="padding: 2px; width: 123px;" align="center"><input type="date" name="excludeDrug" /></td>' +
         '<td style="padding: 2px; width: 159px;">' +
         '<button type="button" class="add">Добавить</button><button type="button" class="del">Исключить</button>' +
         "</td>" +

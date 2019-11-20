@@ -29,38 +29,37 @@
             <form asp-action="RequestJvnlp" asp-controller="Views" name="drugNarcoticForm">
                 <table id="drugNarcotic" border="1" cellspacing="0" cellpadding="5" class="tableForm">
                     <thead>
-                    <tr>
-                        <th scope="col" colspan="4">Наркотические и психотропные препараты</th>
-                    </tr>
-                    <tr>
-                        <th scope="col">Международное наименование</th>
-                        <th scope="col">Дата включения</th>
-                        <th scope="col">Дата исключения</th>
-                        <th scope="col">Функции</th>
-                    </tr>
+                        <tr>
+                            <th scope="col" colspan="3">Наркотические и психотропные препараты</th>
+                        </tr>
+                        <tr>
+                            <th scope="col">Международное наименование</th>
+                            <th scope="col">Дата включения</th>
+                            <th scope="col">Дата исключения</th>
+                        </tr>
                     </thead>
                     <tbody id="dynamicRowDrugs">
-                    <tr>
-                        <td style="padding: 2px">
-                            <input type="text" name="nameDrug" value="" required placeholder="Введите МНН препарата" title="" onKeyup="this.title=this.value">
-                        </td>
-                        <td name="dataAdd" style="padding: 2px; width: 115px;" align="center">
-                            <script>
-                                var currentDate = new Date();
-                                $("[name=dataAdd]").html(currentDate.getDate() +
-                                    "." +
-                                    currentDate.getMonth() +
-                                    "." +
-                                    currentDate.getFullYear());
-                            </script>
-                        </td>
-                        <td name="dataDel" style="padding: 2px; width: 123px;" align="center"><input type="date" name="excludeDrug" /></td>
-                        <td style="padding: 2px; width: 159px;">
-                            <button type="button" class="add">Добавить</button><button type="button" class="del">Исключить</button>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td style="padding: 2px">
+                                <input type="text" name="nameDrug" value="" required placeholder="Введите МНН препарата" title="" onKeyup="this.title=this.value">
+                            </td>
+                            <td name="dataAdd" style="padding: 2px; width: 115px;" align="center">
+                                <script>
+                                    var currentDate = new Date();
+                                    $("[name=dataAdd]").html(currentDate.getDate() +
+                                        "." +
+                                        currentDate.getMonth() +
+                                        "." +
+                                        currentDate.getFullYear());
+                                </script>
+                            </td>
+                            <td name="dataDel" style="padding: 2px; width: 123px;" align="center"><input type="date" name="excludeDrug" /></td>
+                        </tr>
                     </tbody>
                 </table>
+                <button type="button" class="add">Добавить</button>
+                <button type="button" class="del">Удалить</button>
+                <div class="VisExNDrugs"><input type="checkbox" style="cursor: pointer;margin: 1px 2px 2px 2px;" ><span style="margin-left: 4px;vertical-align: 1px;">Скрыть исключенные</span></div>
                 <input class="saveNDrugs" type="submit" value="Сохранить">
             </form>
         </div>
