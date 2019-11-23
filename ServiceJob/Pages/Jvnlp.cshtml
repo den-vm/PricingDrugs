@@ -25,8 +25,8 @@
     </div>
 
     <div class="formDrugsNarcotic" name="divDrugsDownload">
-        <div class="divScroll">
-            <form asp-action="RequestJvnlp" asp-controller="Views" name="drugNarcoticForm">
+        <form asp-action="RequestJvnlp" asp-controller="Views" name="drugNarcoticForm">
+            <div class="divScroll">
                 <table id="drugNarcotic" border="1" cellspacing="0" cellpadding="5" class="tableForm">
                     <thead>
                         <tr>
@@ -38,32 +38,19 @@
                             <th scope="col">Дата исключения</th>
                         </tr>
                     </thead>
-                    <tbody id="dynamicRowDrugs">
-                        <tr>
-                            <td style="padding: 2px">
-                                <input type="text" name="nameDrug" value="" required placeholder="Введите МНН препарата" title="" onKeyup="this.title=this.value">
-                            </td>
-                            <td name="dataAdd" style="padding: 2px; width: 115px;" align="center">
-                                <script>
-                                    var currentDate = new Date();
-                                    $("[name=dataAdd]").html(currentDate.getDate() +
-                                        "." +
-                                        currentDate.getMonth() +
-                                        "." +
-                                        currentDate.getFullYear());
-                                </script>
-                            </td>
-                            <td name="dataDel" style="padding: 2px; width: 123px;" align="center"><input type="date" name="excludeDrug" /></td>
-                        </tr>
+                    <tbody id="RowDrugs">
                     </tbody>
                 </table>
+            </div>
+            <div class="elementsSettingsRow">
                 <button type="button" class="add">Добавить</button>
                 <button type="button" class="del">Удалить</button>
-                <div class="VisExNDrugs"><input type="checkbox" style="cursor: pointer;margin: 1px 2px 2px 2px;" ><span style="margin-left: 4px;vertical-align: 1px;">Скрыть исключенные</span></div>
+                <div class="VisExNDrugs">
+                    <input type="checkbox" style="cursor: pointer; margin: 1px 2px 2px 2px;"><span style="margin-left: 4px; vertical-align: 1px;">Скрыть исключенные</span>
+                </div>
                 <input class="saveNDrugs" type="submit" value="Сохранить">
-            </form>
-        </div>
-
+            </div>
+        </form>
     </div>
 </div>
 <script type="text/javascript" src="~/js/JVNLP/FormFile.js" asp-append-version="true"></script>

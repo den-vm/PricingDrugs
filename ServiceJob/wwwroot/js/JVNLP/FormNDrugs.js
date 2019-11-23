@@ -1,5 +1,23 @@
 ﻿var visibleFormfile = false;
 var visibleFormTableDrugs = false;
+
+var newRowDrug = '<tr name="drugNew">' +
+    '<td style="padding: 2px">' +
+    '<input type="text" name="nameDrug" value="" required placeholder="Введите МНН препарата" title="" onKeyup="this.title=this.value">' +
+    "</td>" +
+    '<td name="dataAdd" style="padding: 2px; width: 115px;" align="center">' +
+    "<script>" +
+    "var currentDate = new Date();" +
+    '$("[name=dataAdd]").html(currentDate.getDate() +' +
+    '"." +' +
+    "currentDate.getMonth() +" +
+    '"." +' +
+    "currentDate.getFullYear());" +
+    "</script>" +
+    "</td>" +
+    '<td name="dataDel" style="padding: 2px; width: 123px;" align="center"><input type="date" name="excludeDrug" /></td>' +
+    "</tr>";
+
 $("li[name=openFormFile]").click(function() {
     if (visibleFormTableDrugs)
         hide_visibleFormTableDrugs(100);
@@ -60,27 +78,9 @@ function hide_visibleFormTableDrugs(speed = 200) {
 
 }
 
+
 function cleartbodyDrugs() {
-    $("#dynamicRowDrugs").html(
-        "<tr>" +
-        '<td style="padding: 2px">' +
-        '<input type="text" name="nameDrug" value="" required placeholder="Введите МНН препарата" title="" onKeyup="this.title=this.value">' +
-        "</td>" +
-        '<td name="dataAdd" style="padding: 2px; width: 115px;" align="center">' +
-        "<script>" +
-        "var currentDate = new Date();" +
-        '$("[name=dataAdd]").html(currentDate.getDate() +' +
-        '"." +' +
-        "currentDate.getMonth() +" +
-        '"." +' +
-        "currentDate.getFullYear());" +
-        "</script>" +
-        "</td>" +
-        '<td name="dataDel" style="padding: 2px; width: 123px;" align="center"><input type="date" name="excludeDrug" /></td>' +
-        '<td style="padding: 2px; width: 159px;">' +
-        '<button type="button" class="add">Добавить</button><button type="button" class="del">Исключить</button>' +
-        "</td>" +
-        "</tr>");
+    $("#RowDrugs").html("");
 }
 //$("div[name=lockbody]").css({
 //    "display": "none",
@@ -96,7 +96,7 @@ function cleartbodyDrugs() {
 
 $("form[name=drugNarcoticForm]").submit(function(event) {
     event.preventDefault(); // отключить форму отправки события по умолчанию
-    var drugNarcoticTable = $("#dynamicRowDrugs > tr > td > label > input");
+    var drugNarcoticTable = $("#RowDrugs > tr > td > label > input");
     if (drugNarcoticTable.length > 0) {
         var dataForm = new FormData();
         var rows = [];
@@ -122,51 +122,11 @@ $("form[name=drugNarcoticForm]").submit(function(event) {
     }
 });
 
-//DynamicTable
-var DynamicTable = (function(GLOB) {
-    var RID = 0;
-    return function(tBody) {
-        /* Если ф-цию вызвали не как конструктор фиксим этот момент: */
-        if (!(this instanceof arguments.callee)) {
-            return new arguments.callee.apply(arguments);
-        }
-        //Делегируем прослушку событий элементу tbody
-        tBody.onclick = function(e) {
-            var evt = e || GLOB.event,
-                trg = evt.target || evt.srcElement;
-            if (trg.className && trg.className.indexOf("add") !== -1) {
-                _addRow(trg.parentNode.parentNode, tBody);
-            } else if (trg.className && trg.className.indexOf("del") !== -1) {
-                tBody.rows.length > 1 && _delRow(trg.parentNode.parentNode, tBody);
-            }
-        };
-        var _rowTpl = tBody.rows[0].cloneNode(true);
-        // Корректируем имена элементов формы
-        var _correctNames = function(row) {
-            var elements = row.getElementsByTagName("*");
-            for (var i = 0; i < elements.length; i += 1) {
-                if (elements.item(i).name) {
-                    if (elements.item(i).type &&
-                        elements.item(i).type === "radio" &&
-                        elements.item(i).className &&
-                        elements.item(i).className.indexOf("glob") !== -1) {
-                        elements.item(i).value = RID;
-                    } else {
-                        elements.item(i).name = RID + "[" + elements.item(i).name + "]";
-                    }
-                }
-            }
-            RID++;
-            return row;
-        };
-        var _addRow = function(before, tBody) {
-            var newNode = _correctNames(_rowTpl.cloneNode(true));
-            tBody.insertBefore(newNode, before.nextSibling);
-        };
-        var _delRow = function(row, tBody) {
-            tBody.removeChild(row);
-        };
-        _correctNames(tBody.rows[0]);
-    };
-})(this);
-new DynamicTable(document.getElementById("dynamicRowDrugs"));
+$("button[class=add]").click(function() {
+    //var newDrug = singlRowDrug.replace(new RegExp("drugSingl"), "newDrug");
+    $("#RowDrugs").append(newRowDrug);
+});
+
+$("button[class=del]").click(function () {
+    $('tr[name=drugNew]:last').remove();
+});
