@@ -43,6 +43,8 @@ function hide_visibleFormfile(speed = 200) {
         });
 }
 
+
+
 function hide_visibleFormTableDrugs(speed = 200) {
     $("div[name=lockbody]").slideToggle((speed + 100),
         "linear",
@@ -77,7 +79,6 @@ function hide_visibleFormTableDrugs(speed = 200) {
         });
 
 }
-
 
 function cleartbodyDrugs() {
     $("#RowDrugs").html("");
@@ -121,6 +122,10 @@ $("form[name=drugNarcoticForm]").submit(function(event) {
         });
     }
 });
+
+function whriteRowDrugs() {
+
+}
 
 $("button[class=add]").click(function() {
     //var newDrug = singlRowDrug.replace(new RegExp("drugSingl"), "newDrug");
