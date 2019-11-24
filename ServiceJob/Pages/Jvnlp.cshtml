@@ -39,24 +39,23 @@
                     </tr>
                     </thead>
                     <tbody id="RowDrugs">
-                    <tr name="drugNew">
+                    @*<tr name="drugNew">
                         <td style="padding: 2px">
-                            <input type="text" name="nameDrug" value="" required placeholder="Введите МНН препарата" title="" onKeyup="this.title = this.value">
+                            <input type="text" name="nameDrug" required placeholder="Введите МНН препарата" title="" onKeyup="this.title = this.value">
                         </td>
-                        <td name="dataAdd" style="padding: 2px; width: 115px;" align="center">
-                            <script>
-                                var currentDate = new Date();
-                                $("[name=dataAdd]").html(currentDate.getDate() +
-                                    "." +
-                                    currentDate.getMonth() +
-                                    "." +
-                                    currentDate.getFullYear());
+                        <td style="padding: 2px; width: 115px;" align="center">
+                            <input name="dataDrugAdd" type="date"/>
+                            <script type="text/javascript">
+                                $(document).ready(function () {
+                                    var nowDate = new Date();
+                                    $("[name=dataDrugAdd]").val(nowDate.getFullYear() + "-" + nowDate.getMonth() + "-" + nowDate.getDate());
+                                })
                             </script>
                         </td>
-                        <td name="dataDel" style="padding: 2px; width: 123px;" align="center">
-                            <input type="date" name="excludeDrug"/>
+                        <td  style="padding: 2px; width: 123px;" align="center">
+                            <input name="dataDrugDel" type="date"/>
                         </td>
-                    </tr>
+                    </tr>*@
                     </tbody>
                 </table>
             </div>

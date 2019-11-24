@@ -5,17 +5,16 @@ var newRowDrug = '<tr name="drugNew">' +
     '<td style="padding: 2px">' +
     '<input type="text" name="nameDrug" value="" required placeholder="Введите МНН препарата" title="" onKeyup="this.title=this.value">' +
     "</td>" +
-    '<td name="dataAdd" style="padding: 2px; width: 115px;" align="center">' +
-    "<script>" +
-    "var currentDate = new Date();" +
-    '$("[name=dataAdd]").html(currentDate.getDate() +' +
-    '"." +' +
-    "currentDate.getMonth() +" +
-    '"." +' +
-    "currentDate.getFullYear());" +
+    '<td style="padding: 2px; width: 115px;" align="center">' +
+    '<input name="dataDrugAdd" type="date" />' +
+    '<script type="text/javascript">' +
+    "$(document).ready(function () {" +
+    "var nowDate = new Date();" +
+    '$("[name=dataDrugAdd]").val(nowDate.getFullYear() + "-" + nowDate.getMonth() + "-" + nowDate.getDate());' +
+    "})" +
     "</script>" +
     "</td>" +
-    '<td name="dataDel" style="padding: 2px; width: 123px;" align="center"><input type="date" name="excludeDrug" /></td>' +
+    '<td style="padding: 2px; width: 123px;" align="center"><input type="date" name="dataDrugDel" /></td>' +
     "</tr>";
 
 $("li[name=openFormFile]").click(function() {
@@ -44,7 +43,7 @@ function hide_visibleFormfile(speed = 200) {
 }
 
 
-
+// получить список препаратов из списка при открытии формы
 function hide_visibleFormTableDrugs(speed = 200) {
     $("div[name=lockbody]").slideToggle((speed + 100),
         "linear",
@@ -98,7 +97,7 @@ function cleartbodyDrugs() {
 $("form[name=drugNarcoticForm]").submit(function(event) {
     event.preventDefault(); // отключить форму отправки события по умолчанию
     var drugNarcoticTable = $("#RowDrugs > tr > td > label > input");
-    if (drugNarcoticTable.length > 0) {
+    if (false) {
         var dataForm = new FormData();
         var rows = [];
         for (var i = 0; i < drugNarcoticTable.length; i++) {
@@ -106,6 +105,7 @@ $("form[name=drugNarcoticForm]").submit(function(event) {
             rows.push(drugNarcoticTable[i].value);
         }
         dataForm.append("narcoticDrugsAdd", JSON.stringify(rows));
+
         $.ajax({
             type: "POST",
             data: dataForm,
@@ -121,10 +121,20 @@ $("form[name=drugNarcoticForm]").submit(function(event) {
             }
         });
     }
+    readNewDrugs();
 });
 
-function whriteRowDrugs() {
-
+function readNewDrugs() {
+    var elemetsFormDrugs = $("tr[name = drugNew]")
+        .find($("input[name = nameDrug],input[name = dataDrugAdd],input[name = dataDrugDel]"));
+    var valueRowDrugs = elemetsFormDrugs.map(function() {
+        return this.value;
+    }).get();
+    var listDrugs = [];
+    for (var i = 0; i < valueRowDrugs.length; i += 3) {
+        listDrugs.push(valueRowDrugs.slice(i, i + 3));
+    }
+    //console.log(listDrugs);
 }
 
 $("button[class=add]").click(function() {
@@ -132,6 +142,6 @@ $("button[class=add]").click(function() {
     $("#RowDrugs").append(newRowDrug);
 });
 
-$("button[class=del]").click(function () {
-    $('tr[name=drugNew]:last').remove();
+$("button[class=del]").click(function() {
+    $("tr[name=drugNew]:last").remove();
 });
