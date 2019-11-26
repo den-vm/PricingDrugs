@@ -96,34 +96,29 @@ function cleartbodyDrugs() {
 
 $("form[name=drugNarcoticForm]").submit(function(event) {
     event.preventDefault(); // отключить форму отправки события по умолчанию
-    var drugNarcoticTable = $("#RowDrugs > tr > td > label > input");
-    if (false) {
-        var dataForm = new FormData();
-        var rows = [];
-        for (var i = 0; i < drugNarcoticTable.length; i++) {
-            //rows.push(`{name: "${drugNarcoticTable[i].value}"`);
-            rows.push(drugNarcoticTable[i].value);
-        }
-        dataForm.append("narcoticDrugsAdd", JSON.stringify(rows));
+    var dataForm = new FormData();
+    dataForm.append("narcoticDrugsAdd", readNewDrugs());
+    //console.log(dataForm.get('narcoticDrugsAdd'));
+    //dataForm.append("narcoticDrugsEdit", readEditDrugs());
+    //dataForm.append("narcoticDrugsDel", readDeleteDrugs());
 
-        $.ajax({
-            type: "POST",
-            data: dataForm,
-            dataType: "json",
-            processData: false, // отключение преобразования строки запроса по contentType
-            contentType:
-                false, // отключение преобразования контента в тип по умолчанию: "application/x-www-form-urlencoded; charset=UTF-8"
-            success: function(data) {
-                if (data["typemessage"] === "error")
-                    alertify.error(data["message"]);
-                if (data["typemessage"] === "complite")
-                    alertify.message(data["message"]);
-            }
-        });
-    }
-    readNewDrugs();
+    //$.ajax({
+    //    type: "POST",
+    //    data: dataForm,
+    //    dataType: "json",
+    //    processData: false, // отключение преобразования строки запроса по contentType
+    //    contentType:
+    //        false, // отключение преобразования контента в тип по умолчанию: "application/x-www-form-urlencoded; charset=UTF-8"
+    //    success: function(data) {
+    //        if (data["typemessage"] === "error")
+    //            alertify.error(data["message"]);
+    //        if (data["typemessage"] === "complite")
+    //            alertify.message(data["message"]);
+    //    }
+    //});
 });
 
+// Чтение новых наркот. и псих. препаратов
 function readNewDrugs() {
     var elemetsFormDrugs = $("tr[name = drugNew]")
         .find($("input[name = nameDrug],input[name = dataDrugAdd],input[name = dataDrugDel]"));
@@ -134,6 +129,19 @@ function readNewDrugs() {
     for (var i = 0; i < valueRowDrugs.length; i += 3) {
         listDrugs.push(valueRowDrugs.slice(i, i + 3));
     }
+    return listDrugs;
+    //console.log(listDrugs);
+}
+
+// Чтение измененных наркот. и псих. препаратов
+function readEditDrugs() {
+
+    //console.log(listDrugs);
+}
+
+// Чтение исключенных наркот. и псих. препаратов
+function readDeleteDrugs() {
+
     //console.log(listDrugs);
 }
 
