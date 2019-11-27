@@ -97,10 +97,9 @@ function cleartbodyDrugs() {
 $("form[name=drugNarcoticForm]").submit(function(event) {
     event.preventDefault(); // отключить форму отправки события по умолчанию
     var dataForm = new FormData();
-    dataForm.append("narcoticDrugsAdd", readNewDrugs());
-    //console.log(dataForm.get('narcoticDrugsAdd'));
-    //dataForm.append("narcoticDrugsEdit", readEditDrugs());
-    //dataForm.append("narcoticDrugsDel", readDeleteDrugs());
+    dataForm.append("narcoticDrugsAdd", readRowDrugs($("tr[name = drugNew]")));
+    dataForm.append("narcoticDrugsEdit", readRowDrugs($("tr[name = drugEdit]"), true));
+    dataForm.append("narcoticDrugsDel", readRowDrugs($("tr[name = drugDelete]"), true));
 
     //$.ajax({
     //    type: "POST",
@@ -118,32 +117,28 @@ $("form[name=drugNarcoticForm]").submit(function(event) {
     //});
 });
 
-// Чтение новых наркот. и псих. препаратов
-function readNewDrugs() {
-    var elemetsFormDrugs = $("tr[name = drugNew]")
+// Чтение наркот. и псих. препаратов
+function readRowDrugs(nameRowDrug, outIdDrug = false) {
+    var elemetsFormDrugs = nameRowDrug
         .find($("input[name = nameDrug],input[name = dataDrugAdd],input[name = dataDrugDel]"));
     var valueRowDrugs = elemetsFormDrugs.map(function() {
         return this.value;
     }).get();
     var listDrugs = [];
-    for (var i = 0; i < valueRowDrugs.length; i += 3) {
-        listDrugs.push(valueRowDrugs.slice(i, i + 3));
+    var idDrugs = null;
+    if (outIdDrug) {
+        idDrugs = nameRowDrug.map(function() {
+            return this.dataset.id;
+        }).get();
+    }
+    for (var i = 0, j = 0; i < valueRowDrugs.length; i += 3, j++) {
+        if (outIdDrug) {
+            listDrugs.push(idDrugs[j], valueRowDrugs.slice(i, i + 3));
+        } else listDrugs.push(valueRowDrugs.slice(i, i + 3));
     }
     return listDrugs;
-    //console.log(listDrugs);
 }
 
-// Чтение измененных наркот. и псих. препаратов
-function readEditDrugs() {
-
-    //console.log(listDrugs);
-}
-
-// Чтение исключенных наркот. и псих. препаратов
-function readDeleteDrugs() {
-
-    //console.log(listDrugs);
-}
 
 $("button[class=add]").click(function() {
     //var newDrug = singlRowDrug.replace(new RegExp("drugSingl"), "newDrug");
