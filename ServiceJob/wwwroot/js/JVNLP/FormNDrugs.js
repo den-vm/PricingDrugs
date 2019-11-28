@@ -56,20 +56,20 @@ function hide_visibleFormTableDrugs(speed = 200) {
                         visibleFormTableDrugs = true;
                         var dataForm = new FormData();
                         dataForm.append("narcoticDrugsView", null);
-                        $.ajax({
-                            type: "POST",
-                            data: dataForm,
-                            dataType: "json",
-                            processData: false, // отключение преобразования строки запроса по contentType
-                            contentType:
-                                false, // отключение преобразования контента в тип по умолчанию: "application/x-www-form-urlencoded; charset=UTF-8"
-                            success: function(data) {
-                                if (data["typemessage"] === "error")
-                                    alertify.error(data["message"]);
-                                if (data["typemessage"] === "complite")
-                                    alertify.message(data["message"]);
-                            }
-                        });
+                        //$.ajax({
+                        //    type: "POST",
+                        //    data: dataForm,
+                        //    dataType: "json",
+                        //    processData: false, // отключение преобразования строки запроса по contentType
+                        //    contentType:
+                        //        false, // отключение преобразования контента в тип по умолчанию: "application/x-www-form-urlencoded; charset=UTF-8"
+                        //    success: function(data) {
+                        //        if (data["typemessage"] === "error")
+                        //            alertify.error(data["message"]);
+                        //        if (data["typemessage"] === "complite")
+                        //            alertify.message(data["message"]);
+                        //    }
+                        //});
                     } else {
                         visibleFormTableDrugs = false;
                         cleartbodyDrugs();
@@ -100,7 +100,6 @@ $("form[name=drugNarcoticForm]").submit(function(event) {
     dataForm.append("narcoticDrugsAdd", readRowDrugs($("tr[name = drugNew]")));
     dataForm.append("narcoticDrugsEdit", readRowDrugs($("tr[name = drugEdit]"), true));
     dataForm.append("narcoticDrugsDel", readRowDrugs($("tr[name = drugDelete]"), true));
-
     //$.ajax({
     //    type: "POST",
     //    data: dataForm,
@@ -140,11 +139,11 @@ function readRowDrugs(nameRowDrug, outIdDrug = false) {
 }
 
 
-$("button[class=add]").click(function() {
+$("button[class = add]").click(function() {
     //var newDrug = singlRowDrug.replace(new RegExp("drugSingl"), "newDrug");
     $("#RowDrugs").append(newRowDrug);
 });
 
-$("button[class=del]").click(function() {
-    $("tr[name=drugNew]:last").remove();
+$("button[class = del]").click(function() {
+    $("tr[name = drugNew]:last").remove();
 });
