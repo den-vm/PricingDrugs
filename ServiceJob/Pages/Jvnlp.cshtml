@@ -13,7 +13,7 @@
 
 <div name="lockbody" style="background: rgba(0, 0, 0, 0.81); bottom: 53px; display: none; left: 0px; position: absolute; right: 0px; top: 66px; width: 100%;">
     <div class="formfileJvnlp" name="divJvnlp">
-        <form enctype="multipart/form-data" asp-action="RequestJvnlp" asp-controller="Views" name="jvnlpForm" class="formFileJvnlp">
+        <form enctype="multipart/form-data" asp-action="RequestJvnlp" asp-controller="Views" name="jvnlpForm" class="formFileJvnlp" data-idform="form №1">
             <div class="input-file-container">
                 <input type="file" class="input-file">
                 <label tabindex="0" class="input-file-trigger">Выберите файл</label>
@@ -25,7 +25,7 @@
     </div>
 
     <div class="formDrugsNarcotic" name="divDrugsDownload">
-        <form asp-action="RequestJvnlp" asp-controller="Views" name="drugNarcoticForm">
+        <form asp-action="RequestJvnlp" asp-controller="Views" name="drugNarcoticForm" data-idform="form №2">
             <div class="divScroll">
                 <table id="drugNarcotic" border="1" cellspacing="0" cellpadding="5" class="tableForm">
                     <thead>
@@ -58,20 +58,10 @@
                     </tr>*@
                     <tr name="drugSave" data-id="1">
                         <td style="padding: 2px">
-                            <input type="text" name="nameDrug" required placeholder="Введите МНН препарата" title="" onKeyup="this.title = this.value">
+                            <input type="text" name="nameDrug" required placeholder="Введите МНН препарата" title="" onKeyup="this.title = this.value" value="Ритуксимаб">
                         </td>
                         <td style="padding: 2px; width: 115px;" align="center">
-                            <input name="dataDrugAdd" type="date"/>
-                            <script type="text/javascript">
-                                $(document).ready(function() {
-                                    var nowDate = new Date();
-                                    $("[name=dataDrugAdd]").val(nowDate.getFullYear() +
-                                        "-" +
-                                        nowDate.getMonth() +
-                                        "-" +
-                                        nowDate.getDate());
-                                })
-                            </script>
+                            <input name="dataDrugAdd" type="date" value="2019-12-01"/>
                         </td>
                         <td style="padding: 2px; width: 123px;" align="center">
                             <input name="dataDrugDel" type="date"/>
@@ -79,31 +69,16 @@
                     </tr>
                     <tr name="drugSave" data-id="2">
                         <td style="padding: 2px">
-                            <input type="text" name="nameDrug" required placeholder="Введите МНН препарата" title="" onKeyup="this.title = this.value">
+                            <input type="text" name="nameDrug" required placeholder="Введите МНН препарата" title="" onKeyup="this.title = this.value" value="Ритуксимаб">
                         </td>
                         <td style="padding: 2px; width: 115px;" align="center">
-                            <input name="dataDrugAdd" type="date"/>
-                            <script type="text/javascript">
-                                $(document).ready(function() {
-                                    var nowDate = new Date();
-                                    $("[name=dataDrugAdd]").val(nowDate.getFullYear() +
-                                        "-" +
-                                        nowDate.getMonth() +
-                                        "-" +
-                                        nowDate.getDate());
-                                })
-                            </script>
+                            <input name="dataDrugAdd" type="date" value="2019-12-01"/>
                         </td>
                         <td style="padding: 2px; width: 123px;" align="center">
-                            <input name="dataDrugDel" type="date"/>
+                            <input name="dataDrugDel" type="date" value="2019-12-01"/>
                         </td>
                     </tr>
                     </tbody>
-                    <script type="text/javascript">
-                        $("tr[name = drugSave]").bind("DOMSubtreeModified", function(e) {
-                            alert(e);
-                        });
-                    </script>
                 </table>
             </div>
             <div class="elementsSettingsRow">

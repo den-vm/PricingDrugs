@@ -10,7 +10,7 @@ var newRowDrug = '<tr name="drugNew">' +
     '<script type="text/javascript">' +
     "$(document).ready(function () {" +
     "var nowDate = new Date();" +
-    '$("[name=dataDrugAdd]").val(nowDate.getFullYear() + "-" + nowDate.getMonth() + "-" + nowDate.getDate());' +
+    '$("[name=dataDrugAdd]").val(new Date().toISOString().split("T")[0]);' +
     "})" +
     "</script>" +
     "</td>" +
