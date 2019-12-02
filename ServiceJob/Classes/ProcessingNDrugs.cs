@@ -65,11 +65,6 @@ namespace ServiceJob.Classes
             return false;
         }
 
-        public void Delete()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Edit()
         {
             throw new NotImplementedException();

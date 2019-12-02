@@ -87,11 +87,6 @@ namespace ServiceJob.Controllers
                         }
                         goto case "MessageSaveDrugs";
 
-                    case "narcoticDrugsDel":
-                        //var c = new DrugNarcoticsModel().ReadFileDrugs();
-
-                        goto case "MessageSaveDrugs";
-
                     case "narcoticDrugsEdit":
                         //var d = new DrugNarcoticsModel().ReadFileDrugs();
 

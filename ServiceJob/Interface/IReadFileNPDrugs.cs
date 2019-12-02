@@ -23,10 +23,6 @@ namespace ServiceJob.Interface
         /// <returns></returns>
         bool Add(List<T> listdrugs);
         /// <summary>
-        /// Delete drugs the file
-        /// </summary>
-        void Delete();
-        /// <summary>
         /// Change drugs the file 
         /// </summary>
         void Edit();
