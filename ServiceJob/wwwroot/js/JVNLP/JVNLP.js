@@ -1,40 +1,51 @@
 ﻿var visibleFormfile = false;
 var visibleFormTableDrugs = false;
 
-$("li[name=openFormFile]").click(function () {
+$("li[name=openFormFile]").click(function() {
     if (visibleFormTableDrugs)
-        hide_visibleFormTableDrugs(100);
-    hide_visibleFormfile();
+        FormTableDrugs(100);
+    Formfile();
+
 });
-$("li[name=openFormTableDrugs]").click(function () {
+$("li[name=openFormTableDrugs]").click(function() {
     if (visibleFormfile)
-        hide_visibleFormfile(100);
-    hide_visibleFormTableDrugs();
+        Formfile(100);
+    FormTableDrugs(100);
 });
 
-function hide_visibleFormfile(speed = 200) {
+function Formfile(speed = 200) {
 
-    $("div[name=lockbody]").slideToggle((speed + 100),
-        "linear",
-        function () {
-            $("div[name=divJvnlp]").slideToggle(speed,
-                "linear",
-                function () {
+    $("div[name=lockbody]").slideToggle({
+        duration: (speed + 100),
+        easing: "linear",
+        always: function() {
+            $("div[name=divJvnlp]").slideToggle({
+                duration: speed,
+                easing: "linear",
+                always: function() {
                     if ($("div[name=divJvnlp]").css("display") === "block") visibleFormfile = true;
                     else visibleFormfile = false;
-                });
-        });
+                }
+            });
+        }
+    });
 }
 
 // получить список препаратов из списка при открытии формы
-function hide_visibleFormTableDrugs(speed = 200) {
-    $("div[name=lockbody]").slideToggle((speed + 100),
-        "linear",
-        function () {
-            $("div[name=divDrugsDownload]").slideToggle(speed,
-                "linear", getDrugs());
-        });
-
+function FormTableDrugs(speed = 200) {
+    $("div[name=lockbody]").slideToggle({
+        duration: (speed + 100),
+        easing: "linear",
+        always: function() {
+            $("div[name=divDrugsDownload]").slideToggle({
+                duration: speed,
+                easing: "linear",
+                always: function() {
+                    getDrugs();
+                }
+            });
+        }
+    });
 }
 
 function getDrugs() {
@@ -43,7 +54,7 @@ function getDrugs() {
         visibleFormTableDrugs = true;
         var dataForm = new FormData();
         dataForm.append("narcoticDrugsView", null);
-        //RequestFormNPDrugs(dataForm);
+        RequestFormNPDrugs(dataForm);
     } else {
         visibleFormTableDrugs = false;
         $("#RowDrugs").html("");
@@ -61,8 +72,17 @@ function RequestFormNPDrugs(dataForm) {
         success: function(data) {
             if (data["typemessage"] === "error")
                 alertify.error(data["message"]);
-            if (data["typemessage"] === "complite")
+            if (data["typemessage"] === "complite") {
                 alertify.message(data["message"]);
+
+                //Запускаем наблюдение за изменениями в HTML-элементе input JVNLP 
+                var elementsDrugSave = $("tr[name=drugSave]")
+                    .find($("input[name = nameDrug],input[name = dataDrugAdd],input[name = dataDrugDel]"));
+                elementsDrugSave.on("input",
+                    function() {
+                        $(this).parents("td,tr").attr("name", "drugEdit");
+                    });
+            }
         }
     });
 }

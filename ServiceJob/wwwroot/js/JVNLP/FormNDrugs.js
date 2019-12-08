@@ -24,12 +24,16 @@ $("button[class = del]").click(function() {
 $("form[name=drugNarcoticForm]").submit(function(event) {
     event.preventDefault(); // отключить форму отправки события по умолчанию
     var dataForm = new FormData();
+    //-------------------------------------------------------------------------------------------Сделать проверку на существование атрибутов drugNew и drugEdit
     dataForm.append("narcoticDrugsAdd", readRowDrugs($("tr[name = drugNew]")));
     dataForm.append("narcoticDrugsEdit", readRowDrugs($("tr[name = drugEdit]"), true));
-    //RequestFormNPDrugs(dataForm);
+    RequestFormNPDrugs(dataForm);
 });
 
-// Чтение наркот. и псих. препаратов из формы
+
+/*-----------------------------------------------
+    Чтение наркот. и псих. препаратов из формы
+-------------------------------------------------*/
 function readRowDrugs(nameRowDrug, outIdDrug = false) {
     var elemetsFormDrugs = nameRowDrug
         .find($("input[name = nameDrug],input[name = dataDrugAdd],input[name = dataDrugDel]"));
@@ -50,21 +54,3 @@ function readRowDrugs(nameRowDrug, outIdDrug = false) {
     }
     return listDrugs;
 }
-
-var mutationObserver = new MutationObserver(function(mutations) {
-    mutations.forEach(function(mutation) {
-        //console.log(mutation);
-        alert(mutation);
-    });
-});
-console.log($("#RowDrugs")[0]);
-// Запускаем наблюдение за изменениями в HTML-элементе JVNLP
-mutationObserver.observe($("#RowDrugs")[0],
-    {
-        attributes: true, //в атрибутах node
-        characterData: true, //наблюдать ли за node.data (текстовое содержимое)
-        childList: true, //изменения в непосредственных детях node
-        subtree: true, //во всех потомках node
-        attributeOldValue: true, //если true, будет передавать и старое и новое значение node.data в колбэк (см далее), иначе только новое (также требуется опция characterData)
-        characterDataOldValue: true //если true, будет передавать и старое и новое старое значение атрибута в колбэк (см далее), иначе только новое (также требуется опция attributes)
-    });
