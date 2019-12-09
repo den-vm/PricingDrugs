@@ -35,39 +35,39 @@ namespace ServiceJob.Classes
 
         public bool Add(List<DrugNarcoticsModel> listdrugs)
         {
-            var xDoc = new XDocument(Path);
-            var drugs = xDoc.Element("drugs");
+            //var xDoc = new XDocument(Path);
+            //var drugs = xDoc.Element("drugs");
 
-            var iphone6 = new XElement("phone");
-            var iphoneNameAttr = new XAttribute("name", "iPhone 6");
-            var iphoneCompanyElem = new XElement("company", "Apple");
-            var iphonePriceElem = new XElement("price", "40000");
-            iphone6.Add(iphoneNameAttr);
-            iphone6.Add(iphoneCompanyElem);
-            iphone6.Add(iphonePriceElem);
+            //var iphone6 = new XElement("phone");
+            //var iphoneNameAttr = new XAttribute("name", "iPhone 6");
+            //var iphoneCompanyElem = new XElement("company", "Apple");
+            //var iphonePriceElem = new XElement("price", "40000");
+            //iphone6.Add(iphoneNameAttr);
+            //iphone6.Add(iphoneCompanyElem);
+            //iphone6.Add(iphonePriceElem);
 
-            var galaxys5 = new XElement("phone");
-            var galaxysNameAttr = new XAttribute("name", "Samsung Galaxy S5");
-            var galaxysCompanyElem = new XElement("company", "Samsung");
-            var galaxysPriceElem = new XElement("price", "33000");
-            galaxys5.Add(galaxysNameAttr);
-            galaxys5.Add(galaxysCompanyElem);
-            galaxys5.Add(galaxysPriceElem);
+            //var galaxys5 = new XElement("phone");
+            //var galaxysNameAttr = new XAttribute("name", "Samsung Galaxy S5");
+            //var galaxysCompanyElem = new XElement("company", "Samsung");
+            //var galaxysPriceElem = new XElement("price", "33000");
+            //galaxys5.Add(galaxysNameAttr);
+            //galaxys5.Add(galaxysCompanyElem);
+            //galaxys5.Add(galaxysPriceElem);
 
-            if (drugs != null)
-            {
-                drugs.Add(iphone6);
-                drugs.Add(galaxys5);
-                xDoc.Add(drugs);
-                xDoc.Save(Path);
-                return true;
-            }
-            return false;
+            //if (drugs != null)
+            //{
+            //    drugs.Add(iphone6);
+            //    drugs.Add(galaxys5);
+            //    xDoc.Add(drugs);
+            //    xDoc.Save(Path);
+            //    return true;
+            //}
+            return true;
         }
 
-        public void Edit()
+        public bool Edit(List<DrugNarcoticsModel> listdrugs)
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }

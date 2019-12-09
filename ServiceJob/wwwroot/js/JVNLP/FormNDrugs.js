@@ -25,8 +25,10 @@ $("form[name=drugNarcoticForm]").submit(function(event) {
     event.preventDefault(); // отключить форму отправки события по умолчанию
     var dataForm = new FormData();
     //-------------------------------------------------------------------------------------------Сделать проверку на существование атрибутов drugNew и drugEdit
-    dataForm.append("narcoticDrugsAdd", readRowDrugs($("tr[name = drugNew]")));
-    dataForm.append("narcoticDrugsEdit", readRowDrugs($("tr[name = drugEdit]"), true));
+    if (readRowDrugs($("tr[name = drugNew]")).length > 0)
+        dataForm.append("narcoticDrugsAdd", readRowDrugs($("tr[name = drugNew]")));
+    if (readRowDrugs($("tr[name = drugEdit]")).length > 0)
+        dataForm.append("narcoticDrugsEdit", readRowDrugs($("tr[name = drugEdit]"), true));
     RequestFormNPDrugs(dataForm);
 });
 

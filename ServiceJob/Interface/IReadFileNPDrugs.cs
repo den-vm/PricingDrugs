@@ -25,6 +25,6 @@ namespace ServiceJob.Interface
         /// <summary>
         /// Change drugs the file 
         /// </summary>
-        void Edit();
+        bool Edit(List<T> listdrugs);
     }
 }
