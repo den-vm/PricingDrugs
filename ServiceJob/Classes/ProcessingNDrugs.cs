@@ -14,7 +14,7 @@ namespace ServiceJob.Classes
     {
         private static readonly string Path = Directory.GetCurrentDirectory() + "/BaseDrugs/NDrugsReestr.xml";
 
-        public List<DrugNarcoticsModel> Get()
+        public List<DrugNarcoticsModel> GetDrugs()
         {
             var drugsList = new List<DrugNarcoticsModel>();
 
@@ -68,6 +68,11 @@ namespace ServiceJob.Classes
         public bool Edit(List<DrugNarcoticsModel> listdrugs)
         {
             return true;
+        }
+
+        public int GetNewKey()
+        {
+            return 0;
         }
     }
 }

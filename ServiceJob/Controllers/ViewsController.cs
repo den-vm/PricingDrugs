@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -67,7 +68,7 @@ namespace ServiceJob.Controllers
                     switch (keyform.Key)
                     {
                         case "narcoticDrugsView":
-                            var listdrugs = processingNDrugs.Get();
+                            var listdrugs = processingNDrugs.GetDrugs();
                             if (listdrugs.Count == 0)
                                 newmessages.Add(Json(new
                                 {
@@ -77,8 +78,23 @@ namespace ServiceJob.Controllers
                             break;
 
                         case "narcoticDrugsAdd":
-                            var newlistDrugs = keyform.Value;
-                            var resultAdd = processingNDrugs.Add(new List<DrugNarcoticsModel>());
+                            var newKey = processingNDrugs.GetNewKey();
+                            var arrayDrugs = keyform.Value.ToString().Split(',').SplitArray(3);
+                            var newlistDrugs =
+                                arrayDrugs.Select(x =>
+                                {
+                                    var enumX = x.ToList();
+                                    return new DrugNarcoticsModel
+                                    {
+                                        Id = newKey++,
+                                        NameDrug = enumX[0],
+                                        IncludeDate = enumX[1].ToDateTime(),
+                                        OutDate = enumX[2].ToDateTime()
+                                    };
+                                }).ToList();
+
+
+                            var resultAdd = processingNDrugs.Add(newlistDrugs);
                             if (!resultAdd)
                                 newmessages.Add(Json(new
                                 {
