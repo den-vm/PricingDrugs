@@ -96,11 +96,14 @@ namespace ServiceJob.Controllers
 
                             var resultAdd = processingNDrugs.Add(newlistDrugs);
                             if (!resultAdd)
+                            {
                                 newmessages.Add(Json(new
                                 {
                                     typemessage = "error",
                                     message = "Ошибка при сохранении наркотических препаратов"
                                 }));
+                                break;
+                            }
                             newmessages.Add(Json(new
                             {
                                 typemessage = "complite",
@@ -112,11 +115,14 @@ namespace ServiceJob.Controllers
                             var editlistDrugs = keyform.Value;
                             var resultEdit = processingNDrugs.Edit(new List<DrugNarcoticsModel>());
                             if (!resultEdit)
+                            {
                                 newmessages.Add(Json(new
                                 {
                                     typemessage = "error",
                                     message = "Ошибка при изменении существующих позиций"
                                 }));
+                                break;
+                            }
                             newmessages.Add(Json(new
                             {
                                 typemessage = "complite",
