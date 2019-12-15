@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using ServiceJob.Interface;
 using ServiceJob.Models;
@@ -12,19 +14,33 @@ namespace ServiceJob.Classes
 
         public List<DrugNarcoticsModel> GetDrugs()
         {
-            var drugsList = new List<DrugNarcoticsModel>();
-
             try
             {
-                var xDoc = XDocument.Load(Path);
+                var xRoot = XDocument.Load(Path).Element("Drugs");
+                DateTime tempoutdate;
+                var listDrugs = xRoot.Elements("Drug").Select(element => new DrugNarcoticsModel
+                {
+                    Id = int.Parse(element.Attribute("Id")?.Value),
+                    NameDrug = element.Attribute("Name")?.Value,
+                    IncludeDate = DateTime.Parse(element.Attribute("IncludeDate")?.Value),
+                    OutDate = DateTime.TryParse(element.Attribute("OutDate")?.Value, out tempoutdate)
+                        ? tempoutdate
+                        : (DateTime?) null
+                }).ToList();
+                return listDrugs;
             }
-            catch
+            catch (Exception ex)
             {
-                var xDoc = new XDocument();
-                xDoc.Add(new XElement("Drugs"));
-                xDoc.Save(Path);
+                switch (ex.HResult)
+                {
+                    case -2147024894:
+                        var xDoc = new XDocument();
+                        xDoc.Add(new XElement("Drugs"));
+                        xDoc.Save(Path);
+                        return new List<DrugNarcoticsModel>();
+                }
             }
-            return drugsList;
+            return null;
         }
 
         public bool Add(List<DrugNarcoticsModel> listdrugs)
@@ -32,24 +48,23 @@ namespace ServiceJob.Classes
             try
             {
                 var xDoc = XDocument.Load(Path);
-                var xDrugs = xDoc.Element("Drugs");
+                var xRoot = xDoc.Element("Drugs");
 
                 foreach (var infoDrugs in listdrugs)
                 {
-                    var eDrug = new XElement("Drug");
+                    var xNode = new XElement("Drug");
                     var aId = new XAttribute("Id", infoDrugs.Id);
-                    var aName = new XAttribute("name", infoDrugs.NameDrug);
+                    var aName = new XAttribute("Name", infoDrugs.NameDrug);
                     var aInludeDate = infoDrugs.IncludeDate != null
-                        ? new XAttribute("IncludeDate", infoDrugs.IncludeDate.Value.ToString("MM/dd/yyyy"))
+                        ? new XAttribute("IncludeDate", infoDrugs.IncludeDate.Value.ToString("dd/MM/yyyy"))
                         : null;
                     var aOutDate = infoDrugs.OutDate != null
-                        ? new XAttribute("OutDate", infoDrugs.OutDate.Value.ToString("MM/dd/yyyy"))
+                        ? new XAttribute("OutDate", infoDrugs.OutDate.Value.ToString("dd/MM/yyyy"))
                         : null;
-                    eDrug.Add(aId, aName, aInludeDate, aOutDate);
-
-                    xDrugs.Add(eDrug);
+                    xNode.Add(aId, aName, aInludeDate, aOutDate);
+                    xRoot.Add(xNode);
                 }
-                if (xDrugs != null)
+                if (xRoot != null)
                 {
                     xDoc.Save(Path);
                     return true;

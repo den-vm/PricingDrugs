@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -69,12 +68,32 @@ namespace ServiceJob.Controllers
                     {
                         case "narcoticDrugsView":
                             var listdrugs = processingNDrugs.GetDrugs();
-                            if (listdrugs.Count == 0)
+                            if (listdrugs != null)
+                            {
+                                if (listdrugs.Count == 0)
+                                {
+                                    newmessages.Add(Json(new
+                                    {
+                                        typemessage = "complite",
+                                        message = "Таблица наркотических препаратов пуста"
+                                    }));
+                                    break;
+                                }
                                 newmessages.Add(Json(new
                                 {
-                                    typemessage = "complite",
-                                    message = "Таблица наркотических препаратов пуста"
+                                    typemessage = "drugs",
+                                    message = listdrugs
                                 }));
+                            }
+                            else
+                            {
+                                newmessages.Add(Json(new
+                                {
+                                    typemessage = "error",
+                                    message =
+                                    "Ошибка в чтении файла 'NDrugsReestr.xml' наркотических препаратов. Параметры 'ID', 'Name', 'IncludeDate' обязательны для чтения."
+                                }));
+                            }
                             break;
 
                         case "narcoticDrugsAdd":
@@ -134,18 +153,21 @@ namespace ServiceJob.Controllers
                             newmessages.Add(Json(new
                             {
                                 typemessage = "error",
-                                message = "Ошибка чтения запроса от формы наркотических препаратов"
+                                message = "Ошибка чтения несущестующего параметра формы"
                             }));
                             break;
                     }
                 if (newmessages.Count > 0)
                     return Json(new {listmessages = newmessages});
             }
-            newmessages.Add(Json(new
+            else
             {
-                typemessage = "error",
-                message = "Проверьте заполнение формы"
-            }));
+                newmessages.Add(Json(new
+                {
+                    typemessage = "error",
+                    message = "Ошибка чтения данных формы"
+                }));
+            }
             return Json(new {listmessages = newmessages});
         }
 

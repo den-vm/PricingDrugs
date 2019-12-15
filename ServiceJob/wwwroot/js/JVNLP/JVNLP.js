@@ -73,16 +73,23 @@ function RequestFormNPDrugs(dataForm) {
             $.each(data["listmessages"],
                 function(key, message) {
                     var value = message.value;
-                    if (value["typemessage"] === "error")
+                    if (value.typemessage === "error")
                         setTimeout(function() {
+                                console.error(value["message"]);
                                 alertify.error(value["message"]);
                             },
                             key * 200);
-                    if (value["typemessage"] === "complite")
+                    if (value.typemessage === "complite")
                         setTimeout(function() {
+                                console.log(value["message"]);
                                 alertify.message(value["message"]);
                             },
                             key * 200);
+                    if (value.typemessage === "drugs") {
+                        $.each(value.message, function (index, drug) {
+                            var a = drug;
+                        });
+                    }
                 });
             //Запускаем наблюдение за изменениями в HTML-элементе input JVNLP 
             var elementsDrugSave = $("tr[name=drugSave]")
