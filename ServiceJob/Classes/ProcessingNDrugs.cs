@@ -56,10 +56,10 @@ namespace ServiceJob.Classes
                     var aId = new XAttribute("Id", infoDrugs.Id);
                     var aName = new XAttribute("Name", infoDrugs.NameDrug);
                     var aInludeDate = infoDrugs.IncludeDate != null
-                        ? new XAttribute("IncludeDate", infoDrugs.IncludeDate.Value.ToString("dd/MM/yyyy"))
+                        ? new XAttribute("IncludeDate", infoDrugs.IncludeDate.Value.ToString("dd.MM.yyyy"))
                         : null;
                     var aOutDate = infoDrugs.OutDate != null
-                        ? new XAttribute("OutDate", infoDrugs.OutDate.Value.ToString("dd/MM/yyyy"))
+                        ? new XAttribute("OutDate", infoDrugs.OutDate.Value.ToString("dd.MM.yyyy"))
                         : null;
                     xNode.Add(aId, aName, aInludeDate, aOutDate);
                     xRoot.Add(xNode);
@@ -85,7 +85,18 @@ namespace ServiceJob.Classes
 
         public int GetNewKey()
         {
-            return 0;
+            try
+            {
+                var xRoot = XDocument.Load(Path).Element("Drugs")?.Elements("Drug");
+                if (!xRoot.Any())
+                    return 0;
+                var lastKey = int.Parse(xRoot.Last().Attribute("Id")?.Value ?? "0") + 1;
+                return lastKey;
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
         }
     }
 }

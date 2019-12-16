@@ -86,9 +86,7 @@ function RequestFormNPDrugs(dataForm) {
                             },
                             key * 200);
                     if (value.typemessage === "drugs") {
-                        $.each(value.message, function (index, drug) {
-                            var a = drug;
-                        });
+                        $("#RowDrugs").html(getDrugsHTML(value.message));
                     }
                 });
             //Запускаем наблюдение за изменениями в HTML-элементе input JVNLP 

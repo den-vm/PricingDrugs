@@ -98,6 +98,15 @@ namespace ServiceJob.Controllers
 
                         case "narcoticDrugsAdd":
                             var newKey = processingNDrugs.GetNewKey();
+                            if (newKey == -1)
+                            {
+                                newmessages.Add(Json(new
+                                {
+                                    typemessage = "error",
+                                    message = "Ошибка чтении файла 'NDrugsReestr.xml' наркотических препаратов"
+                                }));
+                                break;
+                            }
                             var arrayDrugs = keyform.Value.ToString().Split(',').SplitArray(3);
                             var newlistDrugs =
                                 arrayDrugs.Select(x =>

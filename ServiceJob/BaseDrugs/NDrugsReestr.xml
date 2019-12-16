@@ -1,5 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Drugs>
-  <Drug Id="0" Name="Иматиниб" IncludeDate="15.12.2019"/>
-  <Drug Id="1" Name="Бортезол" IncludeDate="15.12.2019" />
+  <Drug Id="0" Name="Иматиниб" IncludeDate="01.01.2019" />
+  <Drug Id="1" Name="Бортезол" IncludeDate="09.07.2019" />
+  <Drug Id="2" Name="Тоцилизумаб" IncludeDate="27.11.2019" />
+  <Drug Id="3" Name="Интерферон бета 1б" IncludeDate="21.12.2019" />
+  <Drug Id="4" Name="Интерферон бета 1а" IncludeDate="09.12.2019" />
+  <Drug Id="5" Name="Интерферон бета 2а" IncludeDate="04.12.2019" OutDate="04.12.2019" />
+  <Drug Id="6" Name="Интерферон бета 3а" IncludeDate="28.12.2019" />
+  <Drug Id="7" Name="Интерферон бета 4а" IncludeDate="16.12.2019" OutDate="04.12.2019" />
+  <Drug Id="8" Name="Интерферон бета 5а" IncludeDate="16.12.2019" />
 </Drugs>
