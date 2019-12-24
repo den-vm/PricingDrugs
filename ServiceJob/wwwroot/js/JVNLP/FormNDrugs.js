@@ -1,5 +1,5 @@
 ﻿$("button[class = add]").click(function() {
-    var newRowDrug = '<tr name="drugNew">' +
+    var newRowDrug = '<tr name="drugNew"> style="visibility: visible;"' +
         '<td style="padding: 2px">' +
         '<input type="text" name="nameDrug" value="" required placeholder="Введите МНН препарата" title="" onKeyup="this.title=this.value">' +
         "</td>" +
@@ -20,7 +20,6 @@
 $("button[class = del]").click(function() {
     $("tr[name = drugNew]:last").remove();
 });
-
 $("form[name=drugNarcoticForm]").submit(function(event) {
     event.preventDefault(); // отключить форму отправки события по умолчанию
     var dataForm = new FormData();
@@ -31,6 +30,17 @@ $("form[name=drugNarcoticForm]").submit(function(event) {
     RequestFormNPDrugs(dataForm);
 });
 
+$("input[name=invisDrug]").click(function() {
+    var listExclude = $("#RowDrugs").find("tr");
+    var checked = this.checked;
+    $.each(listExclude,
+        function() {
+            var dateExclude = $(this).find("input[name=dataDrugDel]").val();
+            if (dateExclude !== "" && checked) {
+                $(this).css("visibility", "collapse");
+            } else $(this).css("visibility", "visible");
+        });
+});
 
 /*-----------------------------------------------
     Чтение наркот. и псих. препаратов из формы
@@ -70,7 +80,7 @@ function getDrugsHTML(listdrugs) {
 
             saveDrug += '<tr name="drugSave" data-id = "' +
                 id +
-                '">' +
+                '" style="visibility: visible;">' +
                 '<td style="padding: 2px">' +
                 '<input type="text" name="nameDrug" value="' +
                 nameDrug +

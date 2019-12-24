@@ -107,9 +107,9 @@ namespace ServiceJob.Controllers
                                 }));
                                 break;
                             }
-                            var arrayDrugs = keyform.Value.ToString().Split(',').SplitArray(3);
+                            var newarrayDrugs = keyform.Value.ToString().Split(',').SplitArray(3);
                             var newlistDrugs =
-                                arrayDrugs.Select(x =>
+                                newarrayDrugs.Select(x =>
                                 {
                                     var enumX = x.ToList();
                                     return new DrugNarcoticsModel
@@ -140,8 +140,20 @@ namespace ServiceJob.Controllers
                             break;
 
                         case "narcoticDrugsEdit":
-                            var editlistDrugs = keyform.Value;
-                            var resultEdit = processingNDrugs.Edit(new List<DrugNarcoticsModel>());
+                            var editarrayDrugs = keyform.Value.ToString().Split(',').SplitArray(4);
+                            var editlistDrugs =
+                                editarrayDrugs.Select(x =>
+                                {
+                                    var enumX = x.ToList();
+                                    return new DrugNarcoticsModel
+                                    {
+                                        Id = int.Parse(enumX[0]),
+                                        NameDrug = enumX[1],
+                                        IncludeDate = enumX[2].ToDateTime(),
+                                        OutDate = enumX[3].ToDateTime()
+                                    };
+                                }).ToList();
+                            var resultEdit = processingNDrugs.Edit(editlistDrugs);
                             if (!resultEdit)
                             {
                                 newmessages.Add(Json(new
