@@ -80,6 +80,44 @@ namespace ServiceJob.Classes
 
         public bool Edit(List<DrugNarcoticsModel> listdrugs)
         {
+            try
+            {
+                var xDoc = XDocument.Load(Path);
+                var xRoot = xDoc.Element("Drugs");
+                var xElements = xRoot.Elements("Drug");
+                foreach (var infoDrug in listdrugs)
+                {
+                    var drug = xElements.SingleOrDefault(element =>
+                        element.Attribute("Id").Value.Equals(infoDrug.Id.ToString()));
+                    drug.Attribute("Name").Value = infoDrug.NameDrug;
+                    drug.Attribute("IncludeDate").Value = infoDrug.IncludeDate.Value.ToString("dd.MM.yyyy");
+                    if (drug.Attribute("OutDate")?.Value != null)
+                    {
+                        if (infoDrug.OutDate != null)
+                            drug.Attribute("OutDate").Value = infoDrug.OutDate.Value.ToString("dd.MM.yyyy");
+                        else drug.Attribute("OutDate").Remove();
+                    }
+                    else
+                    {
+                        var aOutDate = infoDrug.OutDate != null
+                            ? new XAttribute("OutDate", infoDrug.OutDate.Value.ToString("dd.MM.yyyy"))
+                            : null;
+                        if (aOutDate != null)
+                            drug.Add(aOutDate);
+                    }
+                }
+
+                if (xRoot != null)
+                {
+                    xDoc.Save(Path);
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
             return true;
         }
 

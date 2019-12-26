@@ -75,7 +75,7 @@ namespace ServiceJob.Controllers
                                     newmessages.Add(Json(new
                                     {
                                         typemessage = "complite",
-                                        message = "Таблица наркотических препаратов пуста"
+                                        message = "Список наркотических препарат пуст"
                                     }));
                                     break;
                                 }
@@ -135,7 +135,7 @@ namespace ServiceJob.Controllers
                             newmessages.Add(Json(new
                             {
                                 typemessage = "complite",
-                                message = "Новые позиции успешно внесены в список"
+                                message = "Новые препараты успешно внесены в список"
                             }));
                             break;
 
@@ -159,14 +159,14 @@ namespace ServiceJob.Controllers
                                 newmessages.Add(Json(new
                                 {
                                     typemessage = "error",
-                                    message = "Ошибка при изменении существующих позиций"
+                                    message = "Ошибка при изменении существующих препаратов"
                                 }));
                                 break;
                             }
                             newmessages.Add(Json(new
                             {
                                 typemessage = "complite",
-                                message = "Имеющие позиции успешно изменены"
+                                message = "Препараты успешно изменены"
                             }));
                             break;
 
