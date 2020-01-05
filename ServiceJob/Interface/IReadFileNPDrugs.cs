@@ -15,7 +15,7 @@ namespace ServiceJob.Interface
         /// Return list included drugs 
         /// </summary>
         /// <returns></returns>
-        List<T> Get();
+        List<T> GetDrugs();
         /// <summary>
         /// Add drugs to file
         /// </summary>
@@ -25,6 +25,11 @@ namespace ServiceJob.Interface
         /// <summary>
         /// Change drugs the file 
         /// </summary>
-        void Edit();
+        bool Edit(List<T> listdrugs);
+        /// <summary>
+        /// Get last key list Drugs Saved
+        /// </summary>
+        /// <returns></returns>
+        int GetNewKey();
     }
 }

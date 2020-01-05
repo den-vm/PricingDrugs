@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\images\**" />
+    <Content Remove="wwwroot\images\**" />
+    <EmbeddedResource Remove="wwwroot\images\**" />
+    <None Remove="wwwroot\images\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AlertifyJS" Version="1.11.4" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -24,7 +31,6 @@
 
   <ItemGroup>
     <Folder Include="BaseDrugs\" />
-    <Folder Include="wwwroot\images\JVNLP\" />
     <Folder Include="TempUploadsFile\" />
   </ItemGroup>
 

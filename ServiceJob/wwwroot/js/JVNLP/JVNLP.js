@@ -70,19 +70,32 @@ function RequestFormNPDrugs(dataForm) {
         contentType:
             false, // отключение преобразования контента в тип по умолчанию: "application/x-www-form-urlencoded; charset=UTF-8"
         success: function(data) {
-            if (data["typemessage"] === "error")
-                alertify.error(data["message"]);
-            if (data["typemessage"] === "complite") {
-                alertify.message(data["message"]);
-
-                //Запускаем наблюдение за изменениями в HTML-элементе input JVNLP 
-                var elementsDrugSave = $("tr[name=drugSave]")
-                    .find($("input[name = nameDrug],input[name = dataDrugAdd],input[name = dataDrugDel]"));
-                elementsDrugSave.on("input",
-                    function() {
-                        $(this).parents("td,tr").attr("name", "drugEdit");
-                    });
-            }
+            $.each(data["listmessages"],
+                function(key, message) {
+                    var value = message.value;
+                    if (value.typemessage === "error")
+                        setTimeout(function() {
+                                console.error(value["message"]);
+                                alertify.error(value["message"]);
+                            },
+                            key * 200);
+                    if (value.typemessage === "complite")
+                        setTimeout(function() {
+                                console.log(value["message"]);
+                                alertify.message(value["message"]);
+                            },
+                            key * 200);
+                    if (value.typemessage === "drugs") {
+                        $("#RowDrugs").html(getDrugsHTML(value.message));
+                    }
+                });
+            //Запускаем наблюдение за изменениями в HTML-элементе input JVNLP 
+            var elementsDrugSave = $("tr[name=drugSave]")
+                .find($("input[name = nameDrug],input[name = dataDrugAdd],input[name = dataDrugDel]"));
+            elementsDrugSave.on("input",
+                function() {
+                    $(this).parents("td,tr").attr("name", "drugEdit");
+                });
         }
     });
 }
