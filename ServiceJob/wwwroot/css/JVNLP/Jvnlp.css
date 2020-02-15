@@ -15,9 +15,13 @@ a, a:visited {
     outline: none;
 }
 
-a:hover { text-decoration: none; }
+    a:hover {
+        text-decoration: none;
+    }
 
-section, footer, header, aside { display: block; }
+section, footer, header, aside {
+    display: block;
+}
 
 /*-------------------------
     Menu Jvnlp CSS
@@ -26,22 +30,24 @@ section, footer, header, aside { display: block; }
 .menuJvnlp {
     position: fixed;
     top: 0;
+    width: 100%;
 }
 
-.menuJvnlp li {
-    border: 1px solid #000; /* Рамка вокруг текста */
-    cursor: pointer;
-    display: inline-block; /* Отображать как строчный элемент и блок */
-    margin: 10px;
-    padding: 3px; /* Поля вокруг текста */
-    text-align: center;
-    width: 30%;
-}
+    .menuJvnlp li {
+        border: 1px solid #000;
+        cursor: pointer;
+        display: inline-block;
+        margin: 10px;
+        padding: 5px;
+        position: absolute;
+        text-align: center;
+        width: 160px;
+    }
 
-.menuJvnlp ul {
-    display: inline;
-    padding-inline-start: 0;
-}
+    .menuJvnlp ul {
+        display: inline;
+        padding-inline-start: 0;
+    }
 
 /*-------------------------
     Form File Jvnlp CSS
@@ -62,7 +68,9 @@ section, footer, header, aside { display: block; }
     z-index: 1000;
 }
 
-.formFileJvnlp { margin: 5%; }
+.formFileJvnlp {
+    margin: 5%;
+}
 
 .input-file-container {
     position: relative;
@@ -90,11 +98,11 @@ section, footer, header, aside { display: block; }
     top: 0;
 }
 
-.js .input-file:hover + .input-file-trigger,
-.js .input-file-trigger:hover {
-    background: #34495E;
-    color: #39D2B4;
-}
+    .js .input-file:hover + .input-file-trigger,
+    .js .input-file-trigger:hover {
+        background: #34495E;
+        color: #39D2B4;
+    }
 
 .file-send {
     padding: 5px;
@@ -114,10 +122,10 @@ section, footer, header, aside { display: block; }
     width: inherit;
 }
 
-.js .file-send:hover {
-    background: #34495E;
-    color: #39D2B4;
-}
+    .js .file-send:hover {
+        background: #34495E;
+        color: #39D2B4;
+    }
 
 
 /*-------------------------
@@ -156,6 +164,7 @@ input.saveNDrugs {
     cursor: pointer;
     display: block;
     font-size: 14px;
+    height: 29px;
     line-height: 20px;
     margin: 0px 1px 5px 5px;
     padding: 2px 6px;
@@ -166,19 +175,18 @@ input.saveNDrugs {
     transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
     vertical-align: middle;
     width: 195px;
-    height: 29px;
 }
 
-input.saveNDrugs:hover, input.saveNDrugs:focus {
-    border-color: rgba(82, 168, 236, 0.8);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(82, 168, 236, 0.6);
-    outline: 0 none;
-}
+    input.saveNDrugs:hover, input.saveNDrugs:focus {
+        border-color: rgba(82, 168, 236, 0.8);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(82, 168, 236, 0.6);
+        outline: 0 none;
+    }
 
-input.saveNDrugs:active {
-    background-color: #5a5a5a;
-    color: #FFFFFF;
-}
+    input.saveNDrugs:active {
+        background-color: #5a5a5a;
+        color: #FFFFFF;
+    }
 
 
 .tableForm input[type="text"], input[type="date"] {
@@ -193,25 +201,25 @@ input.saveNDrugs:active {
 }
 
 .VisExNDrugs {
-    position: absolute;
+    background-color: white;
+    border: 2px solid #71717199;
     font-size: 14px;
+    height: 15px;
+    left: 144px;
     padding: 5px 7px;
+    position: absolute;
     text-align: center;
     text-decoration: none;
-    left: 144px;
-    border: 2px solid #71717199;
-    background-color: white;
-    height: 15px;
 }
 
 .add, .del {
     -webkit-transition-duration: 0.4s; /* Safari */
-    position: absolute;
     cursor: pointer;
     display: inline-block;
     font-size: 13px;
     /*margin: 3px 2px;*/
     padding: 5px 7px;
+    position: absolute;
     text-align: center;
     text-decoration: none;
     transition-duration: 0.4s;
@@ -223,10 +231,10 @@ input.saveNDrugs:active {
     color: black;
 }
 
-.add:hover {
-    background-color: #4CAF50;
-    color: white;
-}
+    .add:hover {
+        background-color: #4CAF50;
+        color: white;
+    }
 
 .del {
     background-color: white;
@@ -235,14 +243,33 @@ input.saveNDrugs:active {
     left: 76px;
 }
 
-.del:hover {
-    background-color: #af4c4c;
-    color: white;
-}
+    .del:hover {
+        background-color: #af4c4c;
+        color: white;
+    }
 
 .elementsSettingsRow {
-    width: 509px;
-    height: 29px;
     background-color: black;
+    height: 29px;
     position: fixed;
+    width: 509px;
+}
+
+/*------------------------------------
+    Form Table Drugs Price Criteria
+------------------------------------*/
+
+.formDrugsPriceCriteria {
+    background: rgba(255, 255, 255, 0.53);
+    border-radius: 20px;
+    bottom: 0;
+    display: none;
+    height: 120px;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 250px;
+    z-index: 1000;
 }
