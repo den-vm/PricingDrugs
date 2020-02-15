@@ -26,16 +26,18 @@ section, footer, header, aside { display: block; }
 .menuJvnlp {
     position: fixed;
     top: 0;
+    width: 100%;
 }
 
 .menuJvnlp li {
-    border: 1px solid #000; /* Рамка вокруг текста */
+    border: 1px solid #000;
     cursor: pointer;
-    display: inline-block; /* Отображать как строчный элемент и блок */
+    display: inline-block;
     margin: 10px;
-    padding: 3px; /* Поля вокруг текста */
+    padding: 5px;
+    position: absolute;
     text-align: center;
-    width: 30%;
+    width: 160px;
 }
 
 .menuJvnlp ul {
@@ -156,6 +158,7 @@ input.saveNDrugs {
     cursor: pointer;
     display: block;
     font-size: 14px;
+    height: 29px;
     line-height: 20px;
     margin: 0px 1px 5px 5px;
     padding: 2px 6px;
@@ -166,7 +169,6 @@ input.saveNDrugs {
     transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
     vertical-align: middle;
     width: 195px;
-    height: 29px;
 }
 
 input.saveNDrugs:hover, input.saveNDrugs:focus {
@@ -193,25 +195,25 @@ input.saveNDrugs:active {
 }
 
 .VisExNDrugs {
-    position: absolute;
+    background-color: white;
+    border: 2px solid #71717199;
     font-size: 14px;
+    height: 15px;
+    left: 144px;
     padding: 5px 7px;
+    position: absolute;
     text-align: center;
     text-decoration: none;
-    left: 144px;
-    border: 2px solid #71717199;
-    background-color: white;
-    height: 15px;
 }
 
 .add, .del {
     -webkit-transition-duration: 0.4s; /* Safari */
-    position: absolute;
     cursor: pointer;
     display: inline-block;
     font-size: 13px;
     /*margin: 3px 2px;*/
     padding: 5px 7px;
+    position: absolute;
     text-align: center;
     text-decoration: none;
     transition-duration: 0.4s;
@@ -241,8 +243,27 @@ input.saveNDrugs:active {
 }
 
 .elementsSettingsRow {
-    width: 509px;
-    height: 29px;
     background-color: black;
+    height: 29px;
     position: fixed;
+    width: 509px;
+}
+
+/*------------------------------------
+    Form Table Drugs Price Criteria
+------------------------------------*/
+
+.formDrugsPriceCriteria {
+    background: rgba(255, 255, 255, 0.53);
+    border-radius: 20px;
+    bottom: 0;
+    display: none;
+    height: 120px;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 250px;
+    z-index: 1000;
 }

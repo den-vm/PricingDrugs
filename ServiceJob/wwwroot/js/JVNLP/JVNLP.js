@@ -1,16 +1,27 @@
 ﻿var visibleFormfile = false;
 var visibleFormTableDrugs = false;
+var visibleFormDrugsPriceCriteria = false;
 
 $("li[name=openFormFile]").click(function() {
-    if (visibleFormTableDrugs)
+    if (visibleFormTableDrugs) // закрыть форму наркотических препаратов
         FormTableDrugs(100);
+    if (visibleFormDrugsPriceCriteria) // закрыть форму таблица цен
+        FormCalculationCriteria(100);
     Formfile();
-
 });
 $("li[name=openFormTableDrugs]").click(function() {
-    if (visibleFormfile)
+    if (visibleFormfile) // закрыть форму загрузки препаратов
         Formfile(100);
+    if (visibleFormDrugsPriceCriteria) // закрыть форму таблица цен
+        FormCalculationCriteria(100);
     FormTableDrugs(100);
+});
+$("li[name=openFormDrugsPriceCriteria]").click(function() {
+    if (visibleFormfile) // закрыть форму загрузки препаратов
+        Formfile(100);
+    if (visibleFormTableDrugs) // закрыть форму наркотических препаратов
+        FormTableDrugs(100);
+    FormCalculationCriteria(100);
 });
 
 function Formfile(speed = 200) {
@@ -42,6 +53,29 @@ function FormTableDrugs(speed = 200) {
                 easing: "linear",
                 always: function() {
                     getDrugs();
+                }
+            });
+        }
+    });
+}
+
+// получить таблицу ценовых критериев на препараты
+function FormCalculationCriteria(speed = 200) {
+    $("div[name=lockbody]").slideToggle({
+        duration: (speed + 100),
+        easing: "linear",
+        always: function() {
+            $("div[name=divDrugsPriceCriteria]").slideToggle({
+                duration: speed,
+                easing: "linear",
+                always: function() {
+                    //получить коэфиценты для расчёта цен
+                    if ($("div[name=divDrugsPriceCriteria]").css("display") === "block") {
+                        visibleFormDrugsPriceCriteria = true;
+                        // обратиться на сервер и получить критерии из файла
+                    } else {
+                        visibleFormDrugsPriceCriteria = false;
+                    }
                 }
             });
         }
