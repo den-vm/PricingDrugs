@@ -3,7 +3,7 @@
     ViewData["Title"] = "ЖВНЛП";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link rel="stylesheet" asp-href-include="~/css/JVNLP/*.css" asp-append-version="true" />
+<link rel="stylesheet" asp-href-include="~/css/JVNLP/*.css" asp-append-version="true"/>
 <div class="menuJvnlp">
     <ul>
         <li name="openFormFile">Загрузить реестр препаратов</li>
@@ -12,7 +12,7 @@
     </ul>
 </div>
 
-<div name="lockbody" style="background: rgba(0, 0, 0, 0.81); bottom: 53px; display: none; left: 0px; position: absolute; right: 0px; top: 66px; width: 100%;">
+<div name="lockbody" style="bottom: 53px; display: none; left: 0px; position: absolute; right: 0px; top: 66px; width: 100%;">
     <div class="formfileJvnlp" name="divJvnlp">
         <form enctype="multipart/form-data" asp-action="RequestJvnlp" asp-controller="Views" name="jvnlpForm" class="formFileJvnlp" data-idform="form №1">
             <div class="input-file-container">
@@ -30,14 +30,14 @@
             <div class="divScroll">
                 <table id="drugNarcotic" border="1" cellspacing="0" cellpadding="5" class="tableForm">
                     <thead>
-                        <tr>
-                            <th scope="col" colspan="3">Наркотические и психотропные препараты</th>
-                        </tr>
-                        <tr>
-                            <th scope="col">Международное наименование</th>
-                            <th scope="col">Дата включения</th>
-                            <th scope="col">Дата исключения</th>
-                        </tr>
+                    <tr>
+                        <th scope="col" colspan="3">Наркотические и психотропные препараты</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Международное наименование</th>
+                        <th scope="col">Дата включения</th>
+                        <th scope="col">Дата исключения</th>
+                    </tr>
                     </thead>
                     <tbody id="RowDrugs"></tbody>
                 </table>
@@ -53,7 +53,124 @@
         </form>
     </div>
     <div class="formDrugsPriceCriteria" name="divDrugsPriceCriteria">
-
+        <table style="background: darkgray; width: -webkit-fill-available;" border="1">
+            <tbody>
+            <tr>
+                <td colspan="2" rowspan="2" width="255">Ценовые группы</td>
+                <td colspan="2" width="358">Предельные ( максимальные) оптовые надбавки к фактическим отпускным ценам производителей, %</td>
+                <td colspan="3" width="574">Предельные (максимальные) розничные надбавки к фактическим отпускным ценам производителей, %</td>
+            </tr>
+            <tr>
+                <td width="211">на жизненно необходимые и важнейшие лекарственные средства, за исключением наркотических и психотропных</td>
+                <td width="147">на наркотические и психотропные средства</td>
+                <td width="133">Городской округ "Улан-Удэ"</td>
+                <td width="224">Муниципальные районы, за исключеним райнов, приравненных к районам Крайнего Севера, городского округа "Город Северобайкальск"</td>
+                <td width="217">Муниципальные районы, приравненные к районам Крайнего Севера, городской округ "Город Северобайкальск"</td>
+            </tr>
+            <tr>
+                <td colspan="2" rowspan="2" width="255">до <input type="text" data-type="criteria1" value="50" style="background-color: darkgrey; border-color: black; text-align: center; width: 40px;"/> рублей включительно</td>
+                <td rowspan="2">
+                    <input name="before50NotNarcotik" type="text" value="20" style="" data-type="notnarcotik">
+                </td>
+                <td rowspan="2">
+                    <input name="before50Narcotik" type="text" value="35" data-type="narcotik">
+                </td>
+                <td>
+                    <input name="before50UUNotNarcotik" type="text" value="25" data-type="notnarcotik">
+                </td>
+                <td>
+                    <input name="before50NotAreaNotNarcotik" type="text" value="35" data-type="notnarcotik">
+                </td>
+                <td>
+                    <input name="before50AreaUUNotNarcotik" type="text" value="50" data-type="notnarcotik">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input name="before50UUNarcotik" type="text" value="40" data-type="narcotik">
+                </td>
+                <td>
+                    <input name="before50NotAreaNarcotik" type="text" value="50" data-type="narcotik">
+                </td>
+                <td>
+                    <input name="before50AreaUUNarcotik" type="text" value="65" data-type="narcotik">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" rowspan="2" width="255">Свыше <input type="text" data-type="criteria2" value="50" style="background-color: darkgrey; border-color: black; text-align: center; width: 40px;"/> рублей до <input type="text" data-type="criteria2-1" value="500" style="background-color: darkgrey; border-color: black; text-align: center; width: 40px;"/> рублей включительно</td>
+                <td rowspan="2">
+                    <input name="after50before500NotNarcotik" type="text" value="16" style="" data-type="notnarcotik">
+                </td>
+                <td rowspan="2">
+                    <input name="after50before500Narcotik" type="text" value="48" data-type="narcotik">
+                </td>
+                <td>
+                    <input name="after50before500UUNotNarcotik" type="text" value="19" data-type="notnarcotik">
+                </td>
+                <td>
+                    <input name="after50before500NotAreaNotNarcotik" type="text" value="29" data-type="notnarcotik">
+                </td>
+                <td>
+                    <input name="after50before500AreaUUNotNarcotik" type="text" value="44" data-type="notnarcotik">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input name="after50before500UUNarcotik" type="text" value="34" data-type="narcotik">
+                </td>
+                <td>
+                    <input name="after50before500NotAreaNarcotik" type="text" value="44" data-type="narcotik">
+                </td>
+                <td>
+                    <input name="after50before500AreaUUNarcotik" type="text" value="59" data-type="narcotik">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" rowspan="2" width="255">Свыше <input type="text" data-type="criteria3" value="500" style="background-color: darkgrey; border-color: black; text-align: center; width: 40px;"/> рублей</td>
+                <td rowspan="2">
+                    <input name="after500NotNarcotik" type="text" value="13" style="" data-type="notnarcotik">
+                </td>
+                <td rowspan="2">
+                    <input name="after500Narcotik" type="text" value="37" data-type="narcotik">
+                </td>
+                <td>
+                    <input name="after500UUNotNarcotik" type="text" value="12" data-type="notnarcotik">
+                </td>
+                <td>
+                    <input name="after500NotAreaNotNarcotik" type="text" value="22" data-type="notnarcotik">
+                </td>
+                <td>
+                    <input name="after500AreaUUNotNarcotik" type="text" value="42" data-type="notnarcotik">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input name="after500UUNarcotik" type="text" value="27" data-type="narcotik">
+                </td>
+                <td>
+                    <input name="after500NotAreaNarcotik" type="text" value="37" data-type="narcotik">
+                </td>
+                <td>
+                    <input name="after500AreaUUNarcotik" type="text" value="57" data-type="narcotik">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" style="background-color: #ca9673;">
+                    <span>Наркотические и психотропные</span>
+                </td>
+                <td style="background-color: burlywood; text-align: right;">Значение НДС:</td>
+                <td>
+                    <input name="NDSPrice" type="text" value="1.1" data-type="NDS">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="button" name="downloadSavedCriteriaPrice">
+            Загрузить
+        </button>
+        <button type="button" name="SaveCriteriaPrice">
+            Сохранить
+        </button>
     </div>
 </div>
 <script type="text/javascript" src="~/js/JVNLP/JVNLP.js" asp-append-version="true"></script>

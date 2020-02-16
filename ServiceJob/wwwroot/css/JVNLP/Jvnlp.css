@@ -15,13 +15,9 @@ a, a:visited {
     outline: none;
 }
 
-    a:hover {
-        text-decoration: none;
-    }
+a:hover { text-decoration: none; }
 
-section, footer, header, aside {
-    display: block;
-}
+section, footer, header, aside { display: block; }
 
 /*-------------------------
     Menu Jvnlp CSS
@@ -33,28 +29,28 @@ section, footer, header, aside {
     width: 100%;
 }
 
-    .menuJvnlp li {
-        border: 1px solid #000;
-        cursor: pointer;
-        display: inline-block;
-        margin: 10px;
-        padding: 5px;
-        position: absolute;
-        text-align: center;
-        width: 160px;
-    }
+.menuJvnlp li {
+    border: 1px solid #000;
+    cursor: pointer;
+    display: inline-block;
+    margin: 10px;
+    padding: 5px;
+    position: absolute;
+    text-align: center;
+    width: 160px;
+}
 
-    .menuJvnlp ul {
-        display: inline;
-        padding-inline-start: 0;
-    }
+.menuJvnlp ul {
+    display: inline;
+    padding-inline-start: 0;
+}
 
 /*-------------------------
     Form File Jvnlp CSS
 --------------------------*/
 
 .formfileJvnlp {
-    background: rgba(255, 255, 255, 0.53);
+    background: rgba(53, 147, 210, 0.5686274509803921);
     border-radius: 20px;
     bottom: 0;
     display: none;
@@ -68,9 +64,7 @@ section, footer, header, aside {
     z-index: 1000;
 }
 
-.formFileJvnlp {
-    margin: 5%;
-}
+.formFileJvnlp { margin: 5%; }
 
 .input-file-container {
     position: relative;
@@ -98,11 +92,11 @@ section, footer, header, aside {
     top: 0;
 }
 
-    .js .input-file:hover + .input-file-trigger,
-    .js .input-file-trigger:hover {
-        background: #34495E;
-        color: #39D2B4;
-    }
+.js .input-file:hover + .input-file-trigger,
+.js .input-file-trigger:hover {
+    background: #34495E;
+    color: #39D2B4;
+}
 
 .file-send {
     padding: 5px;
@@ -122,10 +116,10 @@ section, footer, header, aside {
     width: inherit;
 }
 
-    .js .file-send:hover {
-        background: #34495E;
-        color: #39D2B4;
-    }
+.js .file-send:hover {
+    background: #34495E;
+    color: #39D2B4;
+}
 
 
 /*-------------------------
@@ -177,16 +171,16 @@ input.saveNDrugs {
     width: 195px;
 }
 
-    input.saveNDrugs:hover, input.saveNDrugs:focus {
-        border-color: rgba(82, 168, 236, 0.8);
-        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(82, 168, 236, 0.6);
-        outline: 0 none;
-    }
+input.saveNDrugs:hover, input.saveNDrugs:focus {
+    border-color: rgba(82, 168, 236, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(82, 168, 236, 0.6);
+    outline: 0 none;
+}
 
-    input.saveNDrugs:active {
-        background-color: #5a5a5a;
-        color: #FFFFFF;
-    }
+input.saveNDrugs:active {
+    background-color: #5a5a5a;
+    color: #FFFFFF;
+}
 
 
 .tableForm input[type="text"], input[type="date"] {
@@ -231,10 +225,10 @@ input.saveNDrugs {
     color: black;
 }
 
-    .add:hover {
-        background-color: #4CAF50;
-        color: white;
-    }
+.add:hover {
+    background-color: #4CAF50;
+    color: white;
+}
 
 .del {
     background-color: white;
@@ -243,10 +237,10 @@ input.saveNDrugs {
     left: 76px;
 }
 
-    .del:hover {
-        background-color: #af4c4c;
-        color: white;
-    }
+.del:hover {
+    background-color: #af4c4c;
+    color: white;
+}
 
 .elementsSettingsRow {
     background-color: black;
@@ -260,16 +254,61 @@ input.saveNDrugs {
 ------------------------------------*/
 
 .formDrugsPriceCriteria {
-    background: rgba(255, 255, 255, 0.53);
-    border-radius: 20px;
     bottom: 0;
     display: none;
     height: 120px;
+    height: auto;
     left: 0;
     margin: auto;
     position: absolute;
     right: 0;
     top: 0;
-    width: 250px;
     z-index: 1000;
 }
+
+/*.formDrugsPriceCriteria td {
+    vertical-align: baseline;
+}*/
+
+.formDrugsPriceCriteria input[data-type="notnarcotik"], input[data-type="narcotik"], input[data-type="NDS"] {
+    /* height: -webkit-fill-available;*/
+    padding: 5px;
+    width: -webkit-fill-available;
+}
+
+.formDrugsPriceCriteria input[data-type="NDS"] { background-color: burlywood; }
+
+.formDrugsPriceCriteria input[data-type="narcotik"] { background-color: #ca9673; }
+
+.formDrugsPriceCriteria button[name="SaveCriteriaPrice"] {
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+        padding: 3px 30px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        /*position: absolute;
+        right: 0;*/
+    }
+    .formDrugsPriceCriteria button[name="downloadSavedCriteriaPrice"] {
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        background-color: #008CBA;
+        color: white;
+        cursor: pointer;
+        padding: 3px 30px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 16px;
+        /*margin-right: -4px;
+        position: absolute;
+        right: 205px;*/
+    }
+
+    .formDrugsPriceCriteria button:hover {
+        background-color: white; /* Green */
+        color: black;
+    }
