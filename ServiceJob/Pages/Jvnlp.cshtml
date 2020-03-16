@@ -3,6 +3,23 @@
     ViewData["Title"] = "ЖВНЛП";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .alertify-notifier .ajs-message.ajs-success {
+        font-family: "Times New Roman", Times, serif;
+        text-shadow: none;
+        color: black;
+    }
+    .alertify-notifier .ajs-message.ajs-error {
+        font-family: "Times New Roman", Times, serif;
+        text-shadow: none;
+        color: black;
+    }
+    .alertify-notifier .ajs-message.ajs-warning {
+        font-family: "Times New Roman", Times, serif;
+        text-shadow: none;
+        color: black;
+    }
+</style>
 <link rel="stylesheet" asp-href-include="~/css/JVNLP/*.css" asp-append-version="true"/>
 <div class="menuJvnlp">
     <ul>
@@ -68,7 +85,7 @@
                 <td width="217">Муниципальные районы, приравненные к районам Крайнего Севера, городской округ "Город Северобайкальск"</td>
             </tr>
             <tr>
-                <td colspan="2" rowspan="2" width="255">до <input type="text" data-type="criteria1" value="50" style="background-color: darkgrey; border-color: black; text-align: center; width: 40px;"/> рублей включительно</td>
+                <td colspan="2" rowspan="2" width="255">до <input type="text" data-type="criteria1" value="50" style="background-color: white; text-align: center; width: 40px;"/> рублей включительно</td>
                 <td rowspan="2">
                     <input name="before50NotNarcotik" type="text" value="20" style="" data-type="notnarcotik">
                 </td>
@@ -97,7 +114,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2" rowspan="2" width="255">Свыше <input type="text" data-type="criteria2" value="50" style="background-color: darkgrey; border-color: black; text-align: center; width: 40px;"/> рублей до <input type="text" data-type="criteria2-1" value="500" style="background-color: darkgrey; border-color: black; text-align: center; width: 40px;"/> рублей включительно</td>
+                <td colspan="2" rowspan="2" width="255">Свыше <input type="text" data-type="criteria2" value="50" style="background-color: white; text-align: center; width: 40px;"/> рублей до <input type="text" data-type="criteria2-1" value="500" style="background-color: white; text-align: center; width: 40px;"/> рублей включительно</td>
                 <td rowspan="2">
                     <input name="after50before500NotNarcotik" type="text" value="16" style="" data-type="notnarcotik">
                 </td>
@@ -126,7 +143,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2" rowspan="2" width="255">Свыше <input type="text" data-type="criteria3" value="500" style="background-color: darkgrey; border-color: black; text-align: center; width: 40px;"/> рублей</td>
+                <td colspan="2" rowspan="2" width="255">Свыше <input type="text" data-type="criteria3" value="500" style="background-color: white; text-align: center; width: 40px;"/> рублей</td>
                 <td rowspan="2">
                     <input name="after500NotNarcotik" type="text" value="13" style="" data-type="notnarcotik">
                 </td>
@@ -158,14 +175,14 @@
                 <td colspan="5" style="background-color: #ca9673;">
                     <span>Наркотические и психотропные</span>
                 </td>
-                <td style="background-color: burlywood; text-align: right;">Значение НДС:</td>
+                <td style="background-color: darkgrey; text-align: right;">Значение НДС:</td>
                 <td>
                     <input name="NDSPrice" type="text" value="1.1" data-type="NDS">
                 </td>
             </tr>
             </tbody>
         </table>
-        <button type="button" name="downloadSavedCriteriaPrice">
+        <button type="button" name="LoadCriteriaPrice">
             Загрузить
         </button>
         <button type="button" name="SaveCriteriaPrice">
@@ -176,3 +193,4 @@
 <script type="text/javascript" src="~/js/JVNLP/JVNLP.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/js/JVNLP/FormFile.js" asp-append-version="true"></script>
 <script type="text/javascript" src="~/js/JVNLP/FormNDrugs.js" asp-append-version="true"></script>
+<script type="text/javascript" src="~/js/JVNLP/FormPriceCriteria.js" asp-append-version="true"></script>

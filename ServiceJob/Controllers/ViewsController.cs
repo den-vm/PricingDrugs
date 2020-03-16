@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ServiceJob.Classes;
 using ServiceJob.Models;
 
@@ -201,10 +203,52 @@ namespace ServiceJob.Controllers
             return Json(new {listmessages = newmessages});
         }
 
+        [HttpPost]
+        [Route("Jvnlp/PriceCriteria/upload")]
+        public async Task<IActionResult> SavePriceCriteria(IFormCollection formdata)
+        {
+            try
+            {
+                var priceCriteriaJson = formdata.ToDictionary(x => x.Key, x => x.Value)
+                    .Where(element => element.Key.Equals("priceCriteria")).Select(key => key.Value).ToList()[0];
+                var criterias = JsonConvert.DeserializeObject<ListCriterias>(priceCriteriaJson);
+                var priceCriteria = new PriceCriteria<ListCriterias>();
+                await priceCriteria.SavedAsync(criterias);
+                return new JsonResult(new
+                    {
+                        message = "Сохранено"
+                    })
+                    { StatusCode = 200 };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return new JsonResult(new
+                {
+                    message = "Ошибка сохранения"
+                })
+                { StatusCode = 500 };
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
+    }
+
+    public class ListCriterias
+    {
+        public Criteria before50on { get; set; }
+        public Criteria after50before500on { get; set; }
+        public Criteria after500 { get; set; }
+        public string nds { get; set; }
+    }
+
+    public class Criteria
+    {
+        public string[] nonarcotik { get; set; }
+        public string[] narcotik { get; set; }
     }
 }

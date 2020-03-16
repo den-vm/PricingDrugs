@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Documents\\VSProfect19\\servicejob\\ServiceJob\\ServiceJob.csproj": {}
+    "D:\\Documents\\VSProject19\\servicejob\\ServiceJob\\ServiceJob.csproj": {}
   },
   "projects": {
-    "D:\\Documents\\VSProfect19\\servicejob\\ServiceJob\\ServiceJob.csproj": {
+    "D:\\Documents\\VSProject19\\servicejob\\ServiceJob\\ServiceJob.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Documents\\VSProfect19\\servicejob\\ServiceJob\\ServiceJob.csproj",
+        "projectUniqueName": "D:\\Documents\\VSProject19\\servicejob\\ServiceJob\\ServiceJob.csproj",
         "projectName": "ServiceJob",
-        "projectPath": "D:\\Documents\\VSProfect19\\servicejob\\ServiceJob\\ServiceJob.csproj",
+        "projectPath": "D:\\Documents\\VSProject19\\servicejob\\ServiceJob\\ServiceJob.csproj",
         "packagesPath": "C:\\Users\\layon\\.nuget\\packages\\",
-        "outputPath": "D:\\Documents\\VSProfect19\\servicejob\\ServiceJob\\obj\\",
+        "outputPath": "D:\\Documents\\VSProject19\\servicejob\\ServiceJob\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -76,6 +76,10 @@
               "target": "Package",
               "version": "[3.2.6, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
+            },
             "OdeToCode.AddFeatureFolders": {
               "target": "Package",
               "version": "[2.0.3, )"
@@ -83,6 +87,10 @@
             "System.Text.Encoding.CodePages": {
               "target": "Package",
               "version": "[4.6.0, )"
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[4.7.1, )"
             }
           },
           "imports": [
@@ -95,7 +103,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

@@ -19,10 +19,10 @@ a:hover { text-decoration: none; }
 
 section, footer, header, aside { display: block; }
 
+
 /*-------------------------
     Menu Jvnlp CSS
 --------------------------*/
-
 .menuJvnlp {
     position: fixed;
     top: 0;
@@ -276,7 +276,9 @@ input.saveNDrugs:active {
     width: -webkit-fill-available;
 }
 
-.formDrugsPriceCriteria input[data-type="NDS"] { background-color: burlywood; }
+    .formDrugsPriceCriteria input[data-type="NDS"] {
+        background-color: #39d2b4;
+    }
 
 .formDrugsPriceCriteria input[data-type="narcotik"] { background-color: #ca9673; }
 
@@ -293,7 +295,7 @@ input.saveNDrugs:active {
         /*position: absolute;
         right: 0;*/
     }
-    .formDrugsPriceCriteria button[name="downloadSavedCriteriaPrice"] {
+    .formDrugsPriceCriteria button[name="LoadCriteriaPrice"] {
         -webkit-transition-duration: 0.4s; /* Safari */
         transition-duration: 0.4s;
         background-color: #008CBA;

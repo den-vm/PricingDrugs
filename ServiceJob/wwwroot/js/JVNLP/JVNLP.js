@@ -24,51 +24,10 @@ $("li[name=openFormDrugsPriceCriteria]").click(function() {
     FormCalculationCriteria(100);
 });
 $("button[name=SaveCriteriaPrice]").click(function() {
-    var criteris = {
-        before50: {
-            notnarcotik: {
-                row1: $("input[name=before50NotNarcotik]").val(),
-                row2: $("input[name=before50UUNotNarcotik]").val(),
-                row3: $("input[name=before50NotAreaNotNarcotik]").val(),
-                row4: $("input[name=before50AreaUUNotNarcotik]").val()
-            },
-            narcotik: {
-                row1: $("input[name=before50Narcotik]").val(),
-                row2: $("input[name=before50UUNarcotik]").val(),
-                row3: $("input[name=before50NotAreaNarcotik]").val(),
-                row4: $("input[name=before50AreaUUNarcotik]").val()
-            }
-        },
-        after50before500: {
-            notnarcotik: {
-                row1: $("input[name=after50before500NotNarcotik]").val(),
-                row2: $("input[name=after50before500UUNotNarcotik]").val(),
-                row3: $("input[name=after50before500NotAreaNotNarcotik]").val(),
-                row4: $("input[name=after50before500AreaUUNotNarcotik]").val()
-            },
-            narcotik: {
-                row1: $("input[name=after50before500Narcotik]").val(),
-                row2: $("input[name=after50before500UUNarcotik]").val(),
-                row3: $("input[name=after50before500NotAreaNarcotik]").val(),
-                row4: $("input[name=after50before500AreaUUNarcotik]").val()
-            }
-        },
-        after500: {
-            notnarcotik: {
-                row1: $("input[name=after500NotNarcotik]").val(),
-                row2: $("input[name=after500UUNotNarcotik]").val(),
-                row3: $("input[name=after500NotAreaNotNarcotik]").val(),
-                row4: $("input[name=after500AreaUUNotNarcotik]").val()
-            },
-            narcotik: {
-                row1: $("input[name=after500Narcotik]").val(),
-                row2: $("input[name=after500UUNarcotik]").val(),
-                row3: $("input[name=after500NotAreaNarcotik]").val(),
-                row4: $("input[name=after500AreaUUNarcotik]").val()
-            }
-        }
-    };
-    console.log(criteris);
+    SaveCriteria();
+});
+$("button[name=LoadCriteriaPrice]").click(function() {
+    console.log("Кнопка загрузить работает!");
 });
 
 function Formfile(speed = 200) {
