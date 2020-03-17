@@ -1,5 +1,5 @@
 ﻿function SaveCriteria() {
-    var criterisForm = {
+    var criteriasForm = {
         before50on: {
             nonarcotik: [
                 $("input[name=before50NotNarcotik]").val(),
@@ -45,7 +45,7 @@
         nds: $("input[name=NDSPrice]").val()
     };
     var dataForm = new FormData();
-    dataForm.append("priceCriteria", JSON.stringify(criterisForm));
+    dataForm.append("priceCriteria", JSON.stringify(criteriasForm));
     $.ajax({
         type: "POST",
         url: "Jvnlp/PriceCriteria/upload",
@@ -65,8 +65,37 @@
             if (data.status === 200)
                 setTimeout(function() {
                         console.log(requestServer["message"]);
-                        alertify.success(requestServer["message"]).setting("color", "#000000");
+                        alertify.success(requestServer["message"]);
                     },
+                    200);
+        }
+    });
+}
+
+function LoadCriterias() {
+    var criterias = {};
+
+    $.ajax({
+        type: "POST",
+        url: "Jvnlp/PriceCriteria",
+        processData: false, // отключение преобразования строки запроса по contentType
+        contentType:
+            false, // отключение преобразования контента в тип по умолчанию: "application/x-www-form-urlencoded;"
+        complete: function (data) {
+            var requestServer = JSON.parse(data.responseText);
+            if (data.status === 500)
+                setTimeout(function () {
+                        console.error(requestServer["message"]);
+                        alertify.error(requestServer["message"]);
+                    },
+                    200);
+            if (data.status === 200)
+                setTimeout(function () {
+                        console.log(requestServer["message"]);
+                    alertify.success("Загружено");
+                    criterias = JSON.parse(requestServer["message"]);
+                    console.log(criterias);
+                },
                     200);
         }
     });

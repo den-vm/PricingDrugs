@@ -231,6 +231,32 @@ namespace ServiceJob.Controllers
                 { StatusCode = 500 };
         }
 
+        [HttpPost]
+        [Route("Jvnlp/PriceCriteria")]
+        public async Task<IActionResult> LoadPriceCriteria()
+        {
+            try
+            {
+                var loadedCriteria = await new PriceCriteria<ListCriterias>().LoadAsync();
+                var serializeCriterias = JsonConvert.SerializeObject(loadedCriteria);
+                return new JsonResult(new
+                    {
+                        message = serializeCriterias
+                })
+                    { StatusCode = 200 };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return new JsonResult(new
+                {
+                    message = "Ошибка сохранения"
+                })
+                { StatusCode = 500 };
+        }
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

@@ -27,7 +27,7 @@ $("button[name=SaveCriteriaPrice]").click(function() {
     SaveCriteria();
 });
 $("button[name=LoadCriteriaPrice]").click(function() {
-    console.log("Кнопка загрузить работает!");
+    LoadCriterias();
 });
 
 function Formfile(speed = 200) {
