@@ -36,7 +36,7 @@ namespace ServiceJob.Models
             }
             File.Delete(filePath);
             CreateTableJvnlp(tableJvnlp);
-            return new { typemessage = "complite", message = "Успешно обработан" };
+            return new { typemessage = "complite", message = "Реестр успешно прочитан" };
         }
 
         private void CreateTableJvnlp(DataSet dataJvnlp)

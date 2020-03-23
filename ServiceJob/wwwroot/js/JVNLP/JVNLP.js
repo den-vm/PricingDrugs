@@ -103,6 +103,7 @@ function getDrugs() {
 
 function RequestFormNPDrugs(dataForm) {
     $.ajax({
+        url: "Jvnlp/DrugsExpensive",
         type: "POST",
         data: dataForm,
         dataType: "json",

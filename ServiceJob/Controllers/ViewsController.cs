@@ -28,179 +28,160 @@ namespace ServiceJob.Controllers
             return View();
         }
 
-        [HttpPost("Jvnlp")]
-        public async Task<IActionResult> RequestJvnlp(IFormCollection form)
+        [HttpPost]
+        [Route("Jvnlp/upload")]
+        public async Task<IActionResult> UploadFile(IFormCollection form)
         {
-            var processingNDrugs = new ProcessingNDrugs();
             if (form.Equals(null))
-                return Json(new {typemessage = "error", message = "Ошибка обработки формы"});
+                return new JsonResult(new {typemessage = "error", message = "Ошибка обработки формы"})
+                    {StatusCode = 500};
 
             // Form file Jvnlp
-            if (form.Files.Count == 1)
+            var fileJvnlp = form.Files[0];
+            if (fileJvnlp.Length > 25000000 &&
+                fileJvnlp.ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
             {
-                var fileJvnlp = form.Files[0];
-                if (fileJvnlp.Length > 25000000 &&
-                    fileJvnlp.ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
+                // create path temp file
+                var path = "/TempUploadsFile/" + fileJvnlp.FileName;
+                // save temp faile to path catalog wwwroot
+                using (var fileStream = new FileStream(Directory.GetCurrentDirectory() + path, FileMode.Create))
                 {
-                    // create path temp file
-                    var path = "/TempUploadsFile/" + fileJvnlp.FileName;
-                    // save temp faile to path catalog wwwroot
-                    using (var fileStream = new FileStream(Directory.GetCurrentDirectory() + path, FileMode.Create))
-                    {
-                        await fileJvnlp.CopyToAsync(fileStream);
-                    }
-
-                    var responseRead = _fileProcessing.ReadFileJvnlp(Directory.GetCurrentDirectory() + path);
-                    return Json(responseRead);
+                    await fileJvnlp.CopyToAsync(fileStream);
                 }
 
-                return Json(new
-                {
-                    typemessage = "error",
-                    message =
-                        $"Файл '{fileJvnlp.FileName}' не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru"
-                });
+                var responseRead = _fileProcessing.ReadFileJvnlp(Directory.GetCurrentDirectory() + path);
+                return new JsonResult(responseRead) {StatusCode = 200};
             }
 
-            // Form NDrugs
-            var newmessages = new List<JsonResult>();
-            if (form.Keys.Count > 0)
+            return new JsonResult(new
             {
-                var keysform = form.ToDictionary(x => x.Key, x => x.Value).ToList();
-                foreach (var keyform in keysform)
-                    switch (keyform.Key)
-                    {
-                        case "narcoticDrugsView":
-                            var listdrugs = processingNDrugs.GetDrugs();
-                            if (listdrugs != null)
-                            {
-                                if (listdrugs.Count == 0)
-                                {
-                                    newmessages.Add(Json(new
+                typemessage = "error",
+                message =
+                    $"Файл '{fileJvnlp.FileName}' не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru"
+            }) {StatusCode = 500};
+        }
+
+        [HttpPost]
+        [Route("Jvnlp/DrugsExpensive")]
+        public async Task<IActionResult> DrugsExpensive(IFormCollection form)
+        {
+            var processingNDrugs = new ProcessingNDrugs();
+            var messages = new List<JsonResult>();
+            var keysform = form.ToDictionary(x => x.Key, x => x.Value).ToList();
+            IEnumerable<IEnumerable<string>> splitDrugs;
+            List<DrugNarcoticsModel> listDrugs;
+
+            foreach (var information in keysform)
+                switch (information.Key)
+                {
+                    case "narcoticDrugsView":
+                        var drugs = await Task.Run(() => processingNDrugs.GetDrugs());
+                        if (drugs != null)
+                        {
+                            if (drugs.Count == 0)
+                                messages.Add(new JsonResult(new
                                     {
                                         typemessage = "complite",
                                         message = "Список наркотических препарат пуст"
-                                    }));
-                                    break;
-                                }
+                                    })
+                                    {StatusCode = 200});
 
-                                newmessages.Add(Json(new
+                            messages.Add(new JsonResult(new
                                 {
                                     typemessage = "drugs",
-                                    message = listdrugs
-                                }));
-                            }
-                            else
-                            {
-                                newmessages.Add(Json(new
-                                {
-                                    typemessage = "error",
-                                    message =
-                                        "Ошибка в чтении файла 'NDrugsReestr.xml' наркотических препаратов. Параметры 'ID', 'Name', 'IncludeDate' обязательны для чтения."
-                                }));
-                            }
+                                    message = drugs
+                                })
+                                {StatusCode = 200});
+                        }
 
-                            break;
+                        break;
 
-                        case "narcoticDrugsAdd":
-                            var newKey = processingNDrugs.GetNewKey();
-                            if (newKey == -1)
-                            {
-                                newmessages.Add(Json(new
+                    case "narcoticDrugsAdd":
+                        var newKey = await Task.Run(() => processingNDrugs.GetNewKey());
+                        if (newKey == -1)
+                            messages.Add(new JsonResult(new
                                 {
                                     typemessage = "error",
                                     message = "Ошибка чтении файла 'NDrugsReestr.xml' наркотических препаратов"
-                                }));
-                                break;
-                            }
+                                })
+                                {StatusCode = 500});
 
-                            var newarrayDrugs = keyform.Value.ToString().Split(',').SplitArray(3);
-                            var newlistDrugs =
-                                newarrayDrugs.Select(x =>
-                                {
-                                    var enumX = x.ToList();
-                                    return new DrugNarcoticsModel
-                                    {
-                                        Id = newKey++,
-                                        NameDrug = enumX[0],
-                                        IncludeDate = enumX[1].ToDateTime(),
-                                        OutDate = enumX[2].ToDateTime()
-                                    };
-                                }).ToList();
-
-
-                            var resultAdd = processingNDrugs.Add(newlistDrugs);
-                            if (!resultAdd)
+                        splitDrugs = information.Value.ToString().Split(',').SplitArray(3);
+                        listDrugs =
+                            splitDrugs.Select(x =>
                             {
-                                newmessages.Add(Json(new
+                                var enumX = x.ToList();
+                                return new DrugNarcoticsModel
+                                {
+                                    Id = newKey++,
+                                    NameDrug = enumX[0],
+                                    IncludeDate = enumX[1].ToDateTime(),
+                                    OutDate = enumX[2].ToDateTime()
+                                };
+                            }).ToList();
+
+
+                        var resultAdd = await Task.Run(() => processingNDrugs.Add(listDrugs));
+                        if (!resultAdd)
+                            messages.Add(new JsonResult(new
                                 {
                                     typemessage = "error",
                                     message = "Ошибка при сохранении наркотических препаратов"
-                                }));
-                                break;
-                            }
+                                })
+                                {StatusCode = 500});
 
-                            newmessages.Add(Json(new
+                        messages.Add(new JsonResult(new
                             {
                                 typemessage = "complite",
                                 message = "Новые препараты успешно внесены в список"
-                            }));
-                            break;
+                            })
+                            {StatusCode = 200});
+                        break;
 
-                        case "narcoticDrugsEdit":
-                            var editarrayDrugs = keyform.Value.ToString().Split(',').SplitArray(4);
-                            var editlistDrugs =
-                                editarrayDrugs.Select(x =>
-                                {
-                                    var enumX = x.ToList();
-                                    return new DrugNarcoticsModel
-                                    {
-                                        Id = int.Parse(enumX[0]),
-                                        NameDrug = enumX[1],
-                                        IncludeDate = enumX[2].ToDateTime(),
-                                        OutDate = enumX[3].ToDateTime()
-                                    };
-                                }).ToList();
-                            var resultEdit = processingNDrugs.Edit(editlistDrugs);
-                            if (!resultEdit)
+                    case "narcoticDrugsEdit":
+                        splitDrugs = information.Value.ToString().Split(',').SplitArray(4);
+                        listDrugs =
+                            splitDrugs.Select(x =>
                             {
-                                newmessages.Add(Json(new
+                                var enumX = x.ToList();
+                                return new DrugNarcoticsModel
+                                {
+                                    Id = int.Parse(enumX[0]),
+                                    NameDrug = enumX[1],
+                                    IncludeDate = enumX[2].ToDateTime(),
+                                    OutDate = enumX[3].ToDateTime()
+                                };
+                            }).ToList();
+
+                        var resultEdit = await Task.Run(() => processingNDrugs.Edit(listDrugs));
+                        if (!resultEdit)
+                        {
+                            messages.Add(new JsonResult(new
                                 {
                                     typemessage = "error",
-                                    message = "Ошибка при изменении существующих препаратов"
-                                }));
-                                break;
-                            }
-
-                            newmessages.Add(Json(new
-                            {
-                                typemessage = "complite",
-                                message = "Препараты успешно изменены"
-                            }));
+                                    message = "Ошибка при изменении препаратов"
+                                })
+                                {StatusCode = 500});
                             break;
+                        }
 
-                        default:
-                            newmessages.Add(Json(new
-                            {
-                                typemessage = "error",
-                                message = "Ошибка чтения несущестующего параметра формы"
-                            }));
-                            break;
-                    }
+                        messages.Add(new JsonResult(new
+                        {
+                            typemessage = "complite",
+                            message = "Препараты успешно изменены"
+                        }) {StatusCode = 200});
+                        break;
 
-                if (newmessages.Count > 0)
-                    return Json(new {listmessages = newmessages});
-            }
-            else
-            {
-                newmessages.Add(Json(new
-                {
-                    typemessage = "error",
-                    message = "Ошибка чтения данных формы"
-                }));
-            }
+                    default:
+                        messages.Add(new JsonResult(new
+                        {
+                            typemessage = "error",
+                            message = "Ошибка чтения несущестующего параметра формы"
+                        }) {StatusCode = 500});
+                        break;
+                }
 
-            return Json(new {listmessages = newmessages});
+            return new JsonResult(new {listmessages = messages});
         }
 
         [HttpPost]
@@ -211,24 +192,25 @@ namespace ServiceJob.Controllers
             {
                 var priceCriteriaJson = formdata.ToDictionary(x => x.Key, x => x.Value)
                     .Where(element => element.Key.Equals("priceCriteria")).Select(key => key.Value).ToList()[0];
-                var criterias = JsonConvert.DeserializeObject<ListCriterias>(priceCriteriaJson);
-                var priceCriteria = new PriceCriteria<ListCriterias>();
+                var criterias = JsonConvert.DeserializeObject<ListCriteriasModels>(priceCriteriaJson);
+                var priceCriteria = new PriceCriteria<ListCriteriasModels>();
                 await priceCriteria.SavedAsync(criterias);
                 return new JsonResult(new
                     {
                         message = "Сохранено"
                     })
-                    { StatusCode = 200 };
+                    {StatusCode = 200};
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
+
             return new JsonResult(new
                 {
                     message = "Ошибка сохранения"
                 })
-                { StatusCode = 500 };
+                {StatusCode = 500};
         }
 
         [HttpPost]
@@ -237,23 +219,24 @@ namespace ServiceJob.Controllers
         {
             try
             {
-                var loadedCriteria = await new PriceCriteria<ListCriterias>().LoadAsync();
+                var loadedCriteria = await new PriceCriteria<ListCriteriasModels>().LoadAsync();
                 var serializeCriterias = JsonConvert.SerializeObject(loadedCriteria);
                 return new JsonResult(new
                     {
                         message = serializeCriterias
-                })
-                    { StatusCode = 200 };
+                    })
+                    {StatusCode = 200};
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
+
             return new JsonResult(new
                 {
                     message = "Ошибка загрузки"
                 })
-                { StatusCode = 500 };
+                {StatusCode = 500};
         }
 
 
@@ -262,19 +245,5 @@ namespace ServiceJob.Controllers
         {
             return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
-    }
-
-    public class ListCriterias
-    {
-        public Criteria before50on { get; set; }
-        public Criteria after50before500on { get; set; }
-        public Criteria after500 { get; set; }
-        public string nds { get; set; }
-    }
-
-    public class Criteria
-    {
-        public string[] nonarcotik { get; set; }
-        public string[] narcotik { get; set; }
     }
 }

@@ -13,6 +13,7 @@ $("form[name=jvnlpForm]").submit(function(event) {
         }
         var progressBar = $("#progressbar");
         $.ajax({
+            url: "Jvnlp/upload",
             type: "POST",
             data: dataForm,
             dataType: "json",
