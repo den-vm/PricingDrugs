@@ -251,7 +251,7 @@ namespace ServiceJob.Controllers
             }
             return new JsonResult(new
                 {
-                    message = "Ошибка сохранения"
+                    message = "Ошибка загрузки"
                 })
                 { StatusCode = 500 };
         }

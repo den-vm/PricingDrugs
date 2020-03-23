@@ -7,21 +7,21 @@ $("li[name=openFormFile]").click(function() {
         FormTableDrugs(100);
     if (visibleFormDrugsPriceCriteria) // закрыть форму таблица цен
         FormCalculationCriteria(100);
-    Formfile();
+    Formfile(); // открыть форму загрузки препаратов
 });
 $("li[name=openFormTableDrugs]").click(function() {
     if (visibleFormfile) // закрыть форму загрузки препаратов
         Formfile(100);
     if (visibleFormDrugsPriceCriteria) // закрыть форму таблица цен
         FormCalculationCriteria(100);
-    FormTableDrugs(100);
+    FormTableDrugs(100); // открыть форму наркотических препаратов
 });
 $("li[name=openFormDrugsPriceCriteria]").click(function() {
     if (visibleFormfile) // закрыть форму загрузки препаратов
         Formfile(100);
     if (visibleFormTableDrugs) // закрыть форму наркотических препаратов
         FormTableDrugs(100);
-    FormCalculationCriteria(100);
+    FormCalculationCriteria(100); // открыть форму таблица цен
 });
 $("button[name=SaveCriteriaPrice]").click(function() {
     SaveCriteria();
@@ -78,7 +78,7 @@ function FormCalculationCriteria(speed = 200) {
                     //получить коэфиценты для расчёта цен
                     if ($("div[name=divDrugsPriceCriteria]").css("display") === "block") {
                         visibleFormDrugsPriceCriteria = true;
-                        // обратиться на сервер и получить критерии из файла
+                        LoadCriterias();
                     } else {
                         visibleFormDrugsPriceCriteria = false;
                     }
@@ -115,13 +115,11 @@ function RequestFormNPDrugs(dataForm) {
                     var value = message.value;
                     if (value.typemessage === "error")
                         setTimeout(function() {
-                                console.error(value["message"]);
                                 alertify.error(value["message"]);
                             },
                             key * 200);
                     if (value.typemessage === "complite")
                         setTimeout(function() {
-                                console.log(value["message"]);
                                 alertify.message(value["message"]);
                             },
                             key * 200);

@@ -18,7 +18,7 @@ namespace ServiceJob.Classes
 
         public async Task SavedAsync(T criterias)
         {
-            using (var fs = new FileStream("configcriteria.json", FileMode.OpenOrCreate))
+            using (var fs = new FileStream("configcriteria.json", FileMode.Create))
             {
                 await JsonSerializer.SerializeAsync(fs, criterias);
             }
