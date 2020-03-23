@@ -10,7 +10,7 @@ namespace ServiceJob.Classes
 {
     public class ProcessingNDrugs : IReadFileNPDrugs<DrugNarcoticsModel>
     {
-        private static readonly string Path = Directory.GetCurrentDirectory() + "NDrugsReestr.xml";
+        private static readonly string Path = "NDrugsReestr.xml";
 
         public List<DrugNarcoticsModel> GetDrugs()
         {
