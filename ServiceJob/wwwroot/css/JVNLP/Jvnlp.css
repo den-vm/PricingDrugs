@@ -50,18 +50,14 @@ section, footer, header, aside { display: block; }
     Table Jvnlp CSS
 --------------------------*/
 
-.Jvnlp[name="tableJVNLP"] {
-    display: none;
-}
+.Jvnlp[name="tableJVNLP"] { display: none; }
 
 .Jvnlp table {
     background-color: rgba(169, 169, 169, 0.5);
     width: 100%;
 }
 
-.Jvnlp tr[name="headTable1"] {
-    text-align: center;
-}
+.Jvnlp tr[name="headTable1"] { text-align: center; }
 
 .Jvnlp tr[name="drugs"], tr[name="headTable2"] {
     font-family: "Calibri";
@@ -75,13 +71,113 @@ section, footer, header, aside { display: block; }
     text-overflow: ellipsis;
 }
 
+.tableDrugs {
+    background-color: rgba(169, 169, 169, 0.5);
+    display: none;
+    height: 100%;
+    width: 100%;
+}
+
+.tableDrugsMenu li {
+    border: 1px solid #000;
+    cursor: pointer;
+    display: inline-block;
+    margin: 10px 0 10px 10px;
+    text-align: center;
+    width: 153px;
+    top: -50px;
+    position: absolute;
+}
+
+.tableDrugsMenu {
+    display: inline;
+    padding-inline-start: 0;
+}
+
+.readyJvnlpMenu li {
+    border: 1px solid #000;
+    cursor: pointer;
+    display: inline-block;
+    margin: 10px 0 10px 10px;
+    text-align: center;
+    width: 170px;
+}
+
+.readyJvnlpMenu {
+    display: inline;
+    padding-inline-start: 0;
+}
+
+.CSSButtonUpload {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    /*border-radius: 4px;*/
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #000000;
+    cursor: pointer;
+    display: block;
+    font-size: 14px;
+    height: 29px;
+    line-height: 20px;
+    margin: 0px 1px 5px 5px;
+    padding: 2px 6px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    text-decoration: none;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    vertical-align: middle;
+    width: 195px;
+}
+
+.CSSButtonUpload:hover, .CSSButtonUpload:focus {
+    border-color: rgba(82, 168, 236, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(82, 168, 236, 0.6);
+    outline: 0 none;
+}
+
+.spinner {
+    animation: rotate 1s linear infinite;
+    height: 50px;
+    width: 50px;
+    margin: 0 auto;
+    display: block;
+}
+
+.path {
+    animation: dash 1.5s ease-in-out infinite;
+    stroke: rgb(0, 222, 255);
+    stroke-linecap: round;
+}
+
+@keyframes rotate {
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+    }
+
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+    }
+
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+    }
+}
+
 /*-------------------------
     Form File Jvnlp CSS
 --------------------------*/
 
 .formfileJvnlp {
     background: rgba(53, 147, 210, 0.5);
-    border-radius: 20px;
+    border-radius: 20px 0 20px 20px;
     bottom: 0;
     display: none;
     height: 120px;
@@ -95,6 +191,38 @@ section, footer, header, aside { display: block; }
 }
 
 .formFileJvnlp { margin: 5%; }
+
+.cl-btn { cursor: pointer; }
+
+.cl-btn:before {
+    content: '+';
+    font-size: 35px;
+    line-height: 1;
+    position: absolute;
+    right: 3px;
+    top: -30px;
+    transition: all 0.3s cubic-bezier(0.77, 0, 0.2, 0.85);
+    z-index: 2;
+}
+
+.cl-btn:after {
+    background: rgba(53, 147, 210, 0.5);
+    content: '';
+    height: 26px;
+    position: absolute;
+    right: 0;
+    top: -26px;
+    transition: all 0.3s cubic-bezier(0.77, 0, 0.2, 0.85);
+    width: 26px;
+    z-index: 1;
+}
+
+.cl-btn:hover:before { color: red; }
+
+.cl-btn:before {
+    color: black;
+    transform: scale(0.8) rotate(45deg);
+}
 
 .input-file-container {
     position: relative;
@@ -295,32 +423,29 @@ input.saveNDrugs:active {
     top: 0;
     z-index: 1000;
 }
-    .formDrugsPriceCriteria table {
-        width: -webkit-fill-available;
-        background-color: rgba(169, 169, 169, 0.5);
-    }
-    .headPriceCriteria {
-        text-align: center;
-    }
-    /*.formDrugsPriceCriteria td {
+
+.formDrugsPriceCriteria table {
+    background-color: rgba(169, 169, 169, 0.5);
+    width: -webkit-fill-available;
+}
+
+.headPriceCriteria { text-align: center; }
+
+/*.formDrugsPriceCriteria td {
     vertical-align: baseline;
 }*/
-    .formDrugsPriceCriteria input[data-type="notnarcotik"], input[data-type="narcotik"], input[data-type="NDS"] {
-        /* height: -webkit-fill-available;*/
-        padding: 5px;
-        width: -webkit-fill-available;
-    }
 
-.formDrugsPriceCriteria input[data-type="NDS"] {
-    background-color: rgba(57, 210, 180, 0.5);
+.formDrugsPriceCriteria input[data-type="notnarcotik"], input[data-type="narcotik"], input[data-type="NDS"] {
+    /* height: -webkit-fill-available;*/
+    padding: 5px;
+    width: -webkit-fill-available;
 }
 
-.formDrugsPriceCriteria input[data-type="narcotik"] {
-    background-color: rgba(202, 150, 115, 0.5);
-}
-.formDrugsPriceCriteria input {
-    background-color: rgba(255, 255, 255, 0.5);
-}
+.formDrugsPriceCriteria input[data-type="NDS"] { background-color: rgba(57, 210, 180, 0.5); }
+
+.formDrugsPriceCriteria input[data-type="narcotik"] { background-color: rgba(202, 150, 115, 0.5); }
+
+.formDrugsPriceCriteria input { background-color: rgba(255, 255, 255, 0.5); }
 
 .formDrugsPriceCriteria button[name="SaveCriteriaPrice"] {
     -webkit-transition-duration: 0.4s; /* Safari */

@@ -36,7 +36,8 @@ $("form[name=jvnlpForm]").submit(function(event) {
                     false);
                 xhr.upload.addEventListener("load",
                     function () { // добавляем обработчик события progress (onprogress)
-                            $("#textProgress").html("Загружен");
+                        $("#textProgress").html("Загружен");
+                        $("div[name='lockActions']").css("display", "block");
                     },
                     false);
                 return xhr;
@@ -44,8 +45,15 @@ $("form[name=jvnlpForm]").submit(function(event) {
             success: function(data) {
                 if (data["typemessage"] === "error")
                     alertify.error(data["message"]);
-                if (data["typemessage"] === "complite")
+                if (data["typemessage"] === "complite") {
+                    $("div[name='lockActions']").css("display", "none");
+                    openFormFile();
+
+                    GenerateTableJvnlp(data["listDrugs"], data["listRemovedDrugs"]);
+                    console.log(data["listDrugs"]);
+                    console.log(data["listRemovedDrugs"]);
                     alertify.message(data["message"]);
+                }
             }
         });
     } else {

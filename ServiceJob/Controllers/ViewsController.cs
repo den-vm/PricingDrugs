@@ -49,7 +49,7 @@ namespace ServiceJob.Controllers
                     await fileJvnlp.CopyToAsync(fileStream);
                 }
 
-                var responseRead = _fileProcessing.ReadFileJvnlp(Directory.GetCurrentDirectory() + path);
+                var responseRead = await Task.Run(()=> _fileProcessing.ReadFileJvnlp(Directory.GetCurrentDirectory() + path));
                 return new JsonResult(responseRead) {StatusCode = 200};
             }
 

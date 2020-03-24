@@ -30,13 +30,23 @@ namespace ServiceJob.Models
                             .CreateOpenXmlReader(stream); //Reading from a OpenXml Excel file (2007 format; *.xlsx)
                         break;
                 }
+
                 tableJvnlp =
                     bookExcel
                         ?.AsDataSet(); //DataSet - The result of each spreadsheet will be created in the result.Tables
             }
+
             File.Delete(filePath);
             CreateTableJvnlp(tableJvnlp);
-            return new { typemessage = "complite", message = "Реестр успешно прочитан" };
+            var drugs = Drugs.Rows.Cast<DataRow>().Select(x => x.ItemArray).ToList();
+            var rmDrugs = RemovedDrugs.Rows.Cast<DataRow>().Select(x => x.ItemArray).ToList();
+            return new
+            {
+                typemessage = "complite", 
+                message = "Реестр успешно прочитан", 
+                listDrugs = drugs,
+                listRemovedDrugs = rmDrugs
+            };
         }
 
         private void CreateTableJvnlp(DataSet dataJvnlp)
@@ -48,6 +58,5 @@ namespace ServiceJob.Models
 
     public class SaveNarcoticDrugs
     {
-        
     }
 }

@@ -1,24 +1,55 @@
-﻿var visibleFormfile = false;
+﻿var visibleTableJvnlp = false;
 var visibleFormTableDrugs = false;
 var visibleFormDrugsPriceCriteria = false;
+var visibleFormFile = false;
 
-$("li[name=openFormFile]").click(function() {
+$("button[name=buttonUploadFile],div[name='cl-btn']").click(function() {
+    openFormFile();
+});
+
+$("li[name=openTableJvnlp]").click(function() {
     if (visibleFormTableDrugs) // закрыть форму наркотических препаратов
         FormTableDrugs(100);
     if (visibleFormDrugsPriceCriteria) // закрыть форму таблица цен
         FormCalculationCriteria(100);
-    Formfile(); // открыть форму загрузки препаратов
+    TableJvnlp(100);
 });
+$("li[name=openTableOriginal]").click(function () {
+    $("div[name='originalJvnlp']").css("display", "block");
+    $("div[name='ReadyJvnlp']").css("display", "none");
+});
+$("li[name=openTableReady]").click(function () {
+    $("div[name='originalJvnlp']").css("display", "none");
+    $("div[name='ReadyJvnlp']").css("display", "block");
+});
+
+$("li[name=openReadyJvnlp]").click(function () {
+    $("div[name='readyJvnlp']").css("display", "block");
+    $("div[name='includedJvnlp']").css("display", "none");
+    $("div[name='excludedJvnlp']").css("display", "none");
+});
+$("li[name=openIncludedJvnlp]").click(function () {
+    $("div[name='readyJvnlp']").css("display", "none");
+    $("div[name='includedJvnlp']").css("display", "block");
+    $("div[name='excludedJvnlp']").css("display", "none");
+});
+$("li[name=openExcludedJvnlp]").click(function () {
+    $("div[name='readyJvnlp']").css("display", "none");
+    $("div[name='includedJvnlp']").css("display", "none");
+    $("div[name='excludedJvnlp']").css("display", "block");
+});
+
+
 $("li[name=openFormTableDrugs]").click(function() {
-    if (visibleFormfile) // закрыть форму загрузки препаратов
-        Formfile(100);
+    if (visibleTableJvnlp) // закрыть таблицу препаратов
+        TableJvnlp(100);
     if (visibleFormDrugsPriceCriteria) // закрыть форму таблица цен
         FormCalculationCriteria(100);
     FormTableDrugs(100); // открыть форму наркотических препаратов
 });
 $("li[name=openFormDrugsPriceCriteria]").click(function() {
-    if (visibleFormfile) // закрыть форму загрузки препаратов
-        Formfile(100);
+    if (visibleTableJvnlp) // закрыть таблицу препаратов
+        TableJvnlp(100);
     if (visibleFormTableDrugs) // закрыть форму наркотических препаратов
         FormTableDrugs(100);
     FormCalculationCriteria(100); // открыть форму таблица цен
@@ -30,18 +61,30 @@ $("button[name=LoadCriteriaPrice]").click(function() {
     LoadCriterias();
 });
 
-function Formfile(speed = 200) {
+function openFormFile() {
+    $("div[name=divJvnlp]").slideToggle({
+        duration: 200,
+        easing: "linear",
+        always: function () {
+            if ($("div[name=divJvnlp]").css("display") === "block") visibleFormFile = true;
+            else visibleFormFile = false;
+        }
+    });
+}
 
+function TableJvnlp(speed = 200) {
+    if (visibleFormFile === true)
+        openFormFile();
     $("div[name=lockbody]").slideToggle({
         duration: (speed + 100),
         easing: "linear",
         always: function() {
-            $("div[name=divJvnlp]").slideToggle({
+            $("div[name=tableDrugs]").slideToggle({
                 duration: speed,
                 easing: "linear",
                 always: function() {
-                    if ($("div[name=divJvnlp]").css("display") === "block") visibleFormfile = true;
-                    else visibleFormfile = false;
+                    if ($("div[name=tableDrugs]").css("display") === "block") visibleTableJvnlp = true;
+                    else visibleTableJvnlp = false;
                 }
             });
         }
@@ -137,4 +180,8 @@ function RequestFormNPDrugs(dataForm) {
                 });
         }
     });
+}
+
+function GenerateTableJvnlp(listDrugs, listRemovedDrugs) {
+
 }

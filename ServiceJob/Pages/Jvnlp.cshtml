@@ -3,6 +3,14 @@
     ViewData["Title"] = "ЖВНЛП";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div name="lockActions" style="background-color: rgba(0, 0, 0, 0.9); bottom: 0; display: none; height: 100%; left: 0; position: fixed; right: 0; top: 0; width: 100%; z-index: 999999999;">
+    <div style="bottom: 0; height: 10%; left: 0; margin: auto; position: absolute; right: 0; top: 0; width: 42%;">
+        <svg class="spinner" viewBox="0 0 50 50">
+            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+        </svg>
+        <p style="color: white; font-family: 'Calibri'; text-align: center;">Примерное время ожидания: 10 секунд</p>
+    </div>
+</div>
 <style>
     .alertify-notifier .ajs-message.ajs-success {
         color: black;
@@ -25,7 +33,7 @@
 <link rel="stylesheet" asp-href-include="~/css/JVNLP/*.css" asp-append-version="true"/>
 <div class="menuJvnlp">
     <ul>
-        <li name="openFormFile">
+        <li name="openTableJvnlp">
             <p style="margin: 5px; vertical-align: middle;">Таблица ЖВНЛП</p>
         </li>
         <li name="openFormTableDrugs" style="left: 190px; width: 239px;">
@@ -39,7 +47,248 @@
 
 <div name="lockbody" style="bottom: 53px; display: none; left: 0px; position: absolute; right: 0px; top: 66px; width: 100%;">
 
+<div class="tableDrugs" name="tableDrugs">
+<div name="newTableJvnlp" style="display: block">
+    <button type="button" class="CSSButtonUpload" name="buttonUploadFile">Загрузить реестр</button>
+</div>
+<div name="lastTableJvnlp" style="display: none">
+    <button type="button" class="CSSButtonCalculate" name="buttonCalculate">Расчитать</button>
+</div>
+<ul class="tableDrugsMenu" style="bottom: 0; margin: 0; position: absolute;">
+    <li name="openTableOriginal">
+        <p style="margin: 5px; vertical-align: middle;">Исходный реестр</p>
+    </li>
+    <li name="openTableReady" style="left: 164px;">
+        <p style="margin: 5px; vertical-align: middle;">Расчитанный реестр</p>
+    </li>
+</ul>
+<div name="originalJvnlp" style="background-color: rgba(0, 0, 0, 0.45098039215686275); display: block; height: calc(100% - 80px); margin: 30px 0px 0px 0px; overflow: auto; position: absolute; width: calc(100% - 0px);">
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+    <p style="margin: 5px; vertical-align: middle;">TEST Расчитанный реестр</p>
+</div>
+<div name="ReadyJvnlp" style="background-color: rgba(0, 0, 0, 0.45098039215686275); display: none; height: calc(100% - 80px); margin: 30px 0px 0px 0px; position: absolute; width: calc(100% - 0px);">
+    <ul class="readyJvnlpMenu" style="background-color: rgb(255, 255, 255); bottom: 0; margin: 0; position: absolute; width: 100%;">
+        <li name="openReadyJvnlp">
+            <p style="margin: 5px; vertical-align: middle;">ЖВНЛП</p>
+        </li>
+        <li name="openIncludedJvnlp">
+            <p style="margin: 5px; vertical-align: middle;">Включенные позиции</p>
+        </li>
+        <li name="openExcludedJvnlp">
+            <p style="margin: 5px; vertical-align: middle;">Исключенные позиции</p>
+        </li>
+    </ul>
+    <div name="readyJvnlp" style="display: block; height: calc(100% - 50px); overflow: auto; width: calc(100% - 0);">
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST Рас</p>
+    </div>
+    <div name="includedJvnlp" style="display: none; height: calc(100% - 50px); overflow: auto; width: calc(100% - 0);">
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST танный реестр</p>
+    </div>
+    <div name="excludedJvnlp" style="display: none; height: calc(100% - 50px); overflow: auto; width: calc(100% - 0);">
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+        <p style="margin: 5px; vertical-align: middle;">TEST реестр</p>
+    </div>
+</div>
 <div class="formfileJvnlp" name="divJvnlp">
+    <div class="cl-btn" name="cl-btn"></div>
     <form enctype="multipart/form-data" name="jvnlpForm" class="formFileJvnlp" data-idform="form №1">
         <div class="input-file-container">
             <input type="file" class="input-file">
@@ -49,6 +298,7 @@
         </div>
         <progress id="progressbar" value="0" max="100" style="bottom: 0px; height: 30px; margin-bottom: 5%; position: absolute; width: 89.9%;"></progress>
     </form>
+</div>
 </div>
 
 <div class="formDrugsNarcotic" name="divDrugsDownload">
