@@ -30,37 +30,52 @@ namespace ServiceJob.Controllers
 
         [HttpPost]
         [Route("Jvnlp/upload")]
-        public async Task<IActionResult> UploadFile(IFormCollection form)
+        public IActionResult UploadFile(IFormCollection form)
         {
-            if (form.Equals(null))
-                return new JsonResult(new {typemessage = "error", message = "Ошибка обработки формы"})
-                    {StatusCode = 500};
-
-            // Form file Jvnlp
-            var fileJvnlp = form.Files[0];
-            if (fileJvnlp.Length > 25000000 &&
-                fileJvnlp.ContentType.Equals("application/vnd.ms-excel")) // check byte and type file
+            try
             {
-                // create path temp file
-                var path = "/TempUploadsFile/" + fileJvnlp.FileName;
-                // save temp faile to path catalog wwwroot
-                using (var fileStream = new FileStream(Directory.GetCurrentDirectory() + path, FileMode.Create))
-                {
-                    await fileJvnlp.CopyToAsync(fileStream);
-                }
+                if (form.Equals(null))
+                    return new JsonResult(new {typemessage = "error", message = "Ошибка обработки формы"})
+                        {StatusCode = 500};
 
-                var responseRead = await Task.Run(()=> _fileProcessing.ReadFileJvnlp(Directory.GetCurrentDirectory() + path));
-                return new JsonResult(responseRead) {StatusCode = 200};
+                // Get file Jvnlp
+                var fileJvnlp = form.Files.FirstOrDefault();
+
+                // check byte and type file
+                if (fileJvnlp == null || !fileJvnlp.ContentType.Equals("application/vnd.ms-excel"))
+                    throw new Exception("Invalid file type");
+
+                using var memoryStream = new StreamReader(fileJvnlp.OpenReadStream());
+                var responseRead = _fileProcessing.ReadFileJvnlpAsync(memoryStream, fileJvnlp.FileName);
+
+                var jsonOriginalDrugs = JsonConvert.SerializeObject(responseRead[0].Take(1000));
+                var jsonExcludeDrugs = JsonConvert.SerializeObject(responseRead[1].Take(1000));
+
+                return new JsonResult(new
+                    {
+                        typemessage = "complite",
+                        originalDrugs = jsonOriginalDrugs,
+                        excludeDrugs = jsonExcludeDrugs
+                    })
+                    {StatusCode = 200};
             }
-
-            return new JsonResult(new
+            catch (Exception e)
             {
-                typemessage = "error",
-                message =
-                    $"Файл '{fileJvnlp.FileName}' не является государственным реестром предельных отпускных цен из сайта grls.rosminzdrav.ru"
-            }) {StatusCode = 500};
+                Console.WriteLine(e);
+                return new JsonResult(new
+                    {
+                        typemessage = "error",
+                        message = e.Message
+                    })
+                    {StatusCode = 500};
+            }
         }
 
+        /// <summary>
+        ///     Управление списком наркотических препаратов
+        /// </summary>
+        /// <param name="form"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Jvnlp/DrugsExpensive")]
         public async Task<IActionResult> DrugsExpensive(IFormCollection form)
@@ -184,6 +199,11 @@ namespace ServiceJob.Controllers
             return new JsonResult(new {listmessages = messages});
         }
 
+        /// <summary>
+        ///     Загрузка критерий для расчёта наркотических препаратов
+        /// </summary>
+        /// <param name="formdata"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Jvnlp/PriceCriteria/upload")]
         public async Task<IActionResult> SavePriceCriteria(IFormCollection formdata)
@@ -213,6 +233,10 @@ namespace ServiceJob.Controllers
                 {StatusCode = 500};
         }
 
+        /// <summary>
+        ///     Скачивание критерий для расчёта наркотических препаратов
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [Route("Jvnlp/PriceCriteria")]
         public async Task<IActionResult> LoadPriceCriteria()

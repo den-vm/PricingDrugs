@@ -43,15 +43,18 @@ $("form[name=jvnlpForm]").submit(function(event) {
                 return xhr;
             },
             success: function(data) {
-                if (data["typemessage"] === "error")
+                if (data["typemessage"] === "error") {
                     alertify.error(data["message"]);
+                    $("div[name='lockActions']").css("display", "none");
+                }
+                    
                 if (data["typemessage"] === "complite") {
                     $("div[name='lockActions']").css("display", "none");
                     openFormFile();
 
-                    GenerateTableJvnlp(data["listDrugs"], data["listRemovedDrugs"]);
-                    console.log(data["listDrugs"]);
-                    console.log(data["listRemovedDrugs"]);
+                    GenerateTableJvnlp(data["originalDrugs"], data["excludeDrugs"]);
+                    console.log(data["originalDrugs"]);
+                    console.log(data["excludeDrugs"]);
                     alertify.message(data["message"]);
                 }
             }

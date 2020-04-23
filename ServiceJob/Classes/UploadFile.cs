@@ -1,7 +1,9 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using ExcelDataReader;
 
 namespace ServiceJob.Models
@@ -11,42 +13,34 @@ namespace ServiceJob.Models
         public DataTable Drugs { get; protected set; }
         public DataTable RemovedDrugs { get; protected set; }
 
-        public object ReadFileJvnlp(string filePath)
+        public List<object[]> ReadFileJvnlpAsync(StreamReader fileMemoryStream, string fileName)
         {
             IExcelDataReader bookExcel = null;
-            DataSet tableJvnlp;
-            var fileExt = Path.GetExtension(filePath);
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance); // register provide encoding 1252 to Excel
-            using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
-            {
-                switch (fileExt)
-                {
-                    case ".xls":
-                        bookExcel = ExcelReaderFactory
-                            .CreateBinaryReader(stream); //Reading from a binary Excel file ('97-2003 format; *.xls)
-                        break;
-                    case ".xlsx":
-                        bookExcel = ExcelReaderFactory
-                            .CreateOpenXmlReader(stream); //Reading from a OpenXml Excel file (2007 format; *.xlsx)
-                        break;
-                }
+            // register provide encoding 1252 to Excel
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-                tableJvnlp =
-                    bookExcel
-                        ?.AsDataSet(); //DataSet - The result of each spreadsheet will be created in the result.Tables
-            }
+            //Reading from a binary Excel file ('97-2003 format; *.xls)
+            if (fileName.Contains(".xls"))
+                bookExcel = ExcelReaderFactory.CreateBinaryReader(fileMemoryStream.BaseStream);
 
-            File.Delete(filePath);
+            //Reading from a OpenXml Excel file (2007 format; *.xlsx)
+            if (fileName.Contains(".xlsx"))
+                bookExcel = ExcelReaderFactory.CreateOpenXmlReader(fileMemoryStream.BaseStream);
+
+            //DataSet - The result of each spreadsheet will be created in the result.Tables
+            var tableJvnlp = bookExcel?.AsDataSet();
             CreateTableJvnlp(tableJvnlp);
-            var drugs = Drugs.Rows.Cast<DataRow>().Select(x => x.ItemArray).ToList();
-            var rmDrugs = RemovedDrugs.Rows.Cast<DataRow>().Select(x => x.ItemArray).ToList();
-            return new
+
+            var drugs = Drugs.Rows.Cast<DataRow>().Select(x => x.ItemArray).ToArray();
+            var rmDrugs = RemovedDrugs.Rows.Cast<DataRow>().Select(x => x.ItemArray).ToArray();
+
+            var excelList = new List<object[]>
             {
-                typemessage = "complite", 
-                message = "Реестр успешно прочитан", 
-                listDrugs = drugs,
-                listRemovedDrugs = rmDrugs
+                drugs,
+                rmDrugs
             };
+
+            return excelList;
         }
 
         private void CreateTableJvnlp(DataSet dataJvnlp)

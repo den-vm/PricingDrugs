@@ -6,6 +6,7 @@
     <OutputType>Exe</OutputType>
     <StartupObject />
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
