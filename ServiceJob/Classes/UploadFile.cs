@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -18,35 +19,42 @@ namespace ServiceJob.Models
             IExcelDataReader bookExcel = null;
             // register provide encoding 1252 to Excel
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
-            //Reading from a binary Excel file ('97-2003 format; *.xls)
-            if (fileName.Contains(".xls"))
-                bookExcel = ExcelReaderFactory.CreateBinaryReader(fileMemoryStream.BaseStream);
-
-            //Reading from a OpenXml Excel file (2007 format; *.xlsx)
-            if (fileName.Contains(".xlsx"))
-                bookExcel = ExcelReaderFactory.CreateOpenXmlReader(fileMemoryStream.BaseStream);
-
-            //DataSet - The result of each spreadsheet will be created in the result.Tables
-            var tableJvnlp = bookExcel?.AsDataSet();
-            CreateTableJvnlp(tableJvnlp);
-
-            var drugs = Drugs.Rows.Cast<DataRow>().Select(x => x.ItemArray).ToArray();
-            var rmDrugs = RemovedDrugs.Rows.Cast<DataRow>().Select(x => x.ItemArray).ToArray();
-
-            var excelList = new List<object[]>
+            
+            try
             {
-                drugs,
-                rmDrugs
-            };
+                //Reading from a binary Excel file ('97-2003 format; *.xls)
+                if (fileName.Split(".").LastOrDefault().Equals("xls"))
+                    bookExcel = ExcelReaderFactory.CreateBinaryReader(fileMemoryStream.BaseStream);
 
-            return excelList;
+                //Reading from a OpenXml Excel file (2007 format; *.xlsx)
+                if (fileName.Split(".").LastOrDefault().Equals("xlsx"))
+                    bookExcel = ExcelReaderFactory.CreateOpenXmlReader(fileMemoryStream.BaseStream);
+
+                //DataSet - The result of each spreadsheet will be created in the result.Tables
+                var tableJvnlp = bookExcel?.AsDataSet();
+                CreateTableJvnlp(tableJvnlp);
+
+                if (Drugs == null || RemovedDrugs == null)
+                    return new List<object[]>();
+
+                var drugs = Drugs.Rows.Cast<DataRow>().Select(x => x.ItemArray).ToArray();
+                var rmDrugs = RemovedDrugs.Rows.Cast<DataRow>().Select(x => x.ItemArray).ToArray();
+                return new List<object[]>
+                {
+                    drugs,
+                    rmDrugs
+                };
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         private void CreateTableJvnlp(DataSet dataJvnlp)
         {
-            Drugs = dataJvnlp.Tables[0];
-            RemovedDrugs = dataJvnlp.Tables[1];
+            Drugs = dataJvnlp.Tables["Лист 1"];
+            RemovedDrugs = dataJvnlp.Tables["Искл"];
         }
     }
 

@@ -116,7 +116,7 @@ section, footer, header, aside { display: block; }
     border: 1px solid #000;
     cursor: pointer;
     display: inline-block;
-    margin: 10px 0 10px 10px;
+    margin: 5px 0 5px 5px;
     text-align: center;
     width: 170px;
 }
@@ -129,7 +129,28 @@ section, footer, header, aside { display: block; }
     margin: 0;
     position: absolute;
     width: 100%;
-    height: 50px;
+    height: 40px;
+    overflow: auto;
+}
+
+.readyOriginalJvnlpMenu li {
+    border: 1px solid #000;
+    cursor: pointer;
+    display: inline-block;
+    margin: 5px 0 5px 5px;
+    text-align: center;
+    width: 170px;
+}
+
+.readyOriginalJvnlpMenu {
+    display: inline;
+    padding-inline-start: 0;
+    background-color: rgb(255, 255, 255);
+    bottom: 0;
+    margin: 0;
+    position: absolute;
+    width: 100%;
+    height: 40px;
     overflow: auto;
 }
 
@@ -204,6 +225,27 @@ section, footer, header, aside { display: block; }
         stroke-dasharray: 90, 150;
         stroke-dashoffset: -124;
     }
+}
+
+.viewlist li:hover {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.viewlist li {
+    display: inline-block;
+    text-align: center;
+}
+
+.viewlist {
+    display: inline;
+    padding-inline-start: 0;
+    background-color: rgba(238, 238, 238, 0.611764705882353);
+    bottom: 40px;
+    margin: 0;
+    position: absolute;
+    width: 100%;
+    height: 33px;
+    overflow: auto;
 }
 
 /*-----------------------------------------*/

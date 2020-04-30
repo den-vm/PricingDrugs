@@ -45,7 +45,7 @@
     </ul>
 </div>
 
-<div name="lockbody" style="bottom: 53px; display: none; left: 0px; position: absolute; right: 0px; top: 66px; width: 100%;">
+<div name="lockbody" style="bottom: 44px; display: none; left: 0px; position: absolute; right: 0px; top: 66px; width: 100%;">
 
 <div class="fonTableDrugs" name="tableDrugs">
 <div name="newTableJvnlp" style="display: block">
@@ -62,316 +62,251 @@
         <p style="margin: 5px; vertical-align: middle;">Расчитанный реестр</p>
     </li>
 </ul>
+<!--Таблица исходного реестра препаратов (загруженный файл)-->
 <div name="originalJvnlp" style="background-color: rgba(0, 0, 0, 0.1); display: block; height: calc(100% - 80px); margin: 30px 0px 0px 0px; overflow: auto; position: absolute;">
-    <!--Таблица исходного реестр препаратов (загруженный файл)-->
+    <div name="jvnlp" style="display: block; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
+        <table id="tableDrugs" border="1"></table>
+    </div>
+    <div name="exjvnlp" style="display: none; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
+        <table id="exjvnlpTable" border="1">
+            
+        </table>
+    </div>
+    <ul class="viewlist">
+        <li style="font-size: 18px; margin: 0px 0px 0px 22px; padding: 6px; position: absolute;">
+            <label name="infotable" data-idlist=""></label>
+        </li>
+        <li style="padding: 6px; position: absolute; right: 61px;">
+            <input name="doubleprevlist" type="button" value="<<" style="cursor: pointer;">
+        </li>
+        <li style="padding: 6px; position: absolute; right: 34px;">
+            <input name="prevlist" type="button" value="<" style="cursor: pointer;">
+        </li>
+        <li style="padding: 6px; position: absolute; right: 7px;">
+            <input name="nextlist" type="button" value=">" style="cursor: pointer;">
+        </li>
+    </ul>
+    <ul class="readyOriginalJvnlpMenu">
+        <li name="openOriginalReadyJvnlp">
+            <p style="margin: 5px; vertical-align: middle;">ЖВНЛП</p>
+        </li>
+        <li name="openOriginalExcludedJvnlp" style="width: 310px;">
+            <p style="margin: 5px; vertical-align: middle;">Исключенные позиции</p>
+        </li>
+    </ul>
 </div>
 <div name="ReadyJvnlp" style="background-color: rgba(0, 0, 0, 0.1); display: none; height: calc(100% - 80px); margin: 30px 0px 0px 0px; position: absolute; width: 100%;">
-<div name="newJvnlp" style="display: none; height: calc(100% - 50px); overflow-x: scroll; overflow-y: auto; width: 100%;">
+<div name="newJvnlp" style="display: none; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
     <table id="tableDrugsNew" border="1">
         <thead>
-            <tr name="headTable1">
-                <td colspan="17" style="font-size: 21px;">Государственный реестр предельных отпускных цен производителей на лекарственные препараты</br>включенные в перечень жизненно необходимых и важнейших лекарственных препаратов</br>(по состоянию на <span name="dataUpdateJVNLP">10.03.2020</span> )</td>
-            </tr>
-            <tr name="headTable2">
-                <td rowspan="2">МНН</td>
-                <td rowspan="2">Торговое наименование лекарственного препарата</td>
-                <td rowspan="2">Лекарственная форма, дозировка, упаковка (полная)</td>
-                <td rowspan="2">Владелец РУ/производитель/упаковщик/Выпускающий контроль</td>
-                <td rowspan="2">Количество в потреб. упаковке</td>
-                <td rowspan="2">Предельная цена руб. без НДС</td>
-                <td rowspan="2">Цена указана для первич. упаковки</td>
-                <td rowspan="2">№ РУ</td>
-                <td rowspan="2">Дата регистрации цены<br />(№ решения)</td>
-                <td rowspan="2">Штрих-код (EAN13)</td>
-                <td rowspan="2">АТХ</td>
-                <td rowspan="2">Цена производителя с НДС</td>
-                <td rowspan="2">Предельная отпускная цена организаций оптовой торговли с НДС</td>
-                <td rowspan="2">Предельная отпускная цена организаций оптовой торговли без НДС</td>
-                <td colspan="3">Предельная розничная цена с НДС</td>
-            </tr>
-            <tr name="headTable3">
-                <td>г.Улан-Удэ</td>
-                <td>Сельские районы</td>
+        <tr name="headTable1">
+            <td colspan="17" style="font-size: 21px;">Государственный реестр предельных отпускных цен производителей на лекарственные препараты</br>включенные в перечень жизненно необходимых и важнейших лекарственных препаратов</br>(по состоянию на <span name="dataUpdateJVNLP">10.03.2020</span> )</td>
+        </tr>
+        <tr name="headTable2">
+            <td rowspan="2">МНН</td>
+            <td rowspan="2">Торговое наименование лекарственного препарата</td>
+            <td rowspan="2">Лекарственная форма, дозировка, упаковка (полная)</td>
+            <td rowspan="2">Владелец РУ/производитель/упаковщик/Выпускающий контроль</td>
+            <td rowspan="2">Количество в потреб. упаковке</td>
+            <td rowspan="2">Предельная цена руб. без НДС</td>
+            <td rowspan="2">Цена указана для первич. упаковки</td>
+            <td rowspan="2">№ РУ</td>
+            <td rowspan="2">Дата регистрации цены<br/>(№ решения)</td>
+            <td rowspan="2">Штрих-код (EAN13)</td>
+            <td rowspan="2">АТХ</td>
+            <td rowspan="2">Цена производителя с НДС</td>
+            <td rowspan="2">Предельная отпускная цена организаций оптовой торговли с НДС</td>
+            <td rowspan="2">Предельная отпускная цена организаций оптовой торговли без НДС</td>
+            <td colspan="3">Предельная розничная цена с НДС</td>
+        </tr>
+        <tr name="headTable3">
+            <td>г.Улан-Удэ</td>
+            <td>Сельские районы</td>
             <td>Районы приравненные к районам Крайнего Севера</td>
         </tr>
-            <tr class="searchInput" name="headSearch">
-                <td>
-                    <input name="filterTable1" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable2" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable3" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable4" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable5" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable6" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable7" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable8" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable9" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable10" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable11" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable12" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable13" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable14" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable15" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable16" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable17" type="search" value="" placeholder="Поиск">
-                </td>
-            </tr>
+        <tr class="searchInput" name="headSearch">
+            <td>
+                <input name="filterTable1" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable2" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable3" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable4" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable5" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable6" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable7" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable8" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable9" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable10" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable11" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable12" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable13" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable14" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable15" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable16" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable17" type="search" value="" placeholder="Поиск">
+            </td>
+        </tr>
         </thead>
         <tbody name="drugs" style="overflow-y: scroll;">
-        <tr name="drug">
-            <td>-</td>
-            <td>Перекись водорода</td>
-            <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
-            <td>ООО &quot;ЮжФарм&quot; - Россия</td>
-            <td>1</td>
-            <td>8,65</td>
-            <td></td>
-            <td></td>
-            <td>02.07.2012 (16/20-12)</td>
-            <td>4620008620022</td>
-            <td></td>
-            <td>9,52</td>
-            <td>11,42</td>
-            <td>10,38</td>
-            <td>13,80</td>
-            <td>14,75</td>
-            <td>16,18</td>
-        </tr>
-        <tr name="drug">
-            <td>-</td>
-            <td>Перекись водорода</td>
-            <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
-            <td>ООО &quot;ЮжФарм&quot; - Россия</td>
-            <td>1</td>
-            <td>8,65</td>
-            <td></td>
-            <td></td>
-            <td>02.07.2012 (16/20-12)</td>
-            <td>4620008620022</td>
-            <td></td>
-            <td>9,52</td>
-            <td>11,42</td>
-            <td>10,38</td>
-            <td>13,80</td>
-            <td>14,75</td>
-            <td>13,18</td>
-        </tr>
-        <tr name="drug">
-            <td>-</td>
-            <td>Перекись водорода</td>
-            <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
-            <td>ООО &quot;ЮжФарм&quot; - Россия</td>
-            <td>1</td>
-            <td>8,65</td>
-            <td></td>
-            <td></td>
-            <td>02.07.2012 (16/20-12)</td>
-            <td>4620008620022</td>
-            <td></td>
-            <td>9,52</td>
-            <td>11,42</td>
-            <td>10,38</td>
-            <td>13,80</td>
-            <td>14,75</td>
-            <td>16,18</td>
-        </tr>
-        <tr name="drug">
-            <td>-</td>
-            <td>Перекись водорода</td>
-            <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
-            <td>ООО &quot;ЮжФарм&quot; - Россия</td>
-            <td>1</td>
-            <td>8,65</td>
-            <td></td>
-            <td></td>
-            <td>02.07.2012 (16/20-12)</td>
-            <td>4620008620022</td>
-            <td></td>
-            <td>9,52</td>
-            <td>11,42</td>
-            <td>10,38</td>
-            <td>13,80</td>
-            <td>14,75</td>
-            <td>11,18</td>
-        </tr>
-        <tr name="drug">
-            <td>-</td>
-            <td>Перекись водорода</td>
-            <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
-            <td>ООО &quot;ЮжФарм&quot; - Россия</td>
-            <td>1</td>
-            <td>8,65</td>
-            <td></td>
-            <td></td>
-            <td>02.07.2012 (16/20-12)</td>
-            <td>4620008620022</td>
-            <td></td>
-            <td>9,52</td>
-            <td>11,42</td>
-            <td>10,38</td>
-            <td>13,80</td>
-            <td>14,75</td>
-            <td>16,18</td>
-        </tr>
-        <tr name="drug">
-            <td>-</td>
-            <td>Перекись водорода</td>
-            <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
-            <td>ООО &quot;ЮжФарм&quot; - Россия</td>
-            <td>1</td>
-            <td>8,65</td>
-            <td></td>
-            <td></td>
-            <td>02.07.2012 (16/20-12)</td>
-            <td>4620008620022</td>
-            <td></td>
-            <td>9,52</td>
-            <td>11,42</td>
-            <td>10,38</td>
-            <td>13,80</td>
-            <td>14,75</td>
-            <td>16,18</td>
-        </tr>
+            <tr name="drug">
+                <td>-</td>
+                <td>Перекись водорода</td>
+                <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
+                <td>ООО &quot;ЮжФарм&quot; - Россия</td>
+                <td>1</td>
+                <td>8,65</td>
+                <td></td>
+                <td></td>
+                <td>02.07.2012 (16/20-12)</td>
+                <td>4620008620022</td>
+                <td></td>
+                <td>9,52</td>
+                <td>1,42</td>
+                <td>2,38</td>
+                <td>3,80</td>
+                <td>4,75</td>
+                <td>5,18</td>
+            </tr>
         </tbody>
     </table>
 </div>
-<div name="includedJvnlp" style="display: none; height: calc(100% - 50px); overflow-x: scroll; overflow-y: auto; width: 100%;">
+<div name="includedJvnlp" style="display: none; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
     <table id="tableDrugsIncluded" border="1">
         <thead>
-            <tr name="headTable1">
-                <td colspan="17" style="font-size: 21px;">Государственный реестр предельных отпускных цен производителей на лекарственные препараты</br>включенные в перечень жизненно необходимых и важнейших лекарственных препаратов</br>(по состоянию на <span name="dataUpdateJVNLP">10.03.2020</span> )</td>
-            </tr>
-            <tr name="headTable2">
-                <td rowspan="2">МНН</td>
-                <td rowspan="2">Торговое наименование лекарственного препарата</td>
-                <td rowspan="2">Лекарственная форма, дозировка, упаковка (полная)</td>
-                <td rowspan="2">Владелец РУ/производитель/упаковщик/Выпускающий контроль</td>
-                <td rowspan="2">Количество в потреб. упаковке</td>
-                <td rowspan="2">Предельная цена руб. без НДС</td>
-                <td rowspan="2">Цена указана для первич. упаковки</td>
-                <td rowspan="2">№ РУ</td>
-                <td rowspan="2">Дата регистрации цены<br />(№ решения)</td>
-                <td rowspan="2">Штрих-код (EAN13)</td>
-                <td rowspan="2">АТХ</td>
-                <td rowspan="2">Цена производителя с НДС</td>
-                <td rowspan="2">Предельная отпускная цена организаций оптовой торговли с НДС</td>
-                <td rowspan="2">Предельная отпускная цена организаций оптовой торговли без НДС</td>
-                <td colspan="3">Предельная розничная цена с НДС</td>
-            </tr>
-            <tr name="headTable3">
-                <td>г.Улан-Удэ</td>
-                <td>Сельские районы</td>
+        <tr name="headTable1">
+            <td colspan="17" style="font-size: 21px;">Государственный реестр предельных отпускных цен производителей на лекарственные препараты</br>включенные в перечень жизненно необходимых и важнейших лекарственных препаратов</br>(по состоянию на <span name="dataUpdateJVNLP">10.03.2020</span> )</td>
+        </tr>
+        <tr name="headTable2">
+            <td rowspan="2">МНН</td>
+            <td rowspan="2">Торговое наименование лекарственного препарата</td>
+            <td rowspan="2">Лекарственная форма, дозировка, упаковка (полная)</td>
+            <td rowspan="2">Владелец РУ/производитель/упаковщик/Выпускающий контроль</td>
+            <td rowspan="2">Количество в потреб. упаковке</td>
+            <td rowspan="2">Предельная цена руб. без НДС</td>
+            <td rowspan="2">Цена указана для первич. упаковки</td>
+            <td rowspan="2">№ РУ</td>
+            <td rowspan="2">Дата регистрации цены<br/>(№ решения)</td>
+            <td rowspan="2">Штрих-код (EAN13)</td>
+            <td rowspan="2">АТХ</td>
+            <td rowspan="2">Цена производителя с НДС</td>
+            <td rowspan="2">Предельная отпускная цена организаций оптовой торговли с НДС</td>
+            <td rowspan="2">Предельная отпускная цена организаций оптовой торговли без НДС</td>
+            <td colspan="3">Предельная розничная цена с НДС</td>
+        </tr>
+        <tr name="headTable3">
+            <td>г.Улан-Удэ</td>
+            <td>Сельские районы</td>
             <td>Районы приравненные к районам Крайнего Севера</td>
         </tr>
-            <tr class="searchInput" name="headSearch">
-                <td>
-                    <input name="filterTable1" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable2" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable3" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable4" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable5" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable6" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable7" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable8" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable9" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable10" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable11" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable12" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable13" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable14" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable15" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable16" type="search" value="" placeholder="Поиск">
-                </td>
-                <td>
-                    <input name="filterTable17" type="search" value="" placeholder="Поиск">
-                </td>
-            </tr>
+        <tr class="searchInput" name="headSearch">
+            <td>
+                <input name="filterTable1" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable2" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable3" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable4" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable5" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable6" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable7" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable8" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable9" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable10" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable11" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable12" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable13" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable14" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable15" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable16" type="search" value="" placeholder="Поиск">
+            </td>
+            <td>
+                <input name="filterTable17" type="search" value="" placeholder="Поиск">
+            </td>
+        </tr>
         </thead>
         <tbody style="overflow-y: scroll;">
-        <tr name="drug">
-            <td>-</td>
-            <td>Перекись водорода</td>
-            <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
-            <td>ООО &quot;ЮжФарм&quot; - Россия</td>
-            <td>1</td>
-            <td>8,65</td>
-            <td></td>
-            <td></td>
-            <td>02.07.2012 (16/20-12)</td>
-            <td>4620008620022</td>
-            <td></td>
-            <td>9,52</td>
-            <td>11,42</td>
-            <td>10,38</td>
-            <td>13,80</td>
-            <td>14,75</td>
-            <td>16,18</td>
-        </tr>
+            <tr name="drug">
+                <td>-</td>
+                <td>Перекись водорода</td>
+                <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
+                <td>ООО &quot;ЮжФарм&quot; - Россия</td>
+                <td>1</td>
+                <td>8,65</td>
+                <td></td>
+                <td></td>
+                <td>02.07.2012 (16/20-12)</td>
+                <td>4620008620022</td>
+                <td></td>
+                <td>9,52</td>
+                <td>11,42</td>
+                <td>10,38</td>
+                <td>13,80</td>
+                <td>14,75</td>
+                <td>16,18</td>
+            </tr>
         </tbody>
     </table>
 </div>
-<div name="excludedJvnlp" style="display: none; height: calc(100% - 50px); overflow-x: scroll; overflow-y: auto; width: 100%;">
+<div name="excludedJvnlp" style="display: none; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
     <table id="tableDrugsExcluded" border="1">
         <thead>
         <tr name="headTable1">
@@ -435,24 +370,38 @@
         </tr>
         </thead>
         <tbody style="overflow-y: scroll;">
-        <tr name="drug">
-            <td>-</td>
-            <td>Перекись водорода</td>
-            <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
-            <td>ООО &quot;ЮжФарм&quot; - Россия</td>
-            <td>1</td>
-            <td>8,65</td>
-            <td></td>
-            <td></td>
-            <td>02.07.2012 (16/20-12)</td>
-            <td>4620008620022</td>
-            <td></td>
-            <td>01.07.2019</td>
-            <td>исключения лекарственного препарата из государственного реестра лекарственных средств для медицинского применения</td>
-        </tr>
+            <tr name="drug">
+                <td>-</td>
+                <td>Перекись водорода</td>
+                <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
+                <td>ООО &quot;ЮжФарм&quot; - Россия</td>
+                <td>1</td>
+                <td>8,65</td>
+                <td></td>
+                <td></td>
+                <td>02.07.2012 (16/20-12)</td>
+                <td>4620008620022</td>
+                <td></td>
+                <td>01.07.2019</td>
+                <td>исключения лекарственного препарата из государственного реестра лекарственных средств для медицинского применения</td>
+            </tr>
         </tbody>
     </table>
 </div>
+<ul class="viewlist">
+    <li style="font-size: 18px; margin: 0px 0px 0px 22px; padding: 6px; position: absolute;">
+        <label name="infotable" data-idlist="1">1000 из 5000 (Стр. 1)</label>
+    </li>
+    <li style="padding: 6px; position: absolute; right: 61px;">
+        <input name="doubleprevlist" type="button" value="<<" style="cursor: pointer;">
+    </li>
+    <li style="padding: 6px; position: absolute; right: 34px;">
+        <input name="prevlist" type="button" value="<" style="cursor: pointer;">
+    </li>
+    <li style="padding: 6px; position: absolute; right: 7px;">
+        <input name="nextlist" type="button" value=">" style="cursor: pointer;">
+    </li>
+</ul>
 <ul class="readyJvnlpMenu">
     <li name="openReadyJvnlp">
         <p style="margin: 5px; vertical-align: middle;">ЖВНЛП</p>
@@ -477,7 +426,6 @@
         <progress id="progressbar" value="0" max="100" style="bottom: 0px; height: 30px; margin-bottom: 5%; position: absolute; width: 89.9%;"></progress>
     </form>
 </div>
-
 </div>
 
 <div class="formDrugsNarcotic" name="divDrugsDownload">

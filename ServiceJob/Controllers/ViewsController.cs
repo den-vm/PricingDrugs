@@ -14,13 +14,13 @@ namespace ServiceJob.Controllers
 {
     public class ViewsController : Controller
     {
+        /// <summary>
+        ///     исходный реестр препаратов
+        /// </summary>
+        private static readonly List<object[]> OriginalTableJvnlp = new List<object[]>();
+
         //private readonly IHostingEnvironment _appEnvironment;
         private readonly UploadFile _fileProcessing = new UploadFile();
-
-        //public ViewsController(IHostingEnvironment appEnvironment)
-        //{
-        //    _appEnvironment = appEnvironment;
-        //}
 
         [Route("/Jvnlp")]
         public IActionResult Jvnlp()
@@ -28,6 +28,11 @@ namespace ServiceJob.Controllers
             return View();
         }
 
+        /// <summary>
+        ///     Загрузка реестра препаратов
+        /// </summary>
+        /// <param name="form"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Jvnlp/upload")]
         public IActionResult UploadFile(IFormCollection form)
@@ -35,27 +40,35 @@ namespace ServiceJob.Controllers
             try
             {
                 if (form.Equals(null))
-                    return new JsonResult(new {typemessage = "error", message = "Ошибка обработки формы"})
-                        {StatusCode = 500};
+                    throw new Exception("Ошибка в обработке данных с формы");
 
                 // Get file Jvnlp
                 var fileJvnlp = form.Files.FirstOrDefault();
 
                 // check byte and type file
-                if (fileJvnlp == null || !fileJvnlp.ContentType.Equals("application/vnd.ms-excel"))
-                    throw new Exception("Invalid file type");
+                if (fileJvnlp == null)
+                    throw new Exception("Файл не загружен");
+                if (!fileJvnlp.ContentType.Equals("application/vnd.ms-excel") &&
+                    !fileJvnlp.ContentType.Equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                    throw new Exception("Неверный тип файла");
 
                 using var memoryStream = new StreamReader(fileJvnlp.OpenReadStream());
+
                 var responseRead = _fileProcessing.ReadFileJvnlpAsync(memoryStream, fileJvnlp.FileName);
 
-                var jsonOriginalDrugs = JsonConvert.SerializeObject(responseRead[0].Take(1000));
-                var jsonExcludeDrugs = JsonConvert.SerializeObject(responseRead[1].Take(1000));
+                if (responseRead.Count == 0)
+                    throw new Exception("Ошибка в чтении файла excel. Файл должен содержать листы 'Лист 1' и 'Искл'");
+
+                OriginalTableJvnlp.Add(responseRead[(int) JvnlpLists.JVNLP]);
+                OriginalTableJvnlp.Add(responseRead[(int) JvnlpLists.Excluded]);
+
+                var jsonOriginalDrugs = JsonConvert.SerializeObject(responseRead[(int) JvnlpLists.JVNLP].Take(250));
 
                 return new JsonResult(new
                     {
-                        typemessage = "complite",
                         originalDrugs = jsonOriginalDrugs,
-                        excludeDrugs = jsonExcludeDrugs
+                        originalDrugsLength = responseRead[(int) JvnlpLists.JVNLP].Length - 3,
+                        originalDrugsViewLength = responseRead[(int) JvnlpLists.JVNLP].Take(250).Count() - 3
                     })
                     {StatusCode = 200};
             }
@@ -64,7 +77,6 @@ namespace ServiceJob.Controllers
                 Console.WriteLine(e);
                 return new JsonResult(new
                     {
-                        typemessage = "error",
                         message = e.Message
                     })
                     {StatusCode = 500};
@@ -263,6 +275,84 @@ namespace ServiceJob.Controllers
                 {StatusCode = 500};
         }
 
+        /// <summary>
+        ///     Фильтрация таблицы
+        /// </summary>
+        /// <param name="nameTable"></param>
+        /// <param name="listFilter"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Jvnlp/Drugs/Filtered")]
+        public IActionResult GetRowsFiltered(string nameTable, string listFilter)
+        {
+            List<object> filterList;
+            var filtresCast = JsonConvert.DeserializeObject<string[]>(listFilter);
+            var emptyFilter = filtresCast.All(textFilter => textFilter == "");
+            try
+            {
+                object[] activeTable = null;
+                if (nameTable.Equals("jvnlp"))
+                    activeTable = OriginalTableJvnlp[(int) JvnlpLists.JVNLP];
+                if (nameTable.Equals("exjvnlp"))
+                    activeTable = OriginalTableJvnlp[(int) JvnlpLists.Excluded];
+
+                if (emptyFilter) // если текст фильтра пуст то возращаем всю исходную таблицу 
+                {
+                    filterList = (activeTable ?? throw new InvalidOperationException("Реестр таблиц пуст")).ToList();
+                }
+                else
+                {
+                    if (activeTable == null)
+                        throw new InvalidOperationException("Реестр таблиц пуст");
+
+                    var tempItems = activeTable;
+                    for (var i = 0; i < filtresCast.Length; i++)
+                    {
+                        var numColumn = i;
+                        tempItems = tempItems.WhereIf(!filtresCast[i].Equals(""),
+                            (item, j) =>
+                            {
+                                if (j <= 2)
+                                    return true;
+                                var itemArray = (object[]) item;
+                                return itemArray[numColumn].ToString().ToUpper()
+                                    .Contains(filtresCast[numColumn].ToUpper());
+                            }).ToArray();
+                    }
+
+                    filterList = tempItems.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new JsonResult(new {message = e.Message})
+                    {StatusCode = 500};
+            }
+
+            var jsonFilterList = JsonConvert.SerializeObject(filterList.Take(250));
+            return new JsonResult(new
+                {
+                    filterRowList = jsonFilterList,
+                    filterListLength = filterList.Take(250).Count() - 3,
+                    filterListViewLength = filterList.Count - 3
+                })
+                {StatusCode = 200};
+        }
+
+        /// <summary>
+        ///     Навигация по таблице
+        /// </summary>
+        /// <param name="nameTable"></param>
+        /// <param name="nameButton"></param>
+        /// <param name="idList"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Jvnlp/Drugs/Navigate")]
+        public IActionResult GetRowsNavigate(string nameTable, string nameButton, int idList)
+        {
+            return null;
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

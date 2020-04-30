@@ -4,6 +4,13 @@ using System.Linq;
 
 namespace ServiceJob.Classes
 {
+    /// <summary>
+    ///     Класс расширений
+    ///     SplitArray создании массива коллекции из строки
+    ///     ToDateTime проверка на создание формата даты год-месяц-день в случае неуспеха вернуть null
+    ///     WhereIf создание множественной фильтрации коллекции: условие true -> применение фильтра -> вернуть новую коллекцию;
+    ///     WhereIf условие false -> вернуть текущую коллекцию
+    /// </summary>
     public static class ExtensionClass
     {
         public static IEnumerable<IEnumerable<T>> SplitArray<T>(
@@ -36,42 +43,34 @@ namespace ServiceJob.Classes
                 return null;
             }
         }
-        //public static IEnumerable<List<string>> GetListToModel<T>(this IEnumerable<IEnumerable<string>> source,
-        //    bool onEdit = false) where T : new()
-        //{
-        //    var typeModel = typeof(T);
-        //    var propertiesModel = typeModel.GetProperties();
-        //    var convertList = new List<T>();
-        //    foreach (var dataDrug in source)
-        //    {
-        //        var inlistmodel = (T)propertiesModel.Select((property, key) =>
-        //        {
-        //            var type = nameof(property.Name);
-        //            return new
-        //            {
-        //                 property = dataDrug.ToArray()[key]
-        //            };
-        //        });
-        //        convertList.Add(inlistmodel);
-        //    }
-        //    //var newlistDrugs =
-        //    //    source.Select(x =>
-        //    //    {
-        //    //        var enumX = x.ToList();
-        //    //        foreach (var parametr in enumX)
-        //    //        {
-        //    //            var a = model;
-        //    //        }
-        //    //        //return model 
-        //    //        //{
-        //    //        //    //Id = newKey++,
-        //    //        //    //NameDrug = enumX[0],
-        //    //        //    //IncludeDate = enumX[1].ToDateTime(),
-        //    //        //    //OutDate = enumX[2].ToDateTime()
-        //    //        //};
-        //    //    }).ToList();
-        //    return convertList;
-        //    throw new NotImplementedException();
-        //}
+
+        /// <summary>
+        /// WhereIf - Фильтрация данных
+        /// </summary>
+        /// <typeparam name="T">Тип коллекции данных</typeparam>
+        /// <param name="source">Коллекция данных</param>
+        /// <param name="condition">Условие</param>
+        /// <param name="predicate">Условие которое надо применить к коллекции</param>
+        /// <returns>Отфильтрованные данные</returns>
+        public static IEnumerable<T> WhereIf<T>(this IEnumerable<T> source, bool condition,
+            Func<T, int, bool> predicate)
+        {
+            return condition ? WhereIterator(source, predicate) : source;
+        }
+
+        private static IEnumerable<TSource> WhereIterator<TSource>(IEnumerable<TSource> source,
+            Func<TSource, int, bool> predicate)
+        {
+            var index = -1;
+            foreach (var element in source)
+            {
+                checked
+                {
+                    index++;
+                }
+
+                if (predicate(element, index)) yield return element;
+            }
+        }
     }
 }
