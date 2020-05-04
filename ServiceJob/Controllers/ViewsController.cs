@@ -315,8 +315,9 @@ namespace ServiceJob.Controllers
                                 if (j <= 2)
                                     return true;
                                 var itemArray = (object[]) item;
-                                return itemArray[numColumn].ToString().ToUpper()
-                                    .Contains(filtresCast[numColumn].ToUpper());
+                                var strItemArray = itemArray[numColumn].GetType().BaseType.Name.Equals("ValueType") ? itemArray[numColumn].ToString().Replace(",",".") : itemArray[numColumn].ToString();
+                                var isContains = strItemArray.ToUpper().Contains(filtresCast[numColumn].ToUpper());
+                                return isContains;
                             }).ToArray();
                     }
 
