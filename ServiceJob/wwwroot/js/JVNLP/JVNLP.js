@@ -4,15 +4,6 @@ var visibleFormDrugsPriceCriteria = false;
 var visibleFormFile = false;
 var fActive = "";
 
-$(window).on("resize",
-    function() {
-        UpdateStyleTableDrugs("tableDrugs");
-        UpdateStyleTableDrugs("exjvnlpTable");
-        UpdateStyleTableDrugs("tableDrugsNew");
-        UpdateStyleTableDrugs("tableDrugsIncluded");
-        UpdateStyleTableDrugs("tableDrugsExcluded", true);
-    });
-
 ///Навигация
 $(".viewlist li > input[type='button']").click("input",
     function(input) {
@@ -109,7 +100,6 @@ $("li[name=openTableOriginal]").click(function() {
         $("li[name=openOriginalExcludedJvnlp]").css("background-color", "rgba(0, 222, 255, 0)");
         $("div[name='jvnlp']").show(1,
             function() {
-                UpdateStyleTableDrugs("tableDrugs");
                 if ($("#tableDrugs").html() === "") {
                     alertify.message("Загрузите реестр препаратов");
                 }
@@ -134,7 +124,6 @@ $("li[name=openTableReady]").click(function() {
         $("li[name=openExcludedJvnlp]").css("background-color", "rgba(0, 222, 255, 0)");
         $("div[name='newJvnlp']").show(1,
             function() {
-                UpdateStyleTableDrugs("tableDrugsNew");
                 if ($("#tableDrugs").html() === "") {
                     alertify.message("Загрузите реестр препаратов");
                 }
@@ -151,7 +140,6 @@ $("li[name=openOriginalReadyJvnlp]").click(function() {
     $("li[name=openOriginalReadyJvnlp]").css("background-color", "rgba(0, 222, 255, 0.29)");
     $("div[name='jvnlp']").show(1,
         function() {
-            UpdateStyleTableDrugs("tableDrugs");
             if ($("#tableDrugs").html() === "") {
                 alertify.message("Загрузите реестр препаратов");
             }
@@ -164,7 +152,6 @@ $("li[name=openOriginalExcludedJvnlp]").click(function() {
     $("li[name=openOriginalExcludedJvnlp]").css("background-color", "rgba(0, 222, 255, 0.29)");
     $("div[name='exjvnlp']").show(1,
         function() {
-            UpdateStyleTableDrugs("exjvnlpTable");
             if ($("#tableDrugs").html() === "") {
                 alertify.message("Загрузите реестр препаратов");
             }
@@ -182,7 +169,6 @@ $("li[name=openReadyJvnlp]").click(function() {
     $("li[name=openReadyJvnlp]").css("background-color", "rgba(0, 222, 255, 0.29)");
     $("div[name='newJvnlp']").show(1,
         function() {
-            UpdateStyleTableDrugs("tableDrugsNew");
             if ($("#tableDrugs").html() === "") {
                 alertify.message("Загрузите реестр препаратов");
             }
@@ -197,7 +183,6 @@ $("li[name=openIncludedJvnlp]").click(function() {
     $("li[name=openIncludedJvnlp]").css("background-color", "rgba(0, 222, 255, 0.29)");
     $("div[name='includedJvnlp']").show(1,
         function() {
-            UpdateStyleTableDrugs("tableDrugsIncluded");
             if ($("#tableDrugs").html() === "") {
                 alertify.message("Загрузите реестр препаратов");
             }
@@ -212,7 +197,6 @@ $("li[name=openExcludedJvnlp]").click(function() {
     $("li[name=openExcludedJvnlp]").css("background-color", "rgba(0, 222, 255, 0.29)");
     $("div[name='excludedJvnlp']").show(1,
         function() {
-            UpdateStyleTableDrugs("tableDrugsExcluded", true);
             if ($("#tableDrugs").html() === "") {
                 alertify.message("Загрузите реестр препаратов");
             }
@@ -252,10 +236,7 @@ function TableJvnlp(speed = 200) {
                 always: function() {
                     if ($("div[name=tableDrugs]").css("display") === "block") {
                         visibleTableJvnlp = true;
-                        $("div[name='jvnlp']").show(1,
-                            function() {
-                                UpdateStyleTableDrugs("tableDrugs");
-                            });
+                        $("div[name='jvnlp']").show(1);
                         $("li[name=openTableOriginal]").css("background-color", "rgba(0, 222, 255, 0.29)");
                         $("li[name=openOriginalReadyJvnlp]").css("background-color", "rgba(0, 222, 255, 0.29)");
                     } else {
@@ -374,46 +355,4 @@ function RequestFormNPDrugs(dataForm) {
                 });
         }
     });
-}
-
-function UpdateStyleTableDrugs(nameTable, excludedDrugs = false) {
-    // Change the selector if needed
-    var $table = $("#" + nameTable + "");
-    var $theadCells = $table.find("thead tr[name='headTable2'], tr[name='headTable3']").children();
-    var $delElement = 0;
-    if (nameTable !== "tableDrugs" && nameTable !== "exjvnlpTable" && !excludedDrugs) {
-        $theadCells.each(function(index, value) {
-            if (value.innerHTML === "Предельная розничная цена с НДС") {
-                $delElement = index;
-            }
-        });
-        $theadCells.splice($delElement, 1);
-    }
-
-    // Set the width of tbody columns
-    $table.find("tbody tr").children().each(function(i, v) {
-        $(v).width($theadCells.map(function() {
-            return $(this).width();
-        }).get()[i]);
-    });
-
-    if (nameTable === "tableDrugs")
-        $("#" + nameTable + " tbody")
-            .height($("div[name='jvnlp']").height() - $("#" + nameTable + " thead").height() - 16);
-
-    if (nameTable === "exjvnlpTable")
-        $("#" + nameTable + " tbody")
-            .height($("div[name='exjvnlp']").height() - $("#" + nameTable + " thead").height() - 16);
-
-    if (nameTable === "tableDrugsNew")
-        $("#" + nameTable + " tbody")
-            .height($("div[name='newJvnlp']").height() - $("#" + nameTable + " thead").height() - 16);
-
-    if (nameTable === "tableDrugsIncluded")
-        $("#" + nameTable + " tbody")
-            .height($("div[name='includedJvnlp']").height() - $("#" + nameTable + " thead").height() - 16);
-
-    if (nameTable === "tableDrugsExcluded")
-        $("#" + nameTable + " tbody")
-            .height($("div[name='excludedJvnlp']").height() - $("#" + nameTable + " thead").height() - 16);
 }

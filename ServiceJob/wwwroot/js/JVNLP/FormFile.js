@@ -159,7 +159,7 @@ function GenerateTableJvnlp(drugs, nameTable = "", filter = false) {
             item.forEach(function(item, i) {
                 if (item === null)
                     item = "";
-                tr += (`<td>${item}</td>`);
+                tr += (`<td style='width: calc(100%/${jsonDrugs[3].length})'>${item}</td>`);
             });
             tr += ("</tr>");
             tbody += tr;
@@ -188,7 +188,7 @@ function GenerateTableJvnlp(drugs, nameTable = "", filter = false) {
                 var headColumn = ('<tr name="headTable2">');
                 var headFilters = '<tr class="searchInput" name="headSearch">';
                 item.forEach(function(item, i) {
-                    headColumn += (`<td>${item}</td>`);
+                    headColumn += (`<td style='width: calc(100%/${jsonDrugs[2].length})'>${item}</td>`);
                     headFilters += ("<td>");
                     headFilters += (`<input name="filterTable${i}" type="search" value="" placeholder="Поиск">`);
                     headFilters += ("</td>");
@@ -204,7 +204,7 @@ function GenerateTableJvnlp(drugs, nameTable = "", filter = false) {
             item.forEach(function(item, i) {
                 if (item === null)
                     item = "";
-                tr += (`<td>${item}</td>`);
+                tr += (`<td style='width: calc(100%/${jsonDrugs[2].length})'>${item}</td>`);
             });
             tr += ("</tr>");
             tbody += tr;
@@ -212,22 +212,5 @@ function GenerateTableJvnlp(drugs, nameTable = "", filter = false) {
         table += thead;
         table += tbody;
         $(`#${nameTable}`).html(table);
-    }
-
-    // обновление стилей строк таблиц
-    if (nameTable === "tableDrugs") {
-        UpdateStyleTableDrugs("tableDrugs");
-    }
-    if (nameTable === "exjvnlpTable") {
-        UpdateStyleTableDrugs("exjvnlpTable");
-    }
-    if (nameTable === "tableDrugsNew") {
-        UpdateStyleTableDrugs("tableDrugsNew");
-    }
-    if (nameTable === "tableDrugsIncluded") {
-        UpdateStyleTableDrugs("tableDrugsIncluded");
-    }
-    if (nameTable === "tableDrugsExcluded") {
-        UpdateStyleTableDrugs("tableDrugsExcluded", true);
     }
 }

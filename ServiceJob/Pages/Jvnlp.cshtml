@@ -29,6 +29,11 @@
         font-family: "Times New Roman", Times, serif;
         text-shadow: none;
     }
+    #tableDrugs tr, 
+    #tableDrugs thead, 
+    #tableDrugs tbody {
+        width: 100%;
+    }
 </style>
 <link rel="stylesheet" asp-href-include="~/css/JVNLP/*.css" asp-append-version="true"/>
 <div class="menuJvnlp">
@@ -63,17 +68,18 @@
     </li>
 </ul>
 <!--Таблица исходного реестра препаратов (загруженный файл)-->
-<div name="originalJvnlp" style="background-color: rgba(0, 0, 0, 0.1); display: block; height: calc(100% - 80px); margin: 30px 0px 0px 0px; overflow: auto; position: absolute;">
+<div name="originalJvnlp" style="width: 100%;background-color: rgba(0, 0, 0, 0.1); display: block; height: calc(100% - 80px); margin: 30px 0px 0px 0px; overflow: auto; position: absolute;">
     <div name="jvnlp" style="display: block; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
         <table id="tableDrugs" border="1"></table>
     </div>
     <div name="exjvnlp" style="display: none; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
-        <table id="exjvnlpTable" border="1">
-            
-        </table>
+        <table id="exjvnlpTable" border="1"></table>
     </div>
     <ul class="viewlist">
-        <li style="font-size: 18px; margin: 0px 0px 0px 22px; padding: 6px; position: absolute;">
+        <li style="        font-size: 18px;
+        margin: 0px 0px 0px 22px;
+        padding: 6px;
+        position: absolute;">
             <label name="infotable" data-idlist=""></label>
         </li>
         <li style="padding: 6px; position: absolute; right: 61px;">
@@ -179,25 +185,25 @@
         </tr>
         </thead>
         <tbody name="drugs" style="overflow-y: scroll;">
-            <tr name="drug">
-                <td>-</td>
-                <td>Перекись водорода</td>
-                <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
-                <td>ООО &quot;ЮжФарм&quot; - Россия</td>
-                <td>1</td>
-                <td>8,65</td>
-                <td></td>
-                <td></td>
-                <td>02.07.2012 (16/20-12)</td>
-                <td>4620008620022</td>
-                <td></td>
-                <td>9,52</td>
-                <td>1,42</td>
-                <td>2,38</td>
-                <td>3,80</td>
-                <td>4,75</td>
-                <td>5,18</td>
-            </tr>
+        <tr name="drug">
+            <td>-</td>
+            <td>Перекись водорода</td>
+            <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
+            <td>ООО &quot;ЮжФарм&quot; - Россия</td>
+            <td>1</td>
+            <td>8,65</td>
+            <td></td>
+            <td></td>
+            <td>02.07.2012 (16/20-12)</td>
+            <td>4620008620022</td>
+            <td></td>
+            <td>9,52</td>
+            <td>1,42</td>
+            <td>2,38</td>
+            <td>3,80</td>
+            <td>4,75</td>
+            <td>5,18</td>
+        </tr>
         </tbody>
     </table>
 </div>
@@ -284,25 +290,25 @@
         </tr>
         </thead>
         <tbody style="overflow-y: scroll;">
-            <tr name="drug">
-                <td>-</td>
-                <td>Перекись водорода</td>
-                <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
-                <td>ООО &quot;ЮжФарм&quot; - Россия</td>
-                <td>1</td>
-                <td>8,65</td>
-                <td></td>
-                <td></td>
-                <td>02.07.2012 (16/20-12)</td>
-                <td>4620008620022</td>
-                <td></td>
-                <td>9,52</td>
-                <td>11,42</td>
-                <td>10,38</td>
-                <td>13,80</td>
-                <td>14,75</td>
-                <td>16,18</td>
-            </tr>
+        <tr name="drug">
+            <td>-</td>
+            <td>Перекись водорода</td>
+            <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
+            <td>ООО &quot;ЮжФарм&quot; - Россия</td>
+            <td>1</td>
+            <td>8,65</td>
+            <td></td>
+            <td></td>
+            <td>02.07.2012 (16/20-12)</td>
+            <td>4620008620022</td>
+            <td></td>
+            <td>9,52</td>
+            <td>11,42</td>
+            <td>10,38</td>
+            <td>13,80</td>
+            <td>14,75</td>
+            <td>16,18</td>
+        </tr>
         </tbody>
     </table>
 </div>
@@ -370,21 +376,21 @@
         </tr>
         </thead>
         <tbody style="overflow-y: scroll;">
-            <tr name="drug">
-                <td>-</td>
-                <td>Перекись водорода</td>
-                <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
-                <td>ООО &quot;ЮжФарм&quot; - Россия</td>
-                <td>1</td>
-                <td>8,65</td>
-                <td></td>
-                <td></td>
-                <td>02.07.2012 (16/20-12)</td>
-                <td>4620008620022</td>
-                <td></td>
-                <td>01.07.2019</td>
-                <td>исключения лекарственного препарата из государственного реестра лекарственных средств для медицинского применения</td>
-            </tr>
+        <tr name="drug">
+            <td>-</td>
+            <td>Перекись водорода</td>
+            <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
+            <td>ООО &quot;ЮжФарм&quot; - Россия</td>
+            <td>1</td>
+            <td>8,65</td>
+            <td></td>
+            <td></td>
+            <td>02.07.2012 (16/20-12)</td>
+            <td>4620008620022</td>
+            <td></td>
+            <td>01.07.2019</td>
+            <td>исключения лекарственного препарата из государственного реестра лекарственных средств для медицинского применения</td>
+        </tr>
         </tbody>
     </table>
 </div>
