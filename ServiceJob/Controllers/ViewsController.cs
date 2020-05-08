@@ -17,7 +17,7 @@ namespace ServiceJob.Controllers
         /// <summary>
         ///     исходный реестр препаратов
         /// </summary>
-        private static readonly List<object[]> OriginalTableJvnlp = new List<object[]>();
+        private static readonly List<List<object>[]> OriginalTableJvnlp = new List<List<object>[]>();
 
         //private readonly IHostingEnvironment _appEnvironment;
         private readonly UploadFile _fileProcessing = new UploadFile();
@@ -59,17 +59,28 @@ namespace ServiceJob.Controllers
                 if (responseRead.Count == 0)
                     throw new Exception("Ошибка в чтении файла excel. Файл должен содержать листы 'Лист 1' и 'Искл'");
 
-                OriginalTableJvnlp.Add(responseRead[(int) JvnlpLists.JVNLP]);
-                OriginalTableJvnlp.Add(responseRead[(int) JvnlpLists.Excluded]);
+                OriginalTableJvnlp.Clear();
+                OriginalTableJvnlp.Add(responseRead[(int)JvnlpLists.JVNLP]);
+                OriginalTableJvnlp.Add(responseRead[(int)JvnlpLists.Excluded]);
 
                 var jsonOriginalDrugs = JsonConvert.SerializeObject(responseRead[(int) JvnlpLists.JVNLP].Take(250));
+                var jsonExcludedDrugs = JsonConvert.SerializeObject(responseRead[(int)JvnlpLists.Excluded].Take(250));
 
                 return new JsonResult(new
+                {
+                    original = new
                     {
-                        originalDrugs = jsonOriginalDrugs,
-                        originalDrugsLength = responseRead[(int) JvnlpLists.JVNLP].Length - 3,
-                        originalDrugsViewLength = responseRead[(int) JvnlpLists.JVNLP].Take(250).Count() - 3
-                    })
+                        drugs = jsonOriginalDrugs,
+                        drugsLength = responseRead[(int)JvnlpLists.JVNLP].Length - 3,
+                        drugsViewLength = responseRead[(int)JvnlpLists.JVNLP].Take(250).Count() - 3
+                    },
+                    excluded = new
+                    {
+                        drugs = jsonExcludedDrugs,
+                        drugsLength = responseRead[(int)JvnlpLists.Excluded].Length - 3,
+                        drugsViewLength = responseRead[(int)JvnlpLists.Excluded].Take(250).Count() - 3
+                    }
+                })
                     {StatusCode = 200};
             }
             catch (Exception e)
@@ -314,8 +325,10 @@ namespace ServiceJob.Controllers
                             {
                                 if (j <= 2)
                                     return true;
-                                var itemArray = (object[]) item;
-                                var strItemArray = itemArray[numColumn].GetType().BaseType.Name.Equals("ValueType") ? itemArray[numColumn].ToString().Replace(",",".") : itemArray[numColumn].ToString();
+                                var itemArray = (List<object>) item;
+                                var strItemArray = itemArray[numColumn].GetType().BaseType.Name.Equals("ValueType") 
+                                    ? itemArray[numColumn].ToString().Replace(",",".") 
+                                    : itemArray[numColumn].ToString();
                                 var isContains = strItemArray.ToUpper().Contains(filtresCast[numColumn].ToUpper());
                                 return isContains;
                             }).ToArray();

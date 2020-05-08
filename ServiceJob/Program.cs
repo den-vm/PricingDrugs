@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore;
+﻿using System;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace ServiceJob
@@ -7,16 +8,34 @@ namespace ServiceJob
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            try
+            {
+                CreateWebHostBuilder(args).Build().Run();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            return WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .UseKestrel(options =>
-                {
-                    options.Limits.MaxRequestBodySize = 1073741824;  /*ограничение размера запроса отдельных значений формы*/  });
-                }
+            try
+            {
+                return WebHost.CreateDefaultBuilder(args)
+                    .UseStartup<Startup>()
+                    .UseKestrel(options =>
+                    {
+                        options.Limits.MaxRequestBodySize =
+                            1073741824; /*ограничение размера запроса отдельных значений формы*/
+                    });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
+}

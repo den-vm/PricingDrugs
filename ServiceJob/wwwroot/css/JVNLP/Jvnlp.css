@@ -240,7 +240,7 @@ section, footer, header, aside { display: block; }
     display: inline;
     padding-inline-start: 0;
     background-color: rgba(238, 238, 238, 0.611764705882353);
-    bottom: 40px;
+    bottom: 90px;
     margin: 0;
     position: absolute;
     width: 100%;

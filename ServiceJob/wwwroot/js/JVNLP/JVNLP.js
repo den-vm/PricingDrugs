@@ -18,20 +18,6 @@ $(".viewlist li > input[type='button']").click("input",
         });
     });
 
-///Фильтрация
-//$("div[name='ReadyJvnlp'],div[name='originalJvnlp'] div > table > thead > tr > td > input[type='search']").on("input",
-//    function(input) {
-//        var nametable = GetActiveTable();
-//        var idFilter = input["target"].name.replace("filterTable", "");
-//        var textFilter = input["target"].value;
-//        //alert(`${nametable}` + ` ${idFilter}` + ` ${textFilter}`);
-
-//        $.get('Jvnlp/Drugs/Filtered', { nameTable: nametable, idColumn: idFilter, text: textFilter })
-//            .always(function (data) {
-//                alert("finished");
-//            });
-//    });
-
 function GetActiveTable() {
     var jvnlp = $("div[name='jvnlp']").css("display");
     var exjvnlp = $("div[name='exjvnlp']").css("display");
@@ -81,7 +67,7 @@ $("li[name=openFormDrugsPriceCriteria]").click(function() {
     FormCalculationCriteria(100); // открыть форму таблица цен
 });
 
-///опен таблицы исходного реестра ЛП или расчитанного
+//открытие таблицы исходного реестра ЛП
 $("li[name=openTableOriginal]").click(function() {
     $("div[name='newJvnlp']").hide();
     $("div[name='includedJvnlp']").hide();
@@ -103,10 +89,12 @@ $("li[name=openTableOriginal]").click(function() {
                 if ($("#tableDrugs").html() === "") {
                     alertify.message("Загрузите реестр препаратов");
                 }
+                else { UpdateInfotable("tableDrugs"); }
             });
     }
 });
 
+//открытие таблицы расcчитанного реестра ЛП
 $("li[name=openTableReady]").click(function() {
     $("div[name='exjvnlp']").hide();
     $("div[name='jvnlp']").hide();
@@ -127,12 +115,12 @@ $("li[name=openTableReady]").click(function() {
                 if ($("#tableDrugs").html() === "") {
                     alertify.message("Загрузите реестр препаратов");
                 }
+                else { UpdateInfotable("tableDrugsNew"); }
             });
     }
 });
-///------------------------------------------------------///
 
-///опен таблицы для исходного реестра ЛП
+//открытие таблицы ЖВНЛП
 $("li[name=openOriginalReadyJvnlp]").click(function() {
     $("div[name='exjvnlp']").hide();
     $("li[name=openOriginalExcludedJvnlp]").css("background-color", "rgba(0, 222, 255, 0)");
@@ -143,8 +131,11 @@ $("li[name=openOriginalReadyJvnlp]").click(function() {
             if ($("#tableDrugs").html() === "") {
                 alertify.message("Загрузите реестр препаратов");
             }
+            else { UpdateInfotable("tableDrugs");}
         });
+    
 });
+//открытие таблицы Исключенные позиции
 $("li[name=openOriginalExcludedJvnlp]").click(function() {
     $("div[name='jvnlp']").hide();
     $("li[name=openOriginalReadyJvnlp]").css("background-color", "rgba(0, 222, 255, 0)");
@@ -155,11 +146,11 @@ $("li[name=openOriginalExcludedJvnlp]").click(function() {
             if ($("#tableDrugs").html() === "") {
                 alertify.message("Загрузите реестр препаратов");
             }
+            else { UpdateInfotable("exjvnlpTable"); }
         });
 });
-///------------------------------------------------------///
 
-///опен таблицы для расчитанного реестра ЛП
+//открытие таблицы расчитанного ЖВНЛП
 $("li[name=openReadyJvnlp]").click(function() {
     $("div[name='includedJvnlp']").hide();
     $("div[name='excludedJvnlp']").hide();
@@ -172,8 +163,10 @@ $("li[name=openReadyJvnlp]").click(function() {
             if ($("#tableDrugs").html() === "") {
                 alertify.message("Загрузите реестр препаратов");
             }
+            else { UpdateInfotable("tableDrugsNew"); }
         });
 });
+//открытие таблицы расчитанных Включенных позиций
 $("li[name=openIncludedJvnlp]").click(function() {
     $("div[name='newJvnlp']").hide();
     $("div[name='excludedJvnlp']").hide();
@@ -186,8 +179,10 @@ $("li[name=openIncludedJvnlp]").click(function() {
             if ($("#tableDrugs").html() === "") {
                 alertify.message("Загрузите реестр препаратов");
             }
+            else { UpdateInfotable("tableDrugsIncluded"); }
         });
 });
+//открытие таблицы Исключенных позиций исходного реестра
 $("li[name=openExcludedJvnlp]").click(function() {
     $("div[name='newJvnlp']").hide();
     $("div[name='includedJvnlp']").hide();
@@ -200,9 +195,9 @@ $("li[name=openExcludedJvnlp]").click(function() {
             if ($("#tableDrugs").html() === "") {
                 alertify.message("Загрузите реестр препаратов");
             }
+            else { UpdateInfotable("tableDrugsExcluded"); }
         });
 });
-///------------------------------------------------------///
 
 
 $("button[name=SaveCriteriaPrice]").click(function() {

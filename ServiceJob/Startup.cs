@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,44 +24,55 @@ namespace ServiceJob
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var mvc = services.AddMvc();
-            mvc.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            mvc.AddRazorPagesOptions(options =>
+            try
             {
-                options.Conventions.AddPageRoute("/Home",
-                    @""); // route Index = RazorPage "Home.cshtml" (default search RazorPage = "Pages/")
-            });
-            services.Configure<RazorViewEngineOptions>(options => {
-                options.ViewLocationExpanders.Add(new ViewLocationExpander());
-            });
-            services.Configure<FormOptions>(options =>
+                var mvc = services.AddMvc();
+                mvc.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                mvc.AddRazorPagesOptions(options =>
+                {
+                    options.Conventions.AddPageRoute("/Home",
+                        @""); // route Index = RazorPage "Home.cshtml" (default search RazorPage = "Pages/")
+                });
+                services.Configure<RazorViewEngineOptions>(options => {
+                    options.ViewLocationExpanders.Add(new ViewLocationExpander());
+                });
+                services.Configure<FormOptions>(options =>
+                {
+                    options.ValueLengthLimit = int.MaxValue; // ограничение длины отдельных значений формы
+                    options.MultipartBodyLengthLimit = int.MaxValue; // ограничение длины каждой формы
+                    options.MultipartHeadersLengthLimit = int.MaxValue; // ограничение длины заголовка формы
+                });
+            }
+            catch (Exception e)
             {
-                options.ValueLengthLimit = int.MaxValue; // ограничение длины отдельных значений формы
-                options.MultipartBodyLengthLimit = int.MaxValue; // ограничение длины каждой формы
-                options.MultipartHeadersLengthLimit = int.MaxValue; // ограничение длины заголовка формы
-            });
+                Console.WriteLine(e);
+                throw;
+            }
+            
             
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
+            try
             {
-                app.UseDeveloperExceptionPage();
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                }
+                else
+                {
+                    app.UseExceptionHandler("/Views/Error");
+                }
+                app.UseStaticFiles();
+                app.UseMvc();
             }
-            else
+            catch (Exception e)
             {
-                app.UseExceptionHandler("/Views/Error");
-                app.UseHsts();
+                Console.WriteLine(e);
+                throw;
             }
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseMvc(); //config =>
-            //{
-            //    config.MapRoute(
-            //        "default", "api/{controller}/{action}");
-            //}
         }
     }
 
