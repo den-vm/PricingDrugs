@@ -94,9 +94,8 @@ $("form[name=jvnlpForm]").submit(function(event) {
 
                     UpdateInfotable("tableDrugs");
 
-                    AddEventOnTable("tableDrugs");
-                    AddEventOnTable("exjvnlpTable");
-
+                    AddEventFilteredOnTable("tableDrugs"); 
+                    AddEventFilteredOnTable("exjvnlpTable");
                 },
                 500: function(data) {
                     $("form[name='jvnlpForm'] > div > input[type='file']").val("");
@@ -245,8 +244,7 @@ function GenerateTableJvnlpOnFiltered(drugs, nameTable = "") {
     $(`#${nameTable} tbody`).html(tbody);
 }
 
-
-function AddEventOnTable(nameTable = "") {
+function AddEventFilteredOnTable(nameTable = "") {
     var timeOut;
 
     //очищаем все события в таблице
@@ -257,7 +255,7 @@ function AddEventOnTable(nameTable = "") {
         function(input) { // выполнение после прекращения ввода
             clearTimeout(timeOut);
             timeOut = setTimeout(function() {
-                    var nametable = GetActiveTable();
+                    var nametable = GetNameActiveTable();
                     var inputfilters = [];
                     $(`table[id='${nameTable}'] > thead > tr > td`).find(":input[type='search']").each(
                         function (i, input) {

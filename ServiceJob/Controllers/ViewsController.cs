@@ -60,27 +60,27 @@ namespace ServiceJob.Controllers
                     throw new Exception("Ошибка в чтении файла excel. Файл должен содержать листы 'Лист 1' и 'Искл'");
 
                 OriginalTableJvnlp.Clear();
-                OriginalTableJvnlp.Add(responseRead[(int)JvnlpLists.JVNLP]);
-                OriginalTableJvnlp.Add(responseRead[(int)JvnlpLists.Excluded]);
+                OriginalTableJvnlp.Add(responseRead[(int) JvnlpLists.JVNLP]);
+                OriginalTableJvnlp.Add(responseRead[(int) JvnlpLists.Excluded]);
 
                 var jsonOriginalDrugs = JsonConvert.SerializeObject(responseRead[(int) JvnlpLists.JVNLP].Take(250));
-                var jsonExcludedDrugs = JsonConvert.SerializeObject(responseRead[(int)JvnlpLists.Excluded].Take(250));
+                var jsonExcludedDrugs = JsonConvert.SerializeObject(responseRead[(int) JvnlpLists.Excluded].Take(250));
 
                 return new JsonResult(new
-                {
-                    original = new
                     {
-                        drugs = jsonOriginalDrugs,
-                        drugsLength = responseRead[(int)JvnlpLists.JVNLP].Length - 3,
-                        drugsViewLength = responseRead[(int)JvnlpLists.JVNLP].Take(250).Count() - 3
-                    },
-                    excluded = new
-                    {
-                        drugs = jsonExcludedDrugs,
-                        drugsLength = responseRead[(int)JvnlpLists.Excluded].Length - 3,
-                        drugsViewLength = responseRead[(int)JvnlpLists.Excluded].Take(250).Count() - 3
-                    }
-                })
+                        original = new
+                        {
+                            drugs = jsonOriginalDrugs,
+                            drugsLength = responseRead[(int) JvnlpLists.JVNLP].Length - 3,
+                            drugsViewLength = responseRead[(int) JvnlpLists.JVNLP].Take(250).Count() - 3
+                        },
+                        excluded = new
+                        {
+                            drugs = jsonExcludedDrugs,
+                            drugsLength = responseRead[(int) JvnlpLists.Excluded].Length - 3,
+                            drugsViewLength = responseRead[(int) JvnlpLists.Excluded].Take(250).Count() - 3
+                        }
+                    })
                     {StatusCode = 200};
             }
             catch (Exception e)
@@ -302,9 +302,9 @@ namespace ServiceJob.Controllers
             try
             {
                 object[] activeTable = null;
-                if (nameTable.Equals("jvnlp"))
+                if (nameTable.Equals("tableDrugs"))
                     activeTable = OriginalTableJvnlp[(int) JvnlpLists.JVNLP];
-                if (nameTable.Equals("exjvnlp"))
+                if (nameTable.Equals("exjvnlpTable"))
                     activeTable = OriginalTableJvnlp[(int) JvnlpLists.Excluded];
 
                 if (emptyFilter) // если текст фильтра пуст то возращаем всю исходную таблицу 
@@ -326,8 +326,8 @@ namespace ServiceJob.Controllers
                                 if (j <= 2)
                                     return true;
                                 var itemArray = (List<object>) item;
-                                var strItemArray = itemArray[numColumn].GetType().BaseType.Name.Equals("ValueType") 
-                                    ? itemArray[numColumn].ToString().Replace(",",".") 
+                                var strItemArray = itemArray[numColumn].GetType().BaseType.Name.Equals("ValueType")
+                                    ? itemArray[numColumn].ToString().Replace(",", ".")
                                     : itemArray[numColumn].ToString();
                                 var isContains = strItemArray.ToUpper().Contains(filtresCast[numColumn].ToUpper());
                                 return isContains;

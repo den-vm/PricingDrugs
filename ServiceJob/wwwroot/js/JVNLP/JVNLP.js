@@ -4,12 +4,12 @@ var visibleFormDrugsPriceCriteria = false;
 var visibleFormFile = false;
 var fActive = "";
 
-///Навигация
+//Навигация по страницам таблицы
 $(".viewlist li > input[type='button']").click("input",
     function(input) {
-        var nametable = GetActiveTable();
+        var nametable = GetNameActiveTable();
         var namebutton = input["target"].name;
-        var idlist = $(".viewlist li > label[name='infotable']").data("idlist");
+        var idlist = infotable[`${nametable}`]["value"];
         alert(`${nametable}` + ` ${namebutton}` + ` ${idlist}`);
 
         $.get('Jvnlp/Drugs/Navigate', { nameTable: nametable, nameButton: namebutton, idList: idlist })
@@ -18,7 +18,7 @@ $(".viewlist li > input[type='button']").click("input",
         });
     });
 
-function GetActiveTable() {
+function GetNameActiveTable() {
     var jvnlp = $("div[name='jvnlp']").css("display");
     var exjvnlp = $("div[name='exjvnlp']").css("display");
     var newJvnlp = $("div[name='newJvnlp']").css("display");
@@ -26,15 +26,15 @@ function GetActiveTable() {
     var excludedJvnlp = $("div[name='excludedJvnlp']").css("display");
 
     if (jvnlp === "block")
-        return "jvnlp";
+        return "tableDrugs";
     if (exjvnlp === "block")
-        return "exjvnlp";
+        return "exjvnlpTable";
     if (newJvnlp === "block")
-        return "newJvnlp";
+        return "tableDrugsNew";
     if (includedJvnlp === "block")
-        return "includedJvnlp";
+        return "tableDrugsIncluded";
     if (excludedJvnlp === "block")
-        return "excludedJvnlp";
+        return "tableDrugsExcluded";
 }
 
 $("button[name=buttonUploadFile],div[name='cl-btn']").click(function() {
@@ -78,8 +78,8 @@ $("li[name=openTableOriginal]").click(function() {
     $("li[name=openIncludedJvnlp]").css("background-color", "rgba(0, 222, 255, 0)");
     $("li[name=openExcludedJvnlp]").css("background-color", "rgba(0, 222, 255, 0)");
 
-    var activeTable = GetActiveTable();
-    if (activeTable !== "jvnlp" && activeTable !== "exjvnlp") {
+    var activeTable = GetNameActiveTable();
+    if (activeTable !== "tableDrugs" && activeTable !== "exjvnlpTable") {
         $("li[name=openTableOriginal]").css("background-color", "rgba(0, 222, 255, 0.29)");
         $("div[name='originalJvnlp']").css("display", "block");
         $("li[name=openOriginalReadyJvnlp]").css("background-color", "rgba(0, 222, 255, 0.29)");
@@ -103,8 +103,8 @@ $("li[name=openTableReady]").click(function() {
     $("li[name=openOriginalReadyJvnlp]").css("background-color", "rgba(0, 222, 255, 0)");
     $("li[name=openOriginalExcludedJvnlp]").css("background-color", "rgba(0, 222, 255, 0)");
 
-    var activeTable = GetActiveTable();
-    if (activeTable !== "newJvnlp" && activeTable !== "includedJvnlp" && activeTable !== "excludedJvnlp") {
+    var activeTable = GetNameActiveTable();
+    if (activeTable !== "tableDrugsNew" && activeTable !== "tableDrugsIncluded" && activeTable !== "tableDrugsExcluded") {
         $("li[name=openTableReady]").css("background-color", "rgba(0, 222, 255, 0.29)");
         $("div[name='ReadyJvnlp']").css("display", "block");
         $("li[name=openReadyJvnlp]").css("background-color", "rgba(0, 222, 255, 0.29)");
