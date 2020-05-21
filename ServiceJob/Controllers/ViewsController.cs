@@ -363,8 +363,9 @@ namespace ServiceJob.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("Jvnlp/Drugs/Navigate")]
-        public IActionResult GetRowsNavigate(string nameTable, string nameButton, int idList)
+        public IActionResult GetRowsNavigate(string nameTable, string nameButton, int idList, string listFilter)
         {
+            var filtresCast = JsonConvert.DeserializeObject<string[]>(listFilter);
             return null;
         }
 

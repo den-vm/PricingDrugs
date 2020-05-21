@@ -10,9 +10,18 @@ $(".viewlist li > input[type='button']").click("input",
         var nametable = GetNameActiveTable();
         var namebutton = input["target"].name;
         var idlist = infotable[`${nametable}`]["value"];
-        alert(`${nametable}` + ` ${namebutton}` + ` ${idlist}`);
+        var inputfilters = [];
+        $(`table[id='${nametable}'] > thead > tr > td`).find(":input[type='search']").each(
+            function (i, input) {
+                if (nametable === "exjvnlpTable" && i === 12 && $(input).val() !== "") {
+                    var datetime = moment($(input).val()).format('DD.MM.YYYY');
+                    inputfilters.push(datetime);
+                } else
+                    inputfilters.push($(input).val()); // записываем значение всех полей поиска
+            });
+        alert(`${nametable}` + ` ${namebutton}` + ` ${idlist}` + ` ${JSON.stringify(inputfilters)}`);
 
-        $.get('Jvnlp/Drugs/Navigate', { nameTable: nametable, nameButton: namebutton, idList: idlist })
+        $.get('Jvnlp/Drugs/Navigate', { nameTable: nametable, nameButton: namebutton, idList: idlist, listFilter: JSON.stringify(inputfilters) })
             .always(function (data) {
             alert("finished");
         });
