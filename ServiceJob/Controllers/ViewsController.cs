@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ServiceJob.Classes;
+using ServiceJob.Interface;
 using ServiceJob.Models;
 
 namespace ServiceJob.Controllers
@@ -17,7 +18,7 @@ namespace ServiceJob.Controllers
         /// <summary>
         ///     исходный реестр препаратов
         /// </summary>
-        private static readonly List<List<object>[]> OriginalTableJvnlp = new List<List<object>[]>();
+        private static readonly List<List<object>[]> AllTableJvnlp = new List<List<object>[]>();
 
         //private readonly IHostingEnvironment _appEnvironment;
         private readonly UploadFile _fileProcessing = new UploadFile();
@@ -59,9 +60,9 @@ namespace ServiceJob.Controllers
                 if (responseRead.Count == 0)
                     throw new Exception("Ошибка в чтении файла excel. Файл должен содержать листы 'Лист 1' и 'Искл'");
 
-                OriginalTableJvnlp.Clear();
-                OriginalTableJvnlp.Add(responseRead[(int) JvnlpLists.JVNLP]);
-                OriginalTableJvnlp.Add(responseRead[(int) JvnlpLists.Excluded]);
+                AllTableJvnlp.Clear();
+                AllTableJvnlp.Add(responseRead[(int) JvnlpLists.JVNLP]);
+                AllTableJvnlp.Add(responseRead[(int) JvnlpLists.Excluded]);
 
                 var jsonOriginalDrugs = JsonConvert.SerializeObject(responseRead[(int) JvnlpLists.JVNLP].Take(250));
                 var jsonExcludedDrugs = JsonConvert.SerializeObject(responseRead[(int) JvnlpLists.Excluded].Take(250));
@@ -296,46 +297,11 @@ namespace ServiceJob.Controllers
         [Route("Jvnlp/Drugs/Filtered")]
         public IActionResult GetRowsFiltered(string nameTable, string listFilter)
         {
-            List<object> filterList;
-            var filtresCast = JsonConvert.DeserializeObject<string[]>(listFilter);
-            var emptyFilter = filtresCast.All(textFilter => textFilter == "");
+            var filterList = new List<object>();
             try
             {
-                object[] activeTable = null;
-                if (nameTable.Equals("tableDrugs"))
-                    activeTable = OriginalTableJvnlp[(int) JvnlpLists.JVNLP];
-                if (nameTable.Equals("exjvnlpTable"))
-                    activeTable = OriginalTableJvnlp[(int) JvnlpLists.Excluded];
-
-                if (emptyFilter) // если текст фильтра пуст то возращаем всю исходную таблицу 
-                {
-                    filterList = (activeTable ?? throw new InvalidOperationException("Реестр таблиц пуст")).ToList();
-                }
-                else
-                {
-                    if (activeTable == null)
-                        throw new InvalidOperationException("Реестр таблиц пуст");
-
-                    var tempItems = activeTable;
-                    for (var i = 0; i < filtresCast.Length; i++)
-                    {
-                        var numColumn = i;
-                        tempItems = tempItems.WhereIf(!filtresCast[i].Equals(""),
-                            (item, j) =>
-                            {
-                                if (j <= 2)
-                                    return true;
-                                var itemArray = (List<object>) item;
-                                var strItemArray = itemArray[numColumn].GetType().BaseType.Name.Equals("ValueType")
-                                    ? itemArray[numColumn].ToString().Replace(",", ".")
-                                    : itemArray[numColumn].ToString();
-                                var isContains = strItemArray.ToUpper().Contains(filtresCast[numColumn].ToUpper());
-                                return isContains;
-                            }).ToArray();
-                    }
-
-                    filterList = tempItems.ToList();
-                }
+                IControlRowsTable controlTable = new ControlTable();
+                filterList = controlTable.FilterRows(nameTable, listFilter, AllTableJvnlp);
             }
             catch (Exception e)
             {
@@ -360,12 +326,24 @@ namespace ServiceJob.Controllers
         /// <param name="nameTable"></param>
         /// <param name="nameButton"></param>
         /// <param name="idList"></param>
+        /// <param name="listFilter"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("Jvnlp/Drugs/Navigate")]
         public IActionResult GetRowsNavigate(string nameTable, string nameButton, int idList, string listFilter)
         {
-            var filtresCast = JsonConvert.DeserializeObject<string[]>(listFilter);
+            try
+            {
+                IControlRowsTable controlTable = new ControlTable();
+                var filterList = controlTable.FilterRows(nameTable, listFilter, AllTableJvnlp);
+                //var viewList = filterList.
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new JsonResult(new { message = e.Message })
+                    { StatusCode = 500 };
+            }
             return null;
         }
 
