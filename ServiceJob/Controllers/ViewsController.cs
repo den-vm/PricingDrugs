@@ -15,6 +15,8 @@ namespace ServiceJob.Controllers
 {
     public class ViewsController : Controller
     {
+        private const int VisibleLines = 250;
+
         /// <summary>
         ///     исходный реестр препаратов
         /// </summary>
@@ -64,8 +66,10 @@ namespace ServiceJob.Controllers
                 AllTableJvnlp.Add(responseRead[(int) JvnlpLists.JVNLP]);
                 AllTableJvnlp.Add(responseRead[(int) JvnlpLists.Excluded]);
 
-                var jsonOriginalDrugs = JsonConvert.SerializeObject(responseRead[(int) JvnlpLists.JVNLP].Take(250));
-                var jsonExcludedDrugs = JsonConvert.SerializeObject(responseRead[(int) JvnlpLists.Excluded].Take(250));
+                var jsonOriginalDrugs =
+                    JsonConvert.SerializeObject(responseRead[(int) JvnlpLists.JVNLP].Take(VisibleLines));
+                var jsonExcludedDrugs =
+                    JsonConvert.SerializeObject(responseRead[(int) JvnlpLists.Excluded].Take(VisibleLines));
 
                 return new JsonResult(new
                     {
@@ -73,13 +77,13 @@ namespace ServiceJob.Controllers
                         {
                             drugs = jsonOriginalDrugs,
                             drugsLength = responseRead[(int) JvnlpLists.JVNLP].Length - 3,
-                            drugsViewLength = responseRead[(int) JvnlpLists.JVNLP].Take(250).Count() - 3
+                            drugsViewLength = responseRead[(int) JvnlpLists.JVNLP].Take(VisibleLines).Count() - 3
                         },
                         excluded = new
                         {
                             drugs = jsonExcludedDrugs,
                             drugsLength = responseRead[(int) JvnlpLists.Excluded].Length - 3,
-                            drugsViewLength = responseRead[(int) JvnlpLists.Excluded].Take(250).Count() - 3
+                            drugsViewLength = responseRead[(int) JvnlpLists.Excluded].Take(VisibleLines).Count() - 3
                         }
                     })
                     {StatusCode = 200};
@@ -310,11 +314,11 @@ namespace ServiceJob.Controllers
                     {StatusCode = 500};
             }
 
-            var jsonFilterList = JsonConvert.SerializeObject(filterList.Take(250));
+            var jsonFilterList = JsonConvert.SerializeObject(filterList.Take(VisibleLines));
             return new JsonResult(new
                 {
                     filterRowList = jsonFilterList,
-                    filterListLength = filterList.Take(250).Count() - 3,
+                    filterListLength = filterList.Take(VisibleLines).Count() - 3,
                     filterListViewLength = filterList.Count - 3
                 })
                 {StatusCode = 200};
@@ -336,15 +340,49 @@ namespace ServiceJob.Controllers
             {
                 IControlRowsTable controlTable = new ControlTable();
                 var filterList = controlTable.FilterRows(nameTable, listFilter, AllTableJvnlp);
-                //var viewList = filterList.
+                var nextCount = idList * VisibleLines;
+                switch (nameButton)
+                {
+                    case "startlist":
+                        idList = 1;
+                        nextCount = 0;
+                        break;
+
+                    case "nextlist":
+                        if (nextCount > filterList.Count) 
+                            return new JsonResult(null);
+                        idList++;
+                        break;
+
+                    case "prevlist":
+                        if (nextCount <= 250)
+                            return new JsonResult(null);
+
+                        idList--;
+                        nextCount = (idList - 1) * VisibleLines;
+                        break;
+                }
+
+                var viewList = filterList.Skip(nextCount).Take(VisibleLines);
+
+                var jsonFilterList = JsonConvert.SerializeObject(viewList);
+
+                // сделать корректный вывод данных
+                return new JsonResult(new
+                    {
+                        filterRowList = jsonFilterList,
+                        filterListLength = filterList.Take(VisibleLines).Count() - 3,
+                        filterListViewLength = filterList.Count - 3,
+                        IndentidifatorList = idList
+                    })
+                    { StatusCode = 200 };
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return new JsonResult(new { message = e.Message })
-                    { StatusCode = 500 };
+                return new JsonResult(new {message = e.Message})
+                    {StatusCode = 500};
             }
-            return null;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
