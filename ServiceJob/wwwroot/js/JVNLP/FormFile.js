@@ -194,7 +194,7 @@ function GenerateTableJvnlpToStart(drugs, nameTable = "") {
     $(`#${nameTable}`).html(table);
 }
 
-function GenerateTableJvnlpOnFiltered(drugs, nameTable = "") {
+function GenerateTableJvnlpOriginal(drugs, nameTable = "") {
     var lenghtHeaderColumn = 0;
     var jsonDrugs = JSON.parse(drugs);
     jsonDrugs.forEach(function(item, i) { // clear null row Drugs
@@ -276,7 +276,7 @@ function AddEventFilteredOnTable(nameTable = "") {
                                 return;
                             }
                             $(`#${nameTable} tbody`).html("");
-                            GenerateTableJvnlpOnFiltered(data["filterRowList"], `${nameTable}`);
+                            GenerateTableJvnlpOriginal(data["filterRowList"], `${nameTable}`);
 
                             infotable[`${nameTable}`]["value"] = 1;
                             infotable[`${nameTable}`]["text"] =

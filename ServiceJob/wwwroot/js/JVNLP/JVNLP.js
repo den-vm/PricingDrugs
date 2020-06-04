@@ -19,11 +19,21 @@ $(".viewlist li > input[type='button']").click("input",
                 } else
                     inputfilters.push($(input).val()); // записываем значение всех полей поиска
             });
-        alert(`${nametable}` + ` ${namebutton}` + ` ${idlist}` + ` ${JSON.stringify(inputfilters)}`);
 
         $.get('Jvnlp/Drugs/Navigate', { nameTable: nametable, nameButton: namebutton, idList: idlist, listFilter: JSON.stringify(inputfilters) })
             .always(function (data) {
-            alert("finished");
+
+                if (data !== null) {
+                    $(`#${nametable} tbody`).html("");
+                    GenerateTableJvnlpOriginal(data["navigateRowList"], `${nametable}`);
+
+                    infotable[`${nametable}`]["value"] = data["idList"];
+                    infotable[`${nametable}`]["text"] =
+                        `${data["navigateListLength"]} из ${data["navigateListViewLength"]
+                        } (Стр. ${infotable[`${nametable}`]["value"]})`;
+
+                    UpdateInfotable(`${nametable}`);
+                }
         });
     });
 

@@ -15,7 +15,7 @@ namespace ServiceJob.Controllers
 {
     public class ViewsController : Controller
     {
-        private const int VisibleLines = 250;
+        private const int VisibleLines = 253;
 
         /// <summary>
         ///     исходный реестр препаратов
@@ -355,11 +355,11 @@ namespace ServiceJob.Controllers
                         break;
 
                     case "prevlist":
-                        if (nextCount <= 250)
+                        if (nextCount <= VisibleLines)
                             return new JsonResult(null);
 
                         idList--;
-                        nextCount = (idList - 1) * VisibleLines;
+                        nextCount = (idList - 1) * (VisibleLines);
                         break;
                 }
 
@@ -367,13 +367,12 @@ namespace ServiceJob.Controllers
 
                 var jsonFilterList = JsonConvert.SerializeObject(viewList);
 
-                // сделать корректный вывод данных
                 return new JsonResult(new
                     {
-                        filterRowList = jsonFilterList,
-                        filterListLength = filterList.Take(VisibleLines).Count() - 3,
-                        filterListViewLength = filterList.Count - 3,
-                        IndentidifatorList = idList
+                        navigateRowList = jsonFilterList,
+                        navigateListLength = VisibleLines * (idList - 1) + viewList.Count() - 3,
+                        navigateListViewLength = filterList.Count - 3,
+                        IdList = idList
                     })
                     { StatusCode = 200 };
             }
