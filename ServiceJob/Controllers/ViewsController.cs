@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -71,6 +72,8 @@ namespace ServiceJob.Controllers
                 var jsonExcludedDrugs =
                     JsonConvert.SerializeObject(responseRead[(int) JvnlpLists.Excluded].Take(VisibleLines));
 
+                // save last date update
+                _fileProcessing.SaveLastDateUpdate(AllTableJvnlp[(int)JvnlpLists.JVNLP][0][0].ToString());
                 return new JsonResult(new
                     {
                         original = new
@@ -382,6 +385,22 @@ namespace ServiceJob.Controllers
                 return new JsonResult(new {message = e.Message})
                     {StatusCode = 500};
             }
+        }
+
+        [HttpGet]
+        [Route("Jvnlp/Drugs/Calculate")]
+        public async Task<IActionResult> GetCalculatedDrugs()
+        {
+            if(AllTableJvnlp.Count == 0)
+                return new JsonResult(new { Message = "Список препаратов пуст" }) { StatusCode = 500 };
+
+            var date = await new CalculateDrugs().ReadLastDateUpdate();
+
+            return new JsonResult(new
+                {
+                    
+                })
+                { StatusCode = 200 };
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

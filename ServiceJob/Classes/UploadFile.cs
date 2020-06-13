@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ExcelDataReader;
 
@@ -90,9 +92,13 @@ namespace ServiceJob.Models
                 throw;
             }
         }
-    }
+        public async void SaveLastDateUpdate(string headerList)
+        {
+            var match = Regex.Match(headerList, @"(0[1-9]|[12][0-9]|3[01])[- .](0[1-9]|1[012])[- .](19|20)\d\d");
+            var dateUpdate = match.Value;
+            using var fs = new FileStream("lastdateupdate.json", FileMode.OpenOrCreate);
+            await JsonSerializer.SerializeAsync(fs, dateUpdate);
+        }
 
-    public class SaveNarcoticDrugs
-    {
     }
 }

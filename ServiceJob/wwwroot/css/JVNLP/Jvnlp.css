@@ -153,6 +153,27 @@ section, footer, header, aside { display: block; }
     height: 40px;
     overflow: auto;
 }
+.CSSButtonCalculate {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    /*border-radius: 4px;*/
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #000000;
+    cursor: pointer;
+    display: block;
+    font-size: 14px;
+    height: 29px;
+    line-height: 20px;
+    margin: 0.5px 1px 1px 1px;
+    padding: 2px 6px;
+    position: absolute;
+    left: 0;
+    text-align: center;
+    text-decoration: none;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+    vertical-align: middle;
+    width: 195px;
+}
 
 .CSSButtonUpload {
     background-color: #FFFFFF;
@@ -165,7 +186,7 @@ section, footer, header, aside { display: block; }
     font-size: 14px;
     height: 29px;
     line-height: 20px;
-    margin: 0px 1px 5px 5px;
+    margin: 0.5px 1px 1px 1px;
     padding: 2px 6px;
     position: absolute;
     right: 0;
@@ -176,11 +197,11 @@ section, footer, header, aside { display: block; }
     width: 195px;
 }
 
-.CSSButtonUpload:hover, .CSSButtonUpload:focus {
-    border-color: rgba(82, 168, 236, 0.8);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(82, 168, 236, 0.6);
-    outline: 0 none;
-}
+    .CSSButtonUpload:hover, .CSSButtonUpload:focus, .CSSButtonCalculate:hover, .CSSButtonCalculate:focus {
+        border-color: rgba(82, 168, 236, 0.8);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(82, 168, 236, 0.6);
+        outline: 0 none;
+    }
 
 /*div[name="ReadyJvnlp"] input[name="filterRow"] {
     margin: 0 auto;

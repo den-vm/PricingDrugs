@@ -60,6 +60,17 @@ $("button[name=buttonUploadFile],div[name='cl-btn']").click(function() {
     openFormFile();
 });
 
+$("button[name=buttonCalculate],div[name='cl-btn']").click(function () {
+    $.get('Jvnlp/Drugs/Calculate')
+        .always(function (data) {
+            if (data.status === 500) {
+                alertify.message(data.responseJSON["message"]);
+                return;
+            }
+            alertify.message("Рассчёт выполнен успешно");
+        });
+});
+
 $("li[name=openTableJvnlp]").click(function() {
     if (visibleFormTableDrugs) // закрыть форму наркотических препаратов
         FormTableDrugs(100);

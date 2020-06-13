@@ -54,12 +54,13 @@
 <div name="lockbody" style="bottom: 44px; display: none; left: 0px; position: absolute; right: 0px; top: 66px; width: 100%;">
 
 <div class="fonTableDrugs" name="tableDrugs">
-<div name="newTableJvnlp" style="display: block">
-    <button type="button" class="CSSButtonUpload" name="buttonUploadFile">Загрузить реестр</button>
-</div>
-<div name="lastTableJvnlp" style="display: none">
+    <div name="newTableJvnlp" style="display: block">
+        <button type="button" class="CSSButtonUpload" name="buttonUploadFile">Загрузить реестр</button>
+        <button type="button" class="CSSButtonCalculate" name="buttonCalculate">Расчитать</button>
+    </div>
+@*<div name="lastTableJvnlp" style="display: block">
     <button type="button" class="CSSButtonCalculate" name="buttonCalculate">Расчитать</button>
-</div>
+</div>*@
 <ul class="tableDrugsMenu" style="bottom: 0; margin: 0; position: absolute;">
     <li name="openTableOriginal">
         <p style="margin: 5px; vertical-align: middle;">Исходный реестр</p>
@@ -69,7 +70,13 @@
     </li>
 </ul>
 <!--Таблица исходного реестра препаратов (загруженный файл)-->
-<div name="originalJvnlp" style="width: 100%;background-color: rgba(0, 0, 0, 0.1); display: block; height: calc(100% - 80px); margin: 30px 0px 0px 0px; overflow: auto; position: absolute;">
+<div name="originalJvnlp" style="        width: 100%;
+        background-color: rgba(0, 0, 0, 0.1);
+        display: block;
+        height: calc(100% - 80px);
+        margin: 30px 0px 0px 0px;
+        overflow: auto;
+        position: absolute;">
     <div name="jvnlp" style="display: block; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
         <table id="tableDrugs" border="1"></table>
     </div>
