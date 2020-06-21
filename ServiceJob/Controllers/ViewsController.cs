@@ -22,6 +22,10 @@ namespace ServiceJob.Controllers
         ///     исходный реестр препаратов
         /// </summary>
         private static readonly List<List<object>[]> AllTableJvnlp = new List<List<object>[]>();
+        /// <summary>
+        /// рассчитанный список препаратов
+        /// </summary>
+        private static readonly List<List<object>[]> CaclDrugs = new List<List<object>[]>();
 
         //private readonly IHostingEnvironment _appEnvironment;
         private readonly UploadFile _fileProcessing = new UploadFile();
@@ -72,8 +76,6 @@ namespace ServiceJob.Controllers
                 var jsonExcludedDrugs =
                     JsonConvert.SerializeObject(responseRead[(int) JvnlpLists.Excluded].Take(VisibleLines));
 
-                // save last date update
-                _fileProcessing.SaveLastDateUpdate(AllTableJvnlp[(int)JvnlpLists.JVNLP][0][0].ToString());
                 return new JsonResult(new
                     {
                         original = new
@@ -394,8 +396,14 @@ namespace ServiceJob.Controllers
             if(AllTableJvnlp.Count == 0)
                 return new JsonResult(new { Message = "Список препаратов пуст" }) { StatusCode = 500 };
 
-            var date = await new CalculateDrugs().ReadLastDateUpdate();
-
+            CaclDrugs.Clear();
+            ICalculateDrugs calculate = new CalculateDrugs(); 
+            await Task.Run(() =>
+            {
+                calculate.Start(AllTableJvnlp[(int)JvnlpLists.JVNLP]);
+                CaclDrugs.Add(calculate.JvnlpCalculated);
+                CaclDrugs.Add(calculate.IncludeCalculated);
+            }); 
             return new JsonResult(new
                 {
                     

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ServiceJob.Models;
 
 namespace ServiceJob.Classes
 {
@@ -45,7 +46,7 @@ namespace ServiceJob.Classes
         }
 
         /// <summary>
-        /// WhereIf - Фильтрация данных
+        ///     WhereIf - Фильтрация данных
         /// </summary>
         /// <typeparam name="T">Тип коллекции данных</typeparam>
         /// <param name="source">Коллекция данных</param>
@@ -70,6 +71,47 @@ namespace ServiceJob.Classes
                 }
 
                 if (predicate(element, index)) yield return element;
+            }
+        }
+
+        public static string GetNameSelection(this float originalPrice)
+        {
+            if (originalPrice <= 50.0f) return "before50on";
+
+            if (originalPrice > 50.0f && originalPrice <= 500.0f) return "after50before500on";
+
+            return originalPrice > 500.0f ? "after500" : "";
+        }
+
+        public static void CalcListJvnlp(this List<object>[] listDrugs, List<string> actNarcoticDrugs,
+            ListCriteriasModels criteriaLoads, Dictionary<string, string[]> typeCriterias)
+        {
+            for (var i = 3; i < listDrugs.Length; i++)
+            {
+                var drug = listDrugs[i];
+                var isContainsNarcotic = actNarcoticDrugs.Any(nDrug => nDrug.Equals(drug[0].ToString().ToLower()));
+                var originalPrice = Convert.ToSingle(drug[6]);
+                var nds = float.Parse(criteriaLoads.nds);
+                drug[11] = originalPrice * Convert.ToSingle(nds); // рассчёт цены с НДС
+                var selection = originalPrice.GetNameSelection(); // Ценовая группа
+                var typeDrug = isContainsNarcotic ? "_n" : "_non"; // Наркотический или ненаркотический
+                var criterias = typeCriterias[selection + typeDrug].Select(float.Parse).ToArray(); // критерии рассчёта для текущего препарата
+                CalcCriteria(drug, criterias, originalPrice, nds); // рассчёт
+            }
+        }
+
+        private static void CalcCriteria(List<object> price, float[] currentCriteria, float originalPrice, float nds)
+        {
+            price[12] = (originalPrice + originalPrice * currentCriteria[0]) * nds;
+            for (int cell = 13, i = 0; i < currentCriteria.Length; cell++, i++)
+            {
+                if (cell == 13)
+                {
+                    price[cell] = originalPrice + originalPrice * currentCriteria[0]; 
+                    continue;
+                }
+                var notNds = (float)price[13]; 
+                price[cell] = (notNds + originalPrice * currentCriteria[i]) * nds; 
             }
         }
     }

@@ -92,13 +92,5 @@ namespace ServiceJob.Models
                 throw;
             }
         }
-        public async void SaveLastDateUpdate(string headerList)
-        {
-            var match = Regex.Match(headerList, @"(0[1-9]|[12][0-9]|3[01])[- .](0[1-9]|1[012])[- .](19|20)\d\d");
-            var dateUpdate = match.Value;
-            using var fs = new FileStream("lastdateupdate.json", FileMode.OpenOrCreate);
-            await JsonSerializer.SerializeAsync(fs, dateUpdate);
-        }
-
     }
 }

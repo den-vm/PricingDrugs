@@ -2,23 +2,115 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Rewrite.Internal;
-using Microsoft.Extensions.FileSystemGlobbing;
-using Newtonsoft.Json;
 using ServiceJob.Interface;
-using JsonSerializer = System.Text.Json.JsonSerializer;
+using ServiceJob.Models;
 
 namespace ServiceJob.Classes
 {
     public class CalculateDrugs : ICalculateDrugs
     {
-        public async Task<string> ReadLastDateUpdate()
+        public List<object>[] JvnlpCalculated { get; private set; }
+        public List<object>[] IncludeCalculated { get; private set; }
+
+        public async Task<string> ReadLastDateUpdate(string headerList)
         {
-            using var fs = new FileStream("lastdateupdate.json", FileMode.Open);
-            var date = await JsonSerializer.DeserializeAsync<string>(fs);
+            string date;
+            try
+            {
+                using var fs = new FileStream("lastdateupdate.json", FileMode.Open);
+                date = await JsonSerializer.DeserializeAsync<string>(fs);
+            }
+            catch
+            {
+                var match = Regex.Match(headerList, @"(0[1-9]|[12][0-9]|3[01])[- .](0[1-9]|1[012])[- .](19|20)\d\d");
+                date = match.Value;
+                using var fs = new FileStream("lastdateupdate.json", FileMode.OpenOrCreate);
+                await JsonSerializer.SerializeAsync(fs, date);
+            }
+
             return date;
+        }
+
+        public List<object>[] SearchIncludeDrugs(List<object>[] regDrugs, string lastDateUpdate)
+        {
+            var includeDrugs = regDrugs.Where(
+                (item, j) =>
+                {
+                    if (j <= 2)
+                        return true;
+                    var dateInc = item[9].ToString()
+                        .Trim(' ')
+                        .Substring(0, 10);
+                    var isContains = DateTime.Parse(dateInc) >= DateTime.Parse(lastDateUpdate);
+                    return isContains;
+                }).ToArray();
+
+            return includeDrugs;
+        }
+
+        public async void Start(List<object>[] regDrugs)
+        {
+            var narcoticDrugs =
+                await Task.Run(() =>
+                    new ProcessingNDrugs().GetDrugs()); // все наркотические препараты из сохраненного списка
+
+            var actNarcoticDrugs = narcoticDrugs
+                .Where(nDrug => nDrug.OutDate.Equals(null)) // действующие наркотические препараты
+                .Select(drug => drug.NameDrug.ToLower()).ToList();
+
+            var criteriaLoads =
+                await new PriceCriteria<ListCriteriasModels>().LoadAsync(); // процентные критерии расчёта
+
+            var typeCriterias = new Dictionary<string, string[]>
+            {
+                {"before50on_n", criteriaLoads.before50on.narcotik},
+                {"before50on_non", criteriaLoads.before50on.nonarcotik},
+                {"after50before500on_n", criteriaLoads.after50before500on.narcotik},
+                {"after50before500on_non", criteriaLoads.after50before500on.nonarcotik},
+                {"after500_n", criteriaLoads.after500.narcotik},
+                {"after500_non", criteriaLoads.after500.nonarcotik}
+            };
+
+            var includeDrugs = SearchIncludeDrugs(
+                regDrugs,
+                await ReadLastDateUpdate(regDrugs[0][0].ToString())); // новые включенные позиции
+
+            ExtendCellDrugs(regDrugs, includeDrugs); // создание списков для расчёта
+
+            JvnlpCalculated.CalcListJvnlp(actNarcoticDrugs, criteriaLoads, typeCriterias);
+            IncludeCalculated.CalcListJvnlp(actNarcoticDrugs, criteriaLoads, typeCriterias);
+        }
+
+        private void ExtendCellDrugs(List<object>[] regDrugs, List<object>[] inDrugs)
+        {
+            JvnlpCalculated = regDrugs.Select((item, i) =>
+            {
+                var exItem = new object[17];
+                item.CopyTo(exItem);
+                return exItem.ToList();
+            }).ToArray();
+            JvnlpCalculated[2][11] = "Цена производителя с НДС";
+            JvnlpCalculated[2][12] = "Предельная отпускная цена организаций оптовой торговли с НДС";
+            JvnlpCalculated[2][13] = "Предельная отпускная цена организаций оптовой торговли без НДС";
+            JvnlpCalculated[2][14] = "г.Улан-Удэ";
+            JvnlpCalculated[2][15] = "Сельские районы";
+            JvnlpCalculated[2][16] = "Районы приравненные к районам Крайнего Севера";
+
+            IncludeCalculated = inDrugs.Select((item, i) =>
+            {
+                var exItem = new object[17];
+                item.CopyTo(exItem);
+                return exItem.ToList();
+            }).ToArray();
+            IncludeCalculated[2][11] = "Цена производителя с НДС";
+            IncludeCalculated[2][12] = "Предельная отпускная цена организаций оптовой торговли с НДС";
+            IncludeCalculated[2][13] = "Предельная отпускная цена организаций оптовой торговли без НДС";
+            IncludeCalculated[2][14] = "г.Улан-Удэ";
+            IncludeCalculated[2][15] = "Сельские районы";
+            IncludeCalculated[2][16] = "Районы приравненные к районам Крайнего Севера";
         }
     }
 }

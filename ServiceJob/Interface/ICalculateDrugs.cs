@@ -7,6 +7,10 @@ namespace ServiceJob.Interface
 {
     interface ICalculateDrugs
     {
-        Task<string> ReadLastDateUpdate();
+        Task<string> ReadLastDateUpdate(string headerList);
+        List<object>[] SearchIncludeDrugs(List<object>[] regDrugs, string lastDateUpdate);
+        void Start(List<object>[] regDrugs);
+        List<object>[] JvnlpCalculated { get; }
+        List<object>[] IncludeCalculated { get; }
     }
 }
