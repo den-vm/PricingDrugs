@@ -22,6 +22,10 @@ namespace ServiceJob.Classes
                     activeTable = allTableJvnlp[(int)JvnlpLists.JVNLP];
                 if (nameTable.Equals("exjvnlpTable"))
                     activeTable = allTableJvnlp[(int)JvnlpLists.Excluded];
+                if (nameTable.Equals("tableDrugsNew"))
+                    activeTable = allTableJvnlp[(int)CalcJvnlp.CalcDrugs];
+                if (nameTable.Equals("tableDrugsIncluded"))
+                    activeTable = allTableJvnlp[(int)CalcJvnlp.CalcIncDrugs];
 
                 if (emptyFilter) // если текст фильтра пуст то возращаем всю исходную таблицу 
                 {

@@ -17,7 +17,7 @@ namespace ServiceJob.Models
         public DataTable Drugs { get; protected set; }
         public DataTable RemovedDrugs { get; protected set; }
 
-        public List<List<object>[]> ReadFileJvnlpAsync(StreamReader fileMemoryStream, string fileName)
+        public List<List<object>[]> ReadFileJvnlp(StreamReader fileMemoryStream, string fileName)
         {
             IExcelDataReader bookExcel = null;
             // register provide encoding 1252 to Excel
@@ -43,7 +43,8 @@ namespace ServiceJob.Models
                 var drugs = Drugs.Rows.Cast<DataRow>().Select(x => x.ItemArray.ToList()).ToArray();
                 var rmDrugs = RemovedDrugs.Rows.Cast<DataRow>().Select(x => x.ItemArray.ToList()).ToArray();
                 RemoveNullColumns(drugs,rmDrugs);
-
+                bookExcel?.Close();
+                fileMemoryStream.Close();
                 return new List<List<object>[]>
                 {
                     drugs,

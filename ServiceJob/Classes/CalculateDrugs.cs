@@ -51,18 +51,15 @@ namespace ServiceJob.Classes
             return includeDrugs;
         }
 
-        public async void Start(List<object>[] regDrugs)
+        public void Start(List<object>[] regDrugs)
         {
-            var narcoticDrugs =
-                await Task.Run(() =>
-                    new ProcessingNDrugs().GetDrugs()); // все наркотические препараты из сохраненного списка
+            var narcoticDrugs = new ProcessingNDrugs().GetDrugs(); // все наркотические препараты из сохраненного списка
 
             var actNarcoticDrugs = narcoticDrugs
                 .Where(nDrug => nDrug.OutDate.Equals(null)) // действующие наркотические препараты
                 .Select(drug => drug.NameDrug.ToLower()).ToList();
 
-            var criteriaLoads =
-                await new PriceCriteria<ListCriteriasModels>().LoadAsync(); // процентные критерии расчёта
+            var criteriaLoads =  new PriceCriteria<ListCriteriasModels>().LoadAsync().Result; // процентные критерии расчёта
 
             var typeCriterias = new Dictionary<string, string[]>
             {
@@ -76,7 +73,7 @@ namespace ServiceJob.Classes
 
             var includeDrugs = SearchIncludeDrugs(
                 regDrugs,
-                await ReadLastDateUpdate(regDrugs[0][0].ToString())); // новые включенные позиции
+                 ReadLastDateUpdate(regDrugs[0][0].ToString()).Result); // новые включенные позиции
 
             ExtendCellDrugs(regDrugs, includeDrugs); // создание списков для расчёта
 

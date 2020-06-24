@@ -20,11 +20,6 @@ var infotable = {
         data: "idlist",
         value: 1,
         text: ""
-    },
-    tableDrugsExcluded: {
-        data: "idlist",
-        value: 1,
-        text: ""
     }
 };
 
@@ -146,10 +141,7 @@ function GenerateTableJvnlpToStart(drugs, nameTable = "") {
 
     });
 
-    //без фильтрации (начальная загрузка)
-    if (nameTable === "newJvnlp" || nameTable === "includedJvnlp") {
-        // тут будет построение таблицы для рассчитанного ЖПВНЛ и Включенных
-    }
+    
 
     // а тут будет построение таблицы для всех остальных типов таблиц
     var table = "";
@@ -157,22 +149,42 @@ function GenerateTableJvnlpToStart(drugs, nameTable = "") {
     var tbody = '<tbody name="drugs" style="overflow-y: scroll;">';
     jsonDrugs.forEach(function(item, i) {
         if (i === 0) {
+            
+            
             thead += ('<tr name="headTable1">');
             thead += (`<td colspan="${jsonDrugs[2].length}" style="font-size: 21px;">${item[i]}</td>`);
             thead += ("</tr>");
             return;
         }
         if (i === 2) {
+            var addEmptyHead = "";
             var headColumn = ('<tr name="headTable2">');
             var headFilters = '<tr class="searchInput" name="headSearch">';
-            item.forEach(function(item, i) {
-                headColumn += (`<td style='width: calc(100%/${jsonDrugs[2].length})'>${item}</td>`);
-                headFilters += ("<td>");
-                headFilters += (`<input name="filterTable${i}" type="search" value="" placeholder="Поиск">`);
-                headFilters += ("</td>");
-            });
-            headFilters += ("</tr>");
-            headColumn += ("</tr>");
+            if (nameTable === "tableDrugsNew" || nameTable === "tableDrugsIncluded") {
+                addEmptyHead += "<tr>";
+                item.forEach(function (item, i) {
+                    if(i > 13)
+                        headColumn += (`<td style='width: calc(100%/${jsonDrugs[2].length})'>${item}</td>`);
+                    else addEmptyHead += (`<td style='width: calc(100%/${jsonDrugs[2].length})' rowspan = "2">${item}</td>`);
+                    
+                    headFilters += ("<td>");
+                    headFilters += (`<input name="filterTable${i}" type="search" value="" placeholder="Поиск">`);
+                    headFilters += ("</td>");
+                });
+                addEmptyHead += '<td colspan="3">Предельная розничная цена с НДС</td></tr>';
+                headColumn += ("</tr>");
+                headFilters += ("</tr>");
+            } else {
+                item.forEach(function (item, i) {
+                    headColumn += (`<td style='width: calc(100%/${jsonDrugs[2].length})'>${item}</td>`);
+                    headFilters += ("<td>");
+                    headFilters += (`<input name="filterTable${i}" type="search" value="" placeholder="Поиск">`);
+                    headFilters += ("</td>");
+                });
+                headColumn += ("</tr>");
+                headFilters += ("</tr>");
+            }
+            thead += addEmptyHead;
             thead += headColumn;
             thead += headFilters;
             thead += ("</thead>");

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,17 +17,21 @@ namespace ServiceJob.Controllers
     {
         private const int VisibleLines = 253;
 
+        static ViewsController()
+        {
+            AllTableJvnlp = new List<List<object>[]>();
+            CalcDrugs = new List<List<object>[]>();
+        }
+
         /// <summary>
         ///     исходный реестр препаратов
         /// </summary>
-        private static readonly List<List<object>[]> AllTableJvnlp = new List<List<object>[]>();
-        /// <summary>
-        /// рассчитанный список препаратов
-        /// </summary>
-        private static readonly List<List<object>[]> CaclDrugs = new List<List<object>[]>();
+        private static List<List<object>[]> AllTableJvnlp { get; }
 
-        //private readonly IHostingEnvironment _appEnvironment;
-        private readonly UploadFile _fileProcessing = new UploadFile();
+        /// <summary>
+        ///     рассчитанный список препаратов
+        /// </summary>
+        private static List<List<object>[]> CalcDrugs { get; }
 
         [Route("/Jvnlp")]
         public IActionResult Jvnlp()
@@ -43,7 +46,7 @@ namespace ServiceJob.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Jvnlp/upload")]
-        public IActionResult UploadFile(IFormCollection form)
+        public async Task<IActionResult> UploadFile(IFormCollection form)
         {
             try
             {
@@ -61,13 +64,12 @@ namespace ServiceJob.Controllers
                     throw new Exception("Неверный тип файла");
 
                 using var memoryStream = new StreamReader(fileJvnlp.OpenReadStream());
-
-                var responseRead = _fileProcessing.ReadFileJvnlpAsync(memoryStream, fileJvnlp.FileName);
-
-                if (responseRead.Count == 0)
-                    throw new Exception("Ошибка в чтении файла excel. Файл должен содержать листы 'Лист 1' и 'Искл'");
+                var fileProcessing = new UploadFile();
 
                 AllTableJvnlp.Clear();
+                var responseRead = fileProcessing.ReadFileJvnlp(memoryStream, fileJvnlp.FileName);
+                if (responseRead.Count == 0)
+                    throw new Exception("Ошибка в чтении файла excel. Файл должен содержать листы 'Лист 1' и 'Искл'");
                 AllTableJvnlp.Add(responseRead[(int) JvnlpLists.JVNLP]);
                 AllTableJvnlp.Add(responseRead[(int) JvnlpLists.Excluded]);
 
@@ -309,8 +311,13 @@ namespace ServiceJob.Controllers
             var filterList = new List<object>();
             try
             {
+                List<List<object>[]> table;
                 IControlRowsTable controlTable = new ControlTable();
-                filterList = controlTable.FilterRows(nameTable, listFilter, AllTableJvnlp);
+                if (nameTable.Equals("tableDrugs") || nameTable.Equals("exjvnlpTable"))
+                    table = AllTableJvnlp;
+                else table = CalcDrugs;
+
+                filterList = controlTable.FilterRows(nameTable, listFilter, table);
             }
             catch (Exception e)
             {
@@ -343,8 +350,13 @@ namespace ServiceJob.Controllers
         {
             try
             {
+                List<List<object>[]> table;
                 IControlRowsTable controlTable = new ControlTable();
-                var filterList = controlTable.FilterRows(nameTable, listFilter, AllTableJvnlp);
+                if (nameTable.Equals("tableDrugs") || nameTable.Equals("exjvnlpTable"))
+                    table = AllTableJvnlp;
+                else table = CalcDrugs;
+
+                var filterList = controlTable.FilterRows(nameTable, listFilter, table);
                 var nextCount = idList * VisibleLines;
                 switch (nameButton)
                 {
@@ -354,7 +366,7 @@ namespace ServiceJob.Controllers
                         break;
 
                     case "nextlist":
-                        if (nextCount > filterList.Count) 
+                        if (nextCount > filterList.Count)
                             return new JsonResult(null);
                         idList++;
                         break;
@@ -364,7 +376,7 @@ namespace ServiceJob.Controllers
                             return new JsonResult(null);
 
                         idList--;
-                        nextCount = (idList - 1) * (VisibleLines);
+                        nextCount = (idList - 1) * VisibleLines;
                         break;
                 }
 
@@ -379,7 +391,7 @@ namespace ServiceJob.Controllers
                         navigateListViewLength = filterList.Count - 3,
                         IdList = idList
                     })
-                    { StatusCode = 200 };
+                    {StatusCode = 200};
             }
             catch (Exception e)
             {
@@ -391,24 +403,51 @@ namespace ServiceJob.Controllers
 
         [HttpGet]
         [Route("Jvnlp/Drugs/Calculate")]
-        public async Task<IActionResult> GetCalculatedDrugs()
+        public IActionResult GetCalculatedDrugs()
         {
-            if(AllTableJvnlp.Count == 0)
-                return new JsonResult(new { Message = "Список препаратов пуст" }) { StatusCode = 500 };
+            if (AllTableJvnlp.Count == 0)
+                return new JsonResult(new {message = "Список препаратов пуст"}) {StatusCode = 500};
 
-            CaclDrugs.Clear();
-            ICalculateDrugs calculate = new CalculateDrugs(); 
-            await Task.Run(() =>
+            try
             {
-                calculate.Start(AllTableJvnlp[(int)JvnlpLists.JVNLP]);
-                CaclDrugs.Add(calculate.JvnlpCalculated);
-                CaclDrugs.Add(calculate.IncludeCalculated);
-            }); 
+                CalcDrugs.Clear();
+                ICalculateDrugs calculate = new CalculateDrugs();
+                calculate.Start(AllTableJvnlp[(int) JvnlpLists.JVNLP]);
+                CalcDrugs.Add(calculate.JvnlpCalculated);
+                CalcDrugs.Add(calculate.IncludeCalculated);
+            }
+            catch (Exception e)
+            {
+                return new JsonResult(new {message = e}) {StatusCode = 500};
+            }
+
+            return new JsonResult(new {message = "Реестр ЖВНЛП рассчитан"}) {StatusCode = 200};
+        }
+
+        [HttpPost]
+        [Route("Jvnlp/Calculated")]
+        public IActionResult GetCalculated()
+        {
+            var jsonCalcDrugs =
+                JsonConvert.SerializeObject(CalcDrugs[(int)CalcJvnlp.CalcDrugs].Take(VisibleLines));
+            var jsonIncCalcDrugs =
+                JsonConvert.SerializeObject(CalcDrugs[(int)CalcJvnlp.CalcIncDrugs].Take(VisibleLines));
             return new JsonResult(new
                 {
-                    
+                    calcJvnlp = new
+                    {
+                        drugs = jsonCalcDrugs,
+                        drugsLength = CalcDrugs[(int) CalcJvnlp.CalcDrugs].Length - 3,
+                        drugsViewLength = CalcDrugs[(int) CalcJvnlp.CalcDrugs].Take(VisibleLines).Count() - 3
+                    },
+                    calcIncJvnlp = new
+                    {
+                        drugs = jsonIncCalcDrugs,
+                        drugsLength = CalcDrugs[(int) CalcJvnlp.CalcIncDrugs].Length - 3,
+                        drugsViewLength = CalcDrugs[(int) CalcJvnlp.CalcIncDrugs].Take(VisibleLines).Count() - 3
+                    }
                 })
-                { StatusCode = 200 };
+                {StatusCode = 200};
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

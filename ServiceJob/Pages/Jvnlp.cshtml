@@ -58,9 +58,6 @@
         <button type="button" class="CSSButtonUpload" name="buttonUploadFile">Загрузить реестр</button>
         <button type="button" class="CSSButtonCalculate" name="buttonCalculate">Расчитать</button>
     </div>
-@*<div name="lastTableJvnlp" style="display: block">
-    <button type="button" class="CSSButtonCalculate" name="buttonCalculate">Расчитать</button>
-</div>*@
 <ul class="tableDrugsMenu" style="bottom: 0; margin: 0; position: absolute;">
     <li name="openTableOriginal">
         <p style="margin: 5px; vertical-align: middle;">Исходный реестр</p>
@@ -70,7 +67,7 @@
     </li>
 </ul>
 <!--Таблица исходного реестра препаратов (загруженный файл)-->
-<div name="originalJvnlp" style="        width: 100%;
+<div name="originalJvnlp" style= "width: 100%;
         background-color: rgba(0, 0, 0, 0.1);
         display: block;
         height: calc(100% - 80px);
@@ -95,7 +92,7 @@
 <div name="ReadyJvnlp" style="background-color: rgba(0, 0, 0, 0.1); display: none; height: calc(100% - 80px); margin: 30px 0px 0px 0px; position: absolute; width: 100%;">
 <div name="newJvnlp" style="display: none; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
     <table id="tableDrugsNew" border="1">
-        <thead>
+        @*<thead>
         <tr name="headTable1">
             <td colspan="17" style="font-size: 21px;">Государственный реестр предельных отпускных цен производителей на лекарственные препараты</br>включенные в перечень жизненно необходимых и важнейших лекарственных препаратов</br>(по состоянию на <span name="dataUpdateJVNLP">10.03.2020</span> )</td>
         </tr>
@@ -195,12 +192,12 @@
             <td>4,75</td>
             <td>5,18</td>
         </tr>
-        </tbody>
+        </tbody>*@
     </table>
 </div>
 <div name="includedJvnlp" style="display: none; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
     <table id="tableDrugsIncluded" border="1">
-        <thead>
+        @*<thead>
         <tr name="headTable1">
             <td colspan="17" style="font-size: 21px;">Государственный реестр предельных отпускных цен производителей на лекарственные препараты</br>включенные в перечень жизненно необходимых и важнейших лекарственных препаратов</br>(по состоянию на <span name="dataUpdateJVNLP">10.03.2020</span> )</td>
         </tr>
@@ -300,89 +297,7 @@
             <td>14,75</td>
             <td>16,18</td>
         </tr>
-        </tbody>
-    </table>
-</div>
-<div name="excludedJvnlp" style="display: none; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
-    <table id="tableDrugsExcluded" border="1">
-        <thead>
-        <tr name="headTable1">
-            <td colspan="13" style="font-size: 21px;">Государственный реестр предельных отпускных цен производителей на лекарственные препараты</br>включенные в перечень жизненно необходимых и важнейших лекарственных препаратов</br>(по состоянию на <span name="dataUpdateJVNLP">10.03.2020</span> )</td>
-        </tr>
-        <tr name="headTable2">
-            <td>МНН</td>
-            <td>Торговое наименование лекарственного препарата </td>
-            <td>Лекарственная форма, дозировка, упаковка (полная)</td>
-            <td>Владелец РУ/производитель/упаковщик/Выпускающий контроль</td>
-            <td>Количество в потреб. упаковке</td>
-            <td>Предельная цена руб. без НДС</td>
-            <td>Цена указана для первич. упаковки</td>
-            <td>№ РУ</td>
-            <td>Дата регистрации цены<br/>(№ решения)</td>
-            <td>Штрих-код (EAN13)</td>
-            <td>АТХ</td>
-            <td>Дата исключения</td>
-            <td>Причина исключения</td>
-        </tr>
-        <tr class="searchInput" name="headSearch">
-            <td>
-                <input name="filterTable1" type="search" value="" placeholder="Поиск">
-            </td>
-            <td>
-                <input name="filterTable2" type="search" value="" placeholder="Поиск">
-            </td>
-            <td>
-                <input name="filterTable3" type="search" value="" placeholder="Поиск">
-            </td>
-            <td>
-                <input name="filterTable4" type="search" value="" placeholder="Поиск">
-            </td>
-            <td>
-                <input name="filterTable5" type="search" value="" placeholder="Поиск">
-            </td>
-            <td>
-                <input name="filterTable6" type="search" value="" placeholder="Поиск">
-            </td>
-            <td>
-                <input name="filterTable7" type="search" value="" placeholder="Поиск">
-            </td>
-            <td>
-                <input name="filterTable8" type="search" value="" placeholder="Поиск">
-            </td>
-            <td>
-                <input name="filterTable9" type="search" value="" placeholder="Поиск">
-            </td>
-            <td>
-                <input name="filterTable10" type="search" value="" placeholder="Поиск">
-            </td>
-            <td>
-                <input name="filterTable11" type="search" value="" placeholder="Поиск">
-            </td>
-            <td>
-                <input name="filterTable12" type="search" value="" placeholder="Поиск">
-            </td>
-            <td>
-                <input name="filterTable13" type="search" value="" placeholder="Поиск">
-            </td>
-        </tr>
-        </thead>
-        <tbody style="overflow-y: scroll;">
-        <tr name="drug">
-            <td>-</td>
-            <td>Перекись водорода</td>
-            <td>раствор для местного и наружного применения 3%, 100мл - флаконы (1) (для стационаров)</td>
-            <td>ООО &quot;ЮжФарм&quot; - Россия</td>
-            <td>1</td>
-            <td>8,65</td>
-            <td></td>
-            <td></td>
-            <td>02.07.2012 (16/20-12)</td>
-            <td>4620008620022</td>
-            <td></td>
-            <td>01.07.2019</td>
-            <td>исключения лекарственного препарата из государственного реестра лекарственных средств для медицинского применения</td>
-        </tr>
-        </tbody>
+        </tbody>*@
     </table>
 </div>
 <ul class="readyJvnlpMenu">
@@ -391,9 +306,6 @@
     </li>
     <li name="openIncludedJvnlp">
         <p style="margin: 5px; vertical-align: middle;">Включенные позиции</p>
-    </li>
-    <li name="openExcludedJvnlp" style="width: 310px;">
-        <p style="margin: 5px; vertical-align: middle;">Исключенные позиции исходного реестра</p>
     </li>
 </ul>
 </div>
