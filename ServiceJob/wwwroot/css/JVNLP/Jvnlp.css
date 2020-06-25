@@ -73,14 +73,25 @@ section, footer, header, aside { display: block; }
 }
 
 .fonTableDrugs thead, .fonTableDrugs tbody {
-    display: block;
+    /*display: block;*/
     font-family: "Calibri";
     font-size: 12px;
     overflow-y: scroll;
     text-align: center;
 }
-
-.fonTableDrugs thead { font-weight: bold; }
+    .fonTableDrugs thead > tr[name="headTable2"] > td {
+        position: sticky;
+        top: 0;
+        background-color: rgb(169, 169, 169);
+    }
+.fonTableDrugs thead > tr[name="headTable2_1"] > td {
+    position: sticky;
+    top: 0;
+    background-color: rgb(169, 169, 169);
+}
+.fonTableDrugs thead {
+        font-weight: bold;
+    }
 
 .fonTableDrugs tbody {
     overflow-x: auto;

@@ -161,10 +161,10 @@ function GenerateTableJvnlpToStart(drugs, nameTable = "") {
             var headColumn = ('<tr name="headTable2">');
             var headFilters = '<tr class="searchInput" name="headSearch">';
             if (nameTable === "tableDrugsNew" || nameTable === "tableDrugsIncluded") {
-                addEmptyHead += "<tr>";
+                addEmptyHead += '<tr name="headTable2_1">';
                 item.forEach(function (item, i) {
                     if(i > 13)
-                        headColumn += (`<td style='width: calc(100%/${jsonDrugs[2].length})'>${item}</td>`);
+                        headColumn += (`<td style='width: calc(100%/${jsonDrugs[2].length}); top: 21px;'>${item}</td>`);
                     else addEmptyHead += (`<td style='width: calc(100%/${jsonDrugs[2].length})' rowspan = "2">${item}</td>`);
                     
                     headFilters += ("<td>");
@@ -190,7 +190,7 @@ function GenerateTableJvnlpToStart(drugs, nameTable = "") {
             thead += ("</thead>");
             return;
         }
-        var tr = '<tr name="drug">';
+        var tr = '<tr name="drug" class="headSticky">';
         item.forEach(function(item, i) {
             if (item === null)
                 item = "";
