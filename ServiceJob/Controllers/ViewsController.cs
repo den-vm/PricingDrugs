@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using OfficeOpenXml;
 using ServiceJob.Classes;
 using ServiceJob.Interface;
 using ServiceJob.Models;
@@ -97,7 +99,6 @@ namespace ServiceJob.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 return new JsonResult(new
                     {
                         message = e.Message
@@ -256,9 +257,8 @@ namespace ServiceJob.Controllers
                     })
                     {StatusCode = 200};
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e);
             }
 
             return new JsonResult(new
@@ -286,9 +286,8 @@ namespace ServiceJob.Controllers
                     })
                     {StatusCode = 200};
             }
-            catch (Exception e)
+            catch
             {
-                Console.WriteLine(e);
             }
 
             return new JsonResult(new
@@ -321,7 +320,6 @@ namespace ServiceJob.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 return new JsonResult(new {message = e.Message})
                     {StatusCode = 500};
             }
@@ -395,15 +393,18 @@ namespace ServiceJob.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 return new JsonResult(new {message = e.Message})
                     {StatusCode = 500};
             }
         }
 
+        /// <summary>
+        ///     Расчёт цен на препараты ЖВНЛП
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("Jvnlp/Drugs/Calculate")]
-        public IActionResult GetCalculatedDrugs()
+        public IActionResult CalculateDrugs()
         {
             if (AllTableJvnlp.Count == 0)
                 return new JsonResult(new {message = "Список препаратов пуст"}) {StatusCode = 500};
@@ -418,20 +419,24 @@ namespace ServiceJob.Controllers
             }
             catch (Exception e)
             {
-                return new JsonResult(new {message = e}) {StatusCode = 500};
+                return new JsonResult(new {message = e.Message}) {StatusCode = 500};
             }
 
             return new JsonResult(new {message = "Реестр ЖВНЛП рассчитан"}) {StatusCode = 200};
         }
 
+        /// <summary>
+        ///     Вывод рассчитанного реестра препаратов ЖВНЛП
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [Route("Jvnlp/Calculated")]
         public IActionResult GetCalculated()
         {
             var jsonCalcDrugs =
-                JsonConvert.SerializeObject(CalcDrugs[(int)CalcJvnlp.CalcDrugs].Take(VisibleLines));
+                JsonConvert.SerializeObject(CalcDrugs[(int) CalcJvnlp.CalcDrugs].Take(VisibleLines));
             var jsonIncCalcDrugs =
-                JsonConvert.SerializeObject(CalcDrugs[(int)CalcJvnlp.CalcIncDrugs].Take(VisibleLines));
+                JsonConvert.SerializeObject(CalcDrugs[(int) CalcJvnlp.CalcIncDrugs].Take(VisibleLines));
             return new JsonResult(new
                 {
                     calcJvnlp = new
@@ -448,6 +453,109 @@ namespace ServiceJob.Controllers
                     }
                 })
                 {StatusCode = 200};
+        }
+
+        [HttpPost]
+        [Route("Jvnlp/SaveCalculated")]
+        public IActionResult SaveCalculatedAsExcel()
+        {
+            var nameFile = "";
+
+            if (CalcDrugs.Count == 0)
+                return new JsonResult(new {message = "Для сохранения в файл необходимо выполнить рассчёт"})
+                    {StatusCode = 500};
+
+            var drugsJvnlp = new List<object[]>();
+            var drugsIncJvnlp = new List<object[]>();
+            var drugsExJvnlp = new List<object[]>();
+
+            var notNumHeader = 0;
+            foreach (var rowDrug in CalcDrugs[(int) CalcJvnlp.CalcDrugs])
+            {
+                if (notNumHeader < 3)
+                {
+                    notNumHeader++;
+                    continue;
+                }
+
+                if (rowDrug[0].ToString().Equals("")) 
+                    rowDrug[0] = "-";
+                drugsJvnlp.Add(rowDrug.ToArray());
+            }
+
+            notNumHeader = 0;
+            foreach (var rowDrug in CalcDrugs[(int) CalcJvnlp.CalcIncDrugs])
+            {
+                if (notNumHeader < 3)
+                {
+                    notNumHeader++;
+                    continue;
+                }
+
+                if (rowDrug[0].ToString().Equals("")) 
+                    rowDrug[0] = "-";
+                drugsIncJvnlp.Add(rowDrug.ToArray());
+            }
+
+            notNumHeader = 0;
+            foreach (var rowDrug in AllTableJvnlp[(int) JvnlpLists.Excluded])
+            {
+                if (notNumHeader < 3)
+                {
+                    notNumHeader++;
+                    continue;
+                }
+
+                if (rowDrug[0].ToString().Equals("")) 
+                    rowDrug[0] = "-";
+                drugsExJvnlp.Add(rowDrug.ToArray());
+            }
+
+            try
+            {
+                drugsJvnlp = drugsJvnlp.OrderBy(row => row[0]).ToList();
+                drugsIncJvnlp = drugsIncJvnlp.OrderBy(row => row[0]).ToList();
+                drugsExJvnlp = drugsExJvnlp.OrderBy(row => row[0]).ToList();
+
+                var headerText = AllTableJvnlp[(int) JvnlpLists.JVNLP][0][0];
+                var matchResult = Regex.Match((string) headerText,
+                    @"(0[1-9]|[12][0-9]|3[01])[- .](0[1-9]|1[012])[- .](19|20)\d\d");
+                var dateUpdateDrugs = matchResult.Value.Split('.');
+                var savePath = Directory.GetCurrentDirectory() + "\\";
+                nameFile = @$"{savePath}JVNLP_{dateUpdateDrugs[0]}_{dateUpdateDrugs[1]}_{dateUpdateDrugs[2]}.xlsx";
+
+                // Is used lib EPPlus to save Excel
+
+                using var newBookExcel =
+                    new ExcelPackage(
+                        new FileInfo(nameFile),
+                        new FileInfo(@$"{Directory.GetCurrentDirectory()}\JVNLP_.xlsx"));
+                var sheetJvnlp = newBookExcel.Workbook.Worksheets[1];
+                sheetJvnlp.Cells["A1"].Value = headerText;
+                sheetJvnlp.Cells["A4"].LoadFromArrays(drugsJvnlp.ToArray());
+
+                var sheetIncJvnlp = newBookExcel.Workbook.Worksheets[2];
+                sheetIncJvnlp.Cells["A1"].Value = headerText;
+                sheetIncJvnlp.Cells["A4"].LoadFromArrays(drugsIncJvnlp.ToArray());
+
+                var sheetExJvnlp = newBookExcel.Workbook.Worksheets[3];
+                sheetExJvnlp.Cells["A1"].Value = headerText;
+                sheetExJvnlp.Cells["A3"].LoadFromArrays(drugsExJvnlp.ToArray());
+
+                const string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                HttpContext.Response.ContentType = contentType;
+                HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
+
+                var fileContentResult = new FileContentResult(newBookExcel.GetAsByteArray(), contentType)
+                {
+                    FileDownloadName = nameFile
+                };
+                return fileContentResult;
+            }
+            catch (Exception e)
+            {
+                return new JsonResult(new {message = e.Message}) {StatusCode = 500};
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -56,6 +56,7 @@
     <div name="newTableJvnlp" style="display: block">
         <button type="button" class="CSSButtonUpload" name="buttonUploadFile">Загрузить реестр</button>
         <button type="button" class="CSSButtonCalculate" name="buttonCalculate">Расчитать</button>
+        <button type="button" class="CSSButtonCalculate" name="buttonSaveToFileExcel" style="left: 195px;">Сохранить в Excel</button>
     </div>
     <ul class="tableDrugsMenu" style="bottom: 0; margin: 0; position: absolute;">
         <li name="openTableOriginal">
@@ -66,7 +67,14 @@
         </li>
     </ul>
     <!--Таблицы исходного реестра препаратов (загруженный файл)-->
-    <div name="originalJvnlp" style="background-color: rgba(0, 0, 0, 0.1); display: block; margin: 30px 0px 0px 0px; overflow: auto; position: absolute; width: 100%; height: calc(100% - 80px);">
+    <div name="originalJvnlp" style="        background-color: rgba(0, 0, 0, 0.1);
+        display: block;
+        margin: 30px 0px 0px 0px;
+        overflow: auto;
+        position: absolute;
+        width: 100%;
+        height: calc(100% - 80px);
+">
         <div name="jvnlp" style="display: block; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
             <table id="tableDrugs" border="1"></table>
         </div>

@@ -85,23 +85,61 @@ $("button[name=buttonCalculate],div[name='cl-btn']").click(function() { // ра�
 
                         infotable["tableDrugsNew"]["value"] = 1;
                         infotable["tableDrugsNew"]["text"] =
-                            `${data["calcJvnlp"]["drugsViewLength"]} из ${data["calcJvnlp"]["drugsLength"]} (Стр. ${infotable[
+                            `${data["calcJvnlp"]["drugsViewLength"]} из ${data["calcJvnlp"]["drugsLength"]} (Стр. ${
+                            infotable[
                                 "tableDrugsNew"]["value"]})`;
 
                         infotable["tableDrugsIncluded"]["value"] = 1;
                         infotable["tableDrugsIncluded"]["text"] =
-                            `${data["calcIncJvnlp"]["drugsViewLength"]} из ${data["calcIncJvnlp"]["drugsLength"]} (Стр. ${infotable[
+                            `${data["calcIncJvnlp"]["drugsViewLength"]} из ${data["calcIncJvnlp"]["drugsLength"]
+                            } (Стр. ${infotable[
                                 "tableDrugsIncluded"]["value"]})`;
 
                         UpdateInfotable("tableDrugsNew");
 
                         AddEventFilteredOnTable("tableDrugsNew");
                         AddEventFilteredOnTable("tableDrugsIncluded");
+                    },
+                    500: function(data) {
+                        alertify.error(data["message"]);
                     }
                 }
             });
         });
 });
+
+$("button[name=buttonSaveToFileExcel],div[name='cl-btn']").click(
+    function() { // сохранение рассчитанного реестра в файл Excel
+        $.ajax({
+            type: "POST",
+            url: "Jvnlp/SaveCalculated",
+            processData: false, // отключение преобразования строки запроса по contentType
+            contentType:
+                false, // отключение преобразования контента в тип по умолчанию: "application/x-www-form-urlencoded;"
+            dataType: 'binary',
+            xhrFields: {
+                'responseType': 'blob'
+            },
+            statusCode: {
+                200: function (data, status, xhr) {
+                    var link = document.createElement('a'),
+                        filename = "";
+                    if (xhr.getResponseHeader('Content-Disposition')){//имя файла
+                        filename = xhr.getResponseHeader('Content-Disposition');
+                         filename = filename.match(/filename="(.*?)"/)[1];
+                        filename = decodeURIComponent(filename);
+                        filename = filename.substring(filename.length-21);
+                    }
+                    link.href = URL.createObjectURL(data);
+                    link.download = filename;
+                    link.click();
+                },
+                500: function (data) {
+                    alertify.error(data.responseJSON["message"]);
+                }
+            }
+        });
+    });
 
 $("li[name=openTableJvnlp]").click(function() {
     if (visibleFormTableDrugs) // закрыть форму наркотических препаратов
@@ -140,7 +178,8 @@ $("li[name=openTableOriginal]").click(function() {
     $("li[name=openExcludedJvnlp]").css("background-color", "rgba(0, 222, 255, 0)");
 
     $("button[name='buttonCalculate']").css("display", "none");
-    
+    $("button[name='buttonSaveToFileExcel']").css("display", "none");
+
     var activeTable = GetNameActiveTable();
     if (activeTable !== "tableDrugs" && activeTable !== "exjvnlpTable") {
         $("li[name=openTableOriginal]").css("background-color", "rgba(0, 222, 255, 0.29)");
@@ -168,6 +207,7 @@ $("li[name=openTableReady]").click(function() {
     $("li[name=openOriginalExcludedJvnlp]").css("background-color", "rgba(0, 222, 255, 0)");
 
     $("button[name='buttonCalculate']").css("display", "block");
+    $("button[name='buttonSaveToFileExcel']").css("display", "block");
 
     var activeTable = GetNameActiveTable();
     if (activeTable !== "tableDrugsNew" && activeTable !== "tableDrugsIncluded") {
@@ -410,4 +450,4 @@ function RequestFormNPDrugs(dataForm) {
                 });
         }
     });
-}
+};

@@ -234,10 +234,6 @@ function GenerateTableJvnlpOriginal(drugs, nameTable = "") {
         }
     });
 
-    if (nameTable === "newJvnlp" || nameTable === "includedJvnlp") {
-        // тут будет построение таблицы для рассчитанного ЖПВНЛ и Включенных
-    }
-
     var tbody = "";
     delete jsonDrugs[0]; // удаляем заголовок таблицы
     delete jsonDrugs[2]; // удаляем строку с заголовками столбцов
