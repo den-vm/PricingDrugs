@@ -109,7 +109,8 @@ $("button[name=buttonCalculate],div[name='cl-btn']").click(function() { // ра�
 });
 
 $("button[name=buttonSaveToFileExcel],div[name='cl-btn']").click(
-    function() { // сохранение рассчитанного реестра в файл Excel
+    function () { // сохранение рассчитанного реестра в файл Excel
+        $("div[name='lockActionsDownload']").css("display", "block");
         $.ajax({
             type: "POST",
             url: "Jvnlp/SaveCalculated",
@@ -119,6 +120,23 @@ $("button[name=buttonSaveToFileExcel],div[name='cl-btn']").click(
             dataType: 'binary',
             xhrFields: {
                 'responseType': 'blob'
+            },
+            xhr: function () {
+                var xhr = $.ajaxSettings.xhr(); // получаем объект XMLHttpRequest
+                xhr.onprogress = function (event) {
+                    if (event.lengthComputable) { // если известно количество байт
+                        // высчитываем процент скачиваемого
+                        var percentComplete = Math.ceil(event.loaded / event.total * 100);
+                        // устанавливаем значение в атрибут value тега <progress>
+                        // и это же значение альтернативным текстом для браузеров, не поддерживающих <progress>
+                        $("#lockActionsDownloadCount").html(percentComplete + "%");
+                        if (percentComplete === 100) {
+                            $("#lockActionsDownloadCount").html("");
+                            $("div[name='lockActionsDownload']").css("display", "none");
+                        }
+                    }
+                };
+                return xhr;
             },
             statusCode: {
                 200: function (data, status, xhr) {

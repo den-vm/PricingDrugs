@@ -12,6 +12,15 @@
         <p style="color: white; font-family: 'Calibri'; text-align: center;">Примерное время ожидания: 20 секунд</p>
     </div>
 </div>
+<div name="lockActionsDownload" style="background-color: rgba(0, 0, 0, 0.9); bottom: 0; display: none; height: 100%; left: 0; position: fixed; right: 0; top: 0; width: 100%; z-index: 999999999;">
+    <div style="bottom: 0; height: 10%; left: 0; margin: auto; position: absolute; right: 0; top: 0; width: 42%;">
+        <svg class="spinner" viewBox="0 0 50 50">
+            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+        </svg>
+        <p style="color: white; font-family: 'Calibri'; text-align: center;">Скачивание...</p>
+        <p id="lockActionsDownloadCount" style="color: white;top: -84px;position: relative;width: 30px;height: 30px;font-size: 13px;margin: 0 auto;"></p>
+    </div>
+</div>
 <style>
     .alertify-notifier .ajs-message.ajs-success {
         color: black;
@@ -55,7 +64,7 @@
 <div class="fonTableDrugs" name="tableDrugs">
     <div name="newTableJvnlp" style="display: block">
         <button type="button" class="CSSButtonUpload" name="buttonUploadFile">Загрузить реестр</button>
-        <button type="button" class="CSSButtonCalculate" name="buttonCalculate">Расчитать</button>
+        <button type="button" class="CSSButtonCalculate" name="buttonCalculate">Рассчитать</button>
         <button type="button" class="CSSButtonCalculate" name="buttonSaveToFileExcel" style="left: 195px;">Сохранить в Excel</button>
     </div>
     <ul class="tableDrugsMenu" style="bottom: 0; margin: 0; position: absolute;">
@@ -67,14 +76,7 @@
         </li>
     </ul>
     <!--Таблицы исходного реестра препаратов (загруженный файл)-->
-    <div name="originalJvnlp" style="        background-color: rgba(0, 0, 0, 0.1);
-        display: block;
-        margin: 30px 0px 0px 0px;
-        overflow: auto;
-        position: absolute;
-        width: 100%;
-        height: calc(100% - 80px);
-">
+    <div name="originalJvnlp" style="background-color: rgba(0, 0, 0, 0.1); display: block; height: calc(100% - 80px); margin: 30px 0px 0px 0px; overflow: auto; position: absolute; width: 100%;">
         <div name="jvnlp" style="display: block; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
             <table id="tableDrugs" border="1"></table>
         </div>
@@ -91,7 +93,12 @@
         </ul>
     </div>
     <!--Таблицы рассчитанных препаратов-->
-    <div name="ReadyJvnlp" style="background-color: rgba(0, 0, 0, 0.1); display: none; height: calc(100% - 80px); margin: 30px 0px 0px 0px; position: absolute; width: 100%;">
+    <div name="ReadyJvnlp" style="        background-color: rgba(0, 0, 0, 0.1);
+        display: none;
+        height: calc(100% - 80px);
+        margin: 30px 0px 0px 0px;
+        position: absolute;
+        width: 100%;">
         <div name="newJvnlp" style="display: none; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
             <table id="tableDrugsNew" border="1">
             </table>
