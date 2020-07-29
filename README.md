@@ -16,7 +16,7 @@
 ## Запуск
 Запуск приложения осуществляется с помощью исполняемого файла ServiceJob.exe или с помощью командной строки "dotnet ServiceJob.dll". Сайт доступен по адресу https://localhost:5001/.
 
-!!!Для корректной работы приложения в рамках расчёта цен необходимы такие файлы как lastdateupdate.json, configcriteria.json, JVNLP_.xlsx. 
+!!!Для корректного расчёта цен необходимо наличие в корне дериктории приложения такие файлы как lastdateupdate.json, configcriteria.json, JVNLP_.xlsx. 
 
 ## Настройка
 Начальная настройка приложения заключается в указании последней даты обновления или любой даты в файле lastdateupdate.json, заполнения таблицы наркотических и психотропных препаратов и критериев расчёта на сайте по адресу https://localhost:5001/Jvnlp в вкладках "Таблица нарк. и псих. препаратов" и "Таблица критерий на цены нарк. и псих. препаратов"
@@ -54,7 +54,7 @@ This application is intended for calculating prices for medicines from the ZHVNL
 ## Launch
 The application is launched using an executable file ServiceJob.exe or using the "dotnet" command line ServiceJob.dll". The site is available at https://localhost:5001/.
 
-!!!Files such as lastdateupdate are required for the app to work correctly within the price calculation.json, configcriteria.json, JVNLP_.xlsx.
+!!!To correctly calculate prices, you must have files such as lastdateupdate in the root of the application's derictory.json, configcriteria.json, JVNLP_.xlsx.
 
 ## Customization
 The initial configuration of the application is to specify the last update date or any date in the lastdateupdate file.json, filling in the table of narcotic and psychotropic drugs and calculation criteria on the site at https://localhost:5001/Jvnlp in the "narc table" tabs. and crazy. drugs " and " table of criteria for drug prices. and crazy. drugs"
