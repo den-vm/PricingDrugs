@@ -18,6 +18,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="JVNLP_.xlsx" />
+    <None Remove="NDrugsReestr.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="JVNLP_.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NDrugsReestr.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AlertifyJS" Version="1.11.4" />
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />

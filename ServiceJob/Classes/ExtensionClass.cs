@@ -74,13 +74,13 @@ namespace ServiceJob.Classes
             }
         }
 
-        public static string GetNameSelection(this float originalPrice)
+        public static string GetNameSelection(this double originalPrice)
         {
-            if (originalPrice <= 50.0f) return "before50on";
+            if (originalPrice <= 50.0d) return "before50on";
 
-            if (originalPrice > 50.0f && originalPrice <= 500.0f) return "after50before500on";
+            if (originalPrice > 50.0d && originalPrice <= 500.0d) return "after50before500on";
 
-            return originalPrice > 500.0f ? "after500" : "";
+            return originalPrice > 500.0d ? "after500" : "";
         }
 
         public static void CalcListJvnlp(this List<object>[] listDrugs, List<string> actNarcoticDrugs,
@@ -90,28 +90,32 @@ namespace ServiceJob.Classes
             {
                 var drug = listDrugs[i];
                 var isContainsNarcotic = actNarcoticDrugs.Any(nDrug => nDrug.Equals(drug[0].ToString().ToLower()));
-                var originalPrice = Convert.ToSingle(drug[6]);
-                var nds = float.Parse(criteriaLoads.nds);
-                drug[11] = originalPrice * Convert.ToSingle(nds); // рассчёт цены с НДС
+                var originalPrice = Convert.ToDouble(drug[6]);
+                var nds = double.Parse(criteriaLoads.nds);
+                drug[11] = originalPrice * Convert.ToDouble(nds); // рассчёт цены с НДС
                 var selection = originalPrice.GetNameSelection(); // Ценовая группа
                 var typeDrug = isContainsNarcotic ? "_n" : "_non"; // Наркотический или ненаркотический
-                var criterias = typeCriterias[selection + typeDrug].Select(float.Parse).ToArray(); // критерии рассчёта для текущего препарата
-                CalcCriteria(drug, criterias, originalPrice, nds); // рассчёт
+                var criterias =
+                    typeCriterias[selection + typeDrug].Select(double.Parse)
+                        .ToArray(); // критерии рассчёта для текущего препарата
+                drug.CalcCriteria(criterias, originalPrice, nds); // рассчёт
             }
         }
 
-        private static void CalcCriteria(List<object> price, float[] currentCriteria, float originalPrice, float nds)
+        private static void CalcCriteria(this List<object> price, double[] currentCriteria, double originalPrice,
+            double nds)
         {
-            price[12] = (originalPrice + originalPrice * currentCriteria[0]) * nds;
+            price[12] = (originalPrice + originalPrice * (currentCriteria[0] / 100)) * nds;
             for (int cell = 13, i = 0; i < currentCriteria.Length; cell++, i++)
             {
                 if (cell == 13)
                 {
-                    price[cell] = originalPrice + originalPrice * currentCriteria[0]; 
+                    price[cell] = originalPrice + originalPrice * (currentCriteria[0] / 100);
                     continue;
                 }
-                var notNds = (float)price[13]; 
-                price[cell] = (notNds + originalPrice * currentCriteria[i]) * nds; 
+
+                var notNds = double.Parse(price[13].ToString());
+                price[cell] = (notNds + originalPrice * (currentCriteria[i] / 100)) * nds;
             }
         }
     }

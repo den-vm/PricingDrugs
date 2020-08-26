@@ -44,7 +44,7 @@ namespace ServiceJob.Classes
                     var dateInc = item[9].ToString()
                         .Trim(' ')
                         .Substring(0, 10);
-                    var isContains = DateTime.Parse(dateInc) >= DateTime.Parse(lastDateUpdate);
+                    var isContains = DateTime.Parse(dateInc) > DateTime.Parse(lastDateUpdate);
                     return isContains;
                 }).ToArray();
 
