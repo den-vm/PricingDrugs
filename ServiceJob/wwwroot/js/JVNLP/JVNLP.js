@@ -159,6 +159,25 @@ $("button[name=buttonSaveToFileExcel],div[name='cl-btn']").click(
         });
     });
 
+$("button[name=buttonSavePrevDate],div[name='cl-btn']").click(
+    function () { // сохранение рассчитанного реестра в файл Excel
+        $.ajax({
+            type: "POST",
+            url: "Jvnlp/SaveDateUpdate",
+            processData: false, // отключение преобразования строки запроса по contentType
+            contentType:
+                false, // отключение преобразования контента в тип по умолчанию: "application/x-www-form-urlencoded;"
+            statusCode: {
+                200: function (data) {
+                    alertify.message(data["message"]);
+                },
+                500: function (data) {
+                    alertify.error(data.responseJSON["message"]);
+                }
+            }
+        });
+    });
+
 $("li[name=openTableJvnlp]").click(function() {
     if (visibleFormTableDrugs) // закрыть форму наркотических препаратов
         FormTableDrugs(100);
@@ -197,6 +216,7 @@ $("li[name=openTableOriginal]").click(function() {
 
     $("button[name='buttonCalculate']").css("display", "none");
     $("button[name='buttonSaveToFileExcel']").css("display", "none");
+    $("button[name='buttonSavePrevDate']").css("display", "none");
 
     var activeTable = GetNameActiveTable();
     if (activeTable !== "tableDrugs" && activeTable !== "exjvnlpTable") {
@@ -226,6 +246,7 @@ $("li[name=openTableReady]").click(function() {
 
     $("button[name='buttonCalculate']").css("display", "block");
     $("button[name='buttonSaveToFileExcel']").css("display", "block");
+    $("button[name='buttonSavePrevDate']").css("display", "block");
 
     var activeTable = GetNameActiveTable();
     if (activeTable !== "tableDrugsNew" && activeTable !== "tableDrugsIncluded") {

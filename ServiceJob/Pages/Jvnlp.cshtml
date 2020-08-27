@@ -66,6 +66,7 @@
         <button type="button" class="CSSButtonUpload" name="buttonUploadFile">Загрузить реестр</button>
         <button type="button" class="CSSButtonCalculate" name="buttonCalculate">Рассчитать</button>
         <button type="button" class="CSSButtonCalculate" name="buttonSaveToFileExcel" style="left: 195px;">Сохранить в Excel</button>
+        <button type="button" class="CSSButtonCalculate" name="buttonSavePrevDate" style="left: 390px;width: auto;">Сохранить дату обновления реестра из файла</button>
     </div>
     <ul class="tableDrugsMenu" style="bottom: 0; margin: 0; position: absolute;">
         <li name="openTableOriginal">
@@ -77,7 +78,11 @@
     </ul>
     <!--Таблицы исходного реестра препаратов (загруженный файл)-->
     <div name="originalJvnlp" style="background-color: rgba(0, 0, 0, 0.1); display: block; height: calc(100% - 80px); margin: 30px 0px 0px 0px; overflow: auto; position: absolute; width: 100%;">
-        <div name="jvnlp" style="display: block; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
+        <div name="jvnlp" style="        display: block;
+        height: calc(100% - 73px);
+        overflow-x: scroll;
+        overflow-y: auto;
+        width: 100%;">
             <table id="tableDrugs" border="1"></table>
         </div>
         <div name="exjvnlp" style="display: none; height: calc(100% - 73px); overflow-x: scroll; overflow-y: auto; width: 100%;">
@@ -176,7 +181,7 @@
         <tbody>
         <tr class="headPriceCriteria">
             <td colspan="2" rowspan="2" width="255">Ценовые группы</td>
-            <td colspan="2" width="358">Предельные ( максимальные) оптовые надбавки к фактическим отпускным ценам производителей, %</td>
+            <td colspan="2" width="358">Предельные (максимальные) оптовые надбавки к фактическим отпускным ценам производителей, %</td>
             <td colspan="3" width="574">Предельные (максимальные) розничные надбавки к фактическим отпускным ценам производителей, %</td>
         </tr>
         <tr class="headPriceCriteria">

@@ -17,6 +17,8 @@ namespace ServiceJob.Models
         public DataTable Drugs { get; protected set; }
         public DataTable RemovedDrugs { get; protected set; }
 
+        public string NewDateUpdate { get; protected set; }
+
         public List<List<object>[]> ReadFileJvnlp(StreamReader fileMemoryStream, string fileName)
         {
             IExcelDataReader bookExcel = null;
@@ -45,6 +47,7 @@ namespace ServiceJob.Models
                 RemoveNullColumns(drugs,rmDrugs);
                 bookExcel?.Close();
                 fileMemoryStream.Close();
+                LoadDateUpdate();
                 return new List<List<object>[]>
                 {
                     drugs,
@@ -55,6 +58,13 @@ namespace ServiceJob.Models
             {
                 throw new Exception(e.Message);
             }
+        }
+
+        private void LoadDateUpdate()
+        {
+            var date = Drugs.Rows[0].ItemArray[0].ToString();
+            var match = Regex.Match(date, @"(0[1-9]|[12][0-9]|3[01])[- .](0[1-9]|1[012])[- .](19|20)\d\d");
+            NewDateUpdate = match.Value;
         }
 
         private void CreateTablesJvnlp(DataSet dataJvnlp)

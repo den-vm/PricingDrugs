@@ -12,6 +12,7 @@ using OfficeOpenXml;
 using ServiceJob.Classes;
 using ServiceJob.Interface;
 using ServiceJob.Models;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace ServiceJob.Controllers
 {
@@ -34,6 +35,11 @@ namespace ServiceJob.Controllers
         ///     рассчитанный список препаратов
         /// </summary>
         private static List<List<object>[]> CalcDrugs { get; }
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        private static string NewDateUpdate { get; set; }
 
         [Route("/Jvnlp")]
         public IActionResult Jvnlp()
@@ -74,6 +80,7 @@ namespace ServiceJob.Controllers
                     throw new Exception("Ошибка в чтении файла excel. Файл должен содержать листы 'Лист 1' и 'Искл'");
                 AllTableJvnlp.Add(responseRead[(int) JvnlpLists.JVNLP]);
                 AllTableJvnlp.Add(responseRead[(int) JvnlpLists.Excluded]);
+                NewDateUpdate = fileProcessing.NewDateUpdate;
 
                 var jsonOriginalDrugs =
                     JsonConvert.SerializeObject(responseRead[(int) JvnlpLists.JVNLP].Take(VisibleLines));
@@ -478,7 +485,7 @@ namespace ServiceJob.Controllers
                     continue;
                 }
 
-                if (rowDrug[0].ToString().Equals("")) 
+                if (rowDrug[0].ToString().Equals(""))
                     rowDrug[0] = "-";
                 drugsJvnlp.Add(rowDrug.ToArray());
             }
@@ -492,7 +499,7 @@ namespace ServiceJob.Controllers
                     continue;
                 }
 
-                if (rowDrug[0].ToString().Equals("")) 
+                if (rowDrug[0].ToString().Equals(""))
                     rowDrug[0] = "-";
                 drugsIncJvnlp.Add(rowDrug.ToArray());
             }
@@ -506,7 +513,7 @@ namespace ServiceJob.Controllers
                     continue;
                 }
 
-                if (rowDrug[0].ToString().Equals("")) 
+                if (rowDrug[0].ToString().Equals(""))
                     rowDrug[0] = "-";
                 drugsExJvnlp.Add(rowDrug.ToArray());
             }
@@ -551,6 +558,29 @@ namespace ServiceJob.Controllers
                     FileDownloadName = nameFile
                 };
                 return fileContentResult;
+            }
+            catch (Exception e)
+            {
+                return new JsonResult(new {message = e.Message}) {StatusCode = 500};
+            }
+        }
+
+
+        [HttpPost]
+        [Route("Jvnlp/SaveDateUpdate")]
+        public async Task<IActionResult> SaveDateUpdate()
+        {
+            try
+            {
+                string controlMessage;
+                if (NewDateUpdate != null)
+                {
+                    using var fs = new FileStream("lastdateupdate.json", FileMode.OpenOrCreate);
+                    await JsonSerializer.SerializeAsync(fs, NewDateUpdate);
+                    controlMessage = $"Дата обновления реестра '{NewDateUpdate}' сохранена в файле 'lastdateupdate.json'";
+                }
+                else controlMessage = "Загрузите реестр препаратов";
+                return new JsonResult(new {message = controlMessage}) {StatusCode = 200};
             }
             catch (Exception e)
             {
