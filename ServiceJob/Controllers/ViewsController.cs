@@ -466,60 +466,61 @@ namespace ServiceJob.Controllers
         [Route("Jvnlp/SaveCalculated")]
         public IActionResult SaveCalculatedAsExcel()
         {
-            var nameFile = "";
-
-            if (CalcDrugs.Count == 0)
-                return new JsonResult(new {message = "Для сохранения в файл необходимо выполнить рассчёт"})
-                    {StatusCode = 500};
-
-            var drugsJvnlp = new List<object[]>();
-            var drugsIncJvnlp = new List<object[]>();
-            var drugsExJvnlp = new List<object[]>();
-
-            var notNumHeader = 0;
-            foreach (var rowDrug in CalcDrugs[(int) CalcJvnlp.CalcDrugs])
-            {
-                if (notNumHeader < 3)
-                {
-                    notNumHeader++;
-                    continue;
-                }
-
-                if (rowDrug[0].ToString().Equals(""))
-                    rowDrug[0] = "-";
-                drugsJvnlp.Add(rowDrug.ToArray());
-            }
-
-            notNumHeader = 0;
-            foreach (var rowDrug in CalcDrugs[(int) CalcJvnlp.CalcIncDrugs])
-            {
-                if (notNumHeader < 3)
-                {
-                    notNumHeader++;
-                    continue;
-                }
-
-                if (rowDrug[0].ToString().Equals(""))
-                    rowDrug[0] = "-";
-                drugsIncJvnlp.Add(rowDrug.ToArray());
-            }
-
-            notNumHeader = 0;
-            foreach (var rowDrug in AllTableJvnlp[(int) JvnlpLists.Excluded])
-            {
-                if (notNumHeader < 3)
-                {
-                    notNumHeader++;
-                    continue;
-                }
-
-                if (rowDrug[0].ToString().Equals(""))
-                    rowDrug[0] = "-";
-                drugsExJvnlp.Add(rowDrug.ToArray());
-            }
-
             try
             {
+                var nameFile = "";
+
+                if (CalcDrugs.Count == 0)
+                    return new JsonResult(new {message = "Для сохранения в файл необходимо выполнить рассчёт"})
+                        {StatusCode = 500};
+
+                var drugsJvnlp = new List<object[]>();
+                var drugsIncJvnlp = new List<object[]>();
+                var drugsExJvnlp = new List<object[]>();
+
+                var notNumHeader = 0;
+                foreach (var rowDrug in CalcDrugs[(int) CalcJvnlp.CalcDrugs])
+                {
+                    if (notNumHeader < 3)
+                    {
+                        notNumHeader++;
+                        continue;
+                    }
+
+                    if (rowDrug[0].ToString().Equals(""))
+                        rowDrug[0] = "-";
+                    drugsJvnlp.Add(rowDrug.ToArray());
+                }
+
+                notNumHeader = 0;
+                foreach (var rowDrug in CalcDrugs[(int) CalcJvnlp.CalcIncDrugs])
+                {
+                    if (notNumHeader < 3)
+                    {
+                        notNumHeader++;
+                        continue;
+                    }
+
+                    if (rowDrug[0].ToString().Equals(""))
+                        rowDrug[0] = "-";
+                    drugsIncJvnlp.Add(rowDrug.ToArray());
+                }
+
+                notNumHeader = 0;
+                foreach (var rowDrug in AllTableJvnlp[(int) JvnlpLists.Excluded])
+                {
+                    if (notNumHeader < 3)
+                    {
+                        notNumHeader++;
+                        continue;
+                    }
+
+                    if (rowDrug[0].ToString().Equals(""))
+                        rowDrug[0] = "-";
+                    drugsExJvnlp.Add(rowDrug.ToArray());
+                }
+
+
                 drugsJvnlp = drugsJvnlp.OrderBy(row => row[0]).ToList();
                 drugsIncJvnlp = drugsIncJvnlp.OrderBy(row => row[0]).ToList();
                 drugsExJvnlp = drugsExJvnlp.OrderBy(row => row[0]).ToList();
@@ -552,7 +553,6 @@ namespace ServiceJob.Controllers
                 const string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                 HttpContext.Response.ContentType = contentType;
                 HttpContext.Response.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
-
                 var fileContentResult = new FileContentResult(newBookExcel.GetAsByteArray(), contentType)
                 {
                     FileDownloadName = nameFile
@@ -561,7 +561,11 @@ namespace ServiceJob.Controllers
             }
             catch (Exception e)
             {
-                return new JsonResult(new {message = e.Message}) {StatusCode = 500};
+                var exMessage = e.Message;
+                if (exMessage.Equals("Column out of range"))
+                    exMessage =
+                        "Предыдущая дата обновления реестра должна быть меньше даты указанная в загруженном реестре";
+                return new JsonResult(new {message = exMessage}) {StatusCode = 500};
             }
         }
 
@@ -577,9 +581,14 @@ namespace ServiceJob.Controllers
                 {
                     using var fs = new FileStream("lastdateupdate.json", FileMode.OpenOrCreate);
                     await JsonSerializer.SerializeAsync(fs, NewDateUpdate);
-                    controlMessage = $"Дата обновления реестра '{NewDateUpdate}' сохранена в файле 'lastdateupdate.json'";
+                    controlMessage =
+                        $"Дата обновления реестра '{NewDateUpdate}' сохранена в файле 'lastdateupdate.json'";
                 }
-                else controlMessage = "Загрузите реестр препаратов";
+                else
+                {
+                    controlMessage = "Загрузите реестр препаратов";
+                }
+
                 return new JsonResult(new {message = controlMessage}) {StatusCode = 200};
             }
             catch (Exception e)

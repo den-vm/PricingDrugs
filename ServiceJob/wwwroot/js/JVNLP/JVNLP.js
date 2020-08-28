@@ -4,6 +4,13 @@ var visibleFormDrugsPriceCriteria = false;
 var visibleFormFile = false;
 var fActive = "";
 
+function s2ab(s) {
+    var buf = new ArrayBuffer(s.length);
+    var view = new Uint8Array(buf);
+    for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+    return buf;
+}
+
 //Навигация по страницам таблицы
 $(".viewlist li > input[type='button']").click("input",
     function(input) {
@@ -109,58 +116,65 @@ $("button[name=buttonCalculate],div[name='cl-btn']").click(function() { // ра�
 });
 
 $("button[name=buttonSaveToFileExcel],div[name='cl-btn']").click(
-    function () { // сохранение рассчитанного реестра в файл Excel
+    async function() { // сохранение рассчитанного реестра в файл Excel
         $("div[name='lockActionsDownload']").css("display", "block");
-        $.ajax({
-            type: "POST",
-            url: "Jvnlp/SaveCalculated",
-            processData: false, // отключение преобразования строки запроса по contentType
-            contentType:
-                false, // отключение преобразования контента в тип по умолчанию: "application/x-www-form-urlencoded;"
-            dataType: 'binary',
-            xhrFields: {
-                'responseType': 'blob'
-            },
-            xhr: function () {
-                var xhr = $.ajaxSettings.xhr(); // получаем объект XMLHttpRequest
-                xhr.onprogress = function (event) {
-                    if (event.lengthComputable) { // если известно количество байт
-                        // высчитываем процент скачиваемого
-                        var percentComplete = Math.ceil(event.loaded / event.total * 100);
-                        // устанавливаем значение в атрибут value тега <progress>
-                        // и это же значение альтернативным текстом для браузеров, не поддерживающих <progress>
-                        $("#lockActionsDownloadCount").html(percentComplete + "%");
-                        if (percentComplete === 100) {
-                            $("#lockActionsDownloadCount").html("");
-                            $("div[name='lockActionsDownload']").css("display", "none");
-                        }
-                    }
-                };
-                return xhr;
-            },
-            statusCode: {
-                200: function (data, status, xhr) {
-                    var link = document.createElement('a'),
-                        filename = "";
-                    if (xhr.getResponseHeader('Content-Disposition')){//имя файла
-                        filename = xhr.getResponseHeader('Content-Disposition');
-                         filename = filename.match(/filename="(.*?)"/)[1];
-                        filename = decodeURIComponent(filename);
-                        filename = filename.substring(filename.length-21);
-                    }
-                    link.href = URL.createObjectURL(data);
-                    link.download = filename;
-                    link.click();
-                },
-                500: function (data) {
-                    alertify.error(data.responseJSON["message"]);
-                }
+
+        let response = await fetch("Jvnlp/SaveCalculated",
+            {
+                method: "POST"
+            });
+        if (response.status === 200) {
+            var link = document.createElement("a");
+            let filename = "";
+            if (response.headers.get("Content-Disposition")) { //имя файла
+                filename = response.headers.get("Content-Disposition");
+                filename = filename.match(/filename="(.*?)"/)[1];
+                filename = decodeURIComponent(filename);
+                filename = filename.substring(filename.length - 21);
             }
-        });
+
+            const reader = response.body.getReader();
+            const contentLength = response.headers.get("Content-Length");
+            let receivedLength = 0;
+            let chunks = []; // массив полученных двоичных фрагментов (составляющих тело ответа)
+            while (true) {
+                // done становится true в последнем фрагменте
+                // value - Uint8Array из байтов каждого фрагмента
+                const { done, value } = await reader.read();
+
+                if (done) {
+                    break;
+                }
+                chunks.push(value);
+                receivedLength += value.length;
+                let percentComplete = Math.ceil(receivedLength / contentLength * 100);
+                $("#lockActionsDownloadCount").html(percentComplete + "%");
+                console.log(percentComplete + "%");
+            }
+            let chunksAll = new Uint8Array(receivedLength); 
+            let position = 0;
+            for (let chunk of chunks) {
+                chunksAll.set(chunk, position); 
+                position += chunk.length;
+            }
+            let blobResponse = new Blob([chunksAll], { type: response.headers.get("Content-Type") });
+            let objectUrl = URL.createObjectURL(blobResponse);
+            link.href = objectUrl;
+            link.download = filename;
+            link.click();
+            $("#lockActionsDownloadCount").html("");
+            $("div[name='lockActionsDownload']").css("display", "none");
+        }
+        if (response.status === 500) {
+            $("#lockActionsDownloadCount").html("");
+            $("div[name='lockActionsDownload']").css("display", "none");
+            let jsonMessage = await response.json();
+            alertify.error(jsonMessage["message"]);
+        }
     });
 
 $("button[name=buttonSavePrevDate],div[name='cl-btn']").click(
-    function () { // сохранение рассчитанного реестра в файл Excel
+    function() { // сохранение даты обновления из загруженного реестра лекарств
         $.ajax({
             type: "POST",
             url: "Jvnlp/SaveDateUpdate",
@@ -168,10 +182,10 @@ $("button[name=buttonSavePrevDate],div[name='cl-btn']").click(
             contentType:
                 false, // отключение преобразования контента в тип по умолчанию: "application/x-www-form-urlencoded;"
             statusCode: {
-                200: function (data) {
+                200: function(data) {
                     alertify.message(data["message"]);
                 },
-                500: function (data) {
+                500: function(data) {
                     alertify.error(data.responseJSON["message"]);
                 }
             }
