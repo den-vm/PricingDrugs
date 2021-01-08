@@ -35,7 +35,7 @@
 
 
 # Description in English language
-## Drug pricing
+## Calculation of prices for medicines
 This application is intended for calculating prices for medicines from the ZHVNLP registry in the Republic of Buryatia region of the Russian Federation
 
 ## Repository structure
