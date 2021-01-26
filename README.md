@@ -25,6 +25,10 @@
 
 Файл "JVNLP_.xlsx" является шаблоном для последующего формирования и сохранения рассчитанного реестра в файл JVNLP_XX_XX_XXXX.xlsx.
 
+Файл "settingFileJvnlp.json" хранит имена листов excel файла для дальнейшего расчёта цен на имеющие позиции и копирование исключенных позиций и количество добавленных новых столбцов в сравнении с предыдущим шаблоном реестра лекарственных препаратов скаченный с сайта grls.rosminzdrav.ru. По умолчанию: 0
+
+Внимание! При установке количества добавленных столбцов обязательно в первую очередь необходимо добавить эти столбцы в шаблон JVNLP_.xlsx, который находится в корневом каталоге приложения. Добавлять столбцы для действующего списка ЛП до столбца "Цена производителя с НДС", а для листа исключенных в конец таблицы.
+
 ## Выполнение расчёта
 Предварительно в вкладках "Таблица нарк. и псих. препаратов" и "Таблица критерий на цены нарк. и псих. препаратов" не должны быть пустыми.
 1) Необходимо скачать реестр ЖВНЛП по адресу http://grls.rosminzdrav.ru/pricelims.aspx, скачать файл и распаковать его;
@@ -32,6 +36,7 @@
 3) Открыть вкладку "Таблица ЖВНЛП" и загрузить реестр (распакованный файл);
 4) Открыть вкладку "Рассчитанный реестр" и нажать на кнопку "Рассчитать" для выполнения расчёта;
 5) Нажать кнопку "Сохранить файл" и выполнить сохранения рассчитанного реестра.
+6) Нажать кнопку "Сохранить дату обновления реестра из файла" для сохранения даты когда обновился реестр.
 
 
 # Description in English language
@@ -61,6 +66,10 @@ File "configcriteria.json " stores the criteria for calculating drugs in%, which
 
 File "JVNLP_.xlsx" is a template for later generating and saving the calculated registry to a file JVNLP_XX_XX_XXXX.xlsx.
 
+File "settingFileJvnlp.json" store the names of excel file sheets for further calculation of prices for existing items and copying excluded items and the number of new columns added in comparison with the previous template of the register of medicines downloaded from the site grls.rosminzdrav.ru. Default value: 0
+
+Attention! When setting the number of added columns, you must first add these columns to the JVNLP_.xlsx, which is located in the root directory of the application. Add columns for the current list of NDS to the "Manufacturer's price with VAT" column, and for the excluded list to the end of the table.
+
 ## Performance of calculation
 Previously, in the tabs " table of drugs. and crazy. drugs " and " table of criteria for drug prices. and crazy. the words " should not be empty.
 1) You need to download the register of ZHVNLP at http://grls.rosminzdrav.ru/pricelims.aspx, download the file and unpack it;
@@ -68,3 +77,4 @@ Previously, in the tabs " table of drugs. and crazy. drugs " and " table of crit
 3) Open the "ZHVNLP table" tab and load the registry (unpacked file);
 4) Open the "Calculated registry" tab and click the "Calculate" button to perform the calculation;
 5) Click the "Save file" button and save the calculated registry.
+6) Click "Save registry update date from file" to save the date when the registry was updated.
