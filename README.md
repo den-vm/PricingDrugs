@@ -1,5 +1,5 @@
 # Description in Russian language
-## Ценообразование препаратов
+## Расчёт цен на лекарственные препараты
 Данное приложение предназначено для расчёта цен на препараты реестра ЖВНЛП в регионе Республика Бурятия Российской Федерации 
 
 ## Структура репозитория
@@ -35,7 +35,7 @@
 
 
 # Description in English language
-## Drug pricing
+## Calculation of prices for medicines
 This application is intended for calculating prices for medicines from the ZHVNLP registry in the Republic of Buryatia region of the Russian Federation
 
 ## Repository structure
