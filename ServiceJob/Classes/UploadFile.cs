@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
-using System.Text.Json;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using ExcelDataReader;
+using Newtonsoft.Json;
 
 namespace ServiceJob.Models
 {
@@ -18,13 +16,14 @@ namespace ServiceJob.Models
         public DataTable RemovedDrugs { get; protected set; }
 
         public string NewDateUpdate { get; protected set; }
+        public int NewColumnCount { get; protected set; }
 
         public List<List<object>[]> ReadFileJvnlp(StreamReader fileMemoryStream, string fileName)
         {
             IExcelDataReader bookExcel = null;
             // register provide encoding 1252 to Excel
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            
+
             try
             {
                 //Reading from a binary Excel file ('97-2003 format; *.xls)
@@ -37,14 +36,14 @@ namespace ServiceJob.Models
 
                 //DataSet - The result of each spreadsheet will be created in the result.Tables
                 var tableJvnlp = bookExcel?.AsDataSet();
-                CreateTablesJvnlp(tableJvnlp);
+                CreateTablesJvnlpAsync(tableJvnlp);
 
                 if (Drugs == null || RemovedDrugs == null)
                     return new List<List<object>[]>();
 
                 var drugs = Drugs.Rows.Cast<DataRow>().Select(x => x.ItemArray.ToList()).ToArray();
                 var rmDrugs = RemovedDrugs.Rows.Cast<DataRow>().Select(x => x.ItemArray.ToList()).ToArray();
-                RemoveNullColumns(drugs,rmDrugs);
+                RemoveNullColumns(drugs, rmDrugs);
                 bookExcel?.Close();
                 fileMemoryStream.Close();
                 LoadDateUpdate();
@@ -67,34 +66,32 @@ namespace ServiceJob.Models
             NewDateUpdate = match.Value;
         }
 
-        private void CreateTablesJvnlp(DataSet dataJvnlp)
+        private void CreateTablesJvnlpAsync(DataSet dataJvnlp)
         {
-            Drugs = dataJvnlp.Tables["Лист 1"];
-            RemovedDrugs = dataJvnlp.Tables["Искл"];
+            var json = File.ReadAllText("settingFileJvnlp.json");
+            var nameList = JsonConvert.DeserializeObject<StructJvnlp>(json);
+            NewColumnCount = nameList.AddColumnCount;
+
+            Drugs = dataJvnlp.Tables[nameList.MainList];
+            RemovedDrugs = dataJvnlp.Tables[nameList.ExList];
         }
 
         private void RemoveNullColumns(List<object>[] drugs, List<object>[] rmDrugs)
         {
             try
             {
-                for (var i = drugs[2].Count-1; i != 0; i--)
+                for (var i = drugs[2].Count - 1; i != 0; i--)
                 {
                     var obj = drugs[2][i].ToString();
                     if (!obj.Equals("")) continue;
-                    foreach (var drug in drugs)
-                    {
-                        drug.RemoveAt(i);
-                    }
+                    foreach (var drug in drugs) drug.RemoveAt(i);
                 }
 
                 for (var i = rmDrugs[2].Count - 1; i != 0; i--)
                 {
                     var obj = rmDrugs[2][i].ToString();
                     if (!obj.Equals("")) continue;
-                    foreach (var rmDrug in rmDrugs)
-                    {
-                        rmDrug.RemoveAt(i);
-                    }
+                    foreach (var rmDrug in rmDrugs) rmDrug.RemoveAt(i);
                 }
             }
             catch (Exception e)
@@ -103,5 +100,12 @@ namespace ServiceJob.Models
                 throw;
             }
         }
+    }
+
+    public class StructJvnlp
+    {
+        public string MainList { get; set; }
+        public string ExList { get; set; }
+        public int AddColumnCount { get; set; }
     }
 }

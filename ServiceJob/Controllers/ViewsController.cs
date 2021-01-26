@@ -19,6 +19,7 @@ namespace ServiceJob.Controllers
     public class ViewsController : Controller
     {
         private const int VisibleLines = 253;
+        private static int _newColumnCount;
 
         static ViewsController()
         {
@@ -76,8 +77,9 @@ namespace ServiceJob.Controllers
 
                 AllTableJvnlp.Clear();
                 var responseRead = fileProcessing.ReadFileJvnlp(memoryStream, fileJvnlp.FileName);
+                _newColumnCount = fileProcessing.NewColumnCount;
                 if (responseRead.Count == 0)
-                    throw new Exception("Ошибка в чтении файла excel. Файл должен содержать листы 'Лист 1' и 'Искл'");
+                    throw new Exception("Ошибка в чтении файла excel. Файл должен содержать листы 'Главный лист со позициями для расчёта' и 'Лист с исключенными позициями'");
                 AllTableJvnlp.Add(responseRead[(int) JvnlpLists.JVNLP]);
                 AllTableJvnlp.Add(responseRead[(int) JvnlpLists.Excluded]);
                 NewDateUpdate = fileProcessing.NewDateUpdate;
@@ -420,7 +422,7 @@ namespace ServiceJob.Controllers
             {
                 CalcDrugs.Clear();
                 ICalculateDrugs calculate = new CalculateDrugs();
-                calculate.Start(AllTableJvnlp[(int) JvnlpLists.JVNLP]);
+                calculate.Start(AllTableJvnlp[(int) JvnlpLists.JVNLP], _newColumnCount);
                 CalcDrugs.Add(calculate.JvnlpCalculated);
                 CalcDrugs.Add(calculate.IncludeCalculated);
             }
@@ -462,6 +464,10 @@ namespace ServiceJob.Controllers
                 {StatusCode = 200};
         }
 
+        /// <summary>
+        ///     Сохранение рассчётного реестра в файл
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [Route("Jvnlp/SaveCalculated")]
         public IActionResult SaveCalculatedAsExcel()
@@ -557,6 +563,9 @@ namespace ServiceJob.Controllers
                 {
                     FileDownloadName = nameFile
                 };
+
+
+
                 return fileContentResult;
             }
             catch (Exception e)

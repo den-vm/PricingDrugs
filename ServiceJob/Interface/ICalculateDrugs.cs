@@ -9,7 +9,7 @@ namespace ServiceJob.Interface
     {
         Task<string> ReadLastDateUpdate(string headerList);
         List<object>[] SearchIncludeDrugs(List<object>[] regDrugs, string lastDateUpdate);
-        void Start(List<object>[] regDrugs);
+        void Start(List<object>[] regDrugs, int newColumnCount);
         List<object>[] JvnlpCalculated { get; }
         List<object>[] IncludeCalculated { get; }
     }

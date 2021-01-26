@@ -163,7 +163,7 @@ function GenerateTableJvnlpToStart(drugs, nameTable = "") {
             if (nameTable === "tableDrugsNew" || nameTable === "tableDrugsIncluded") {
                 addEmptyHead += '<tr name="headTable2_1">';
                 item.forEach(function (item, i) {
-                    if(i > 13)
+                    if(i > 14)
                         headColumn += (`<td style='width: calc(100%/${jsonDrugs[2].length}); top: 21px;'>${item}</td>`);
                     else addEmptyHead += (`<td style='width: calc(100%/${jsonDrugs[2].length})' rowspan = "2">${item}</td>`);
                     

@@ -84,7 +84,7 @@ namespace ServiceJob.Classes
         }
 
         public static void CalcListJvnlp(this List<object>[] listDrugs, List<string> actNarcoticDrugs,
-            ListCriteriasModels criteriaLoads, Dictionary<string, string[]> typeCriterias)
+            ListCriteriasModels criteriaLoads, Dictionary<string, string[]> typeCriterias, int newColumnCount)
         {
             for (var i = 3; i < listDrugs.Length; i++)
             {
@@ -92,29 +92,29 @@ namespace ServiceJob.Classes
                 var isContainsNarcotic = actNarcoticDrugs.Any(nDrug => nDrug.Equals(drug[0].ToString().ToLower()));
                 var originalPrice = Convert.ToDouble(drug[6]);
                 var nds = double.Parse(criteriaLoads.nds);
-                drug[11] = originalPrice * Convert.ToDouble(nds); // рассчёт цены с НДС
+                drug[11 + newColumnCount] = originalPrice * Convert.ToDouble(nds); // рассчёт цены с НДС
                 var selection = originalPrice.GetNameSelection(); // Ценовая группа
                 var typeDrug = isContainsNarcotic ? "_n" : "_non"; // Наркотический или ненаркотический
                 var criterias =
                     typeCriterias[selection + typeDrug].Select(double.Parse)
                         .ToArray(); // критерии рассчёта для текущего препарата
-                drug.CalcCriteria(criterias, originalPrice, nds); // рассчёт
+                drug.CalcCriteria(criterias, originalPrice, nds, newColumnCount); // рассчёт
             }
         }
 
         private static void CalcCriteria(this List<object> price, double[] currentCriteria, double originalPrice,
-            double nds)
+            double nds, int newColumnCount)
         {
-            price[12] = (originalPrice + originalPrice * (currentCriteria[0] / 100)) * nds;
-            for (int cell = 13, i = 0; i < currentCriteria.Length; cell++, i++)
+            price[12 + newColumnCount] = (originalPrice + originalPrice * (currentCriteria[0] / 100)) * nds;
+            for (int cell = 13 + newColumnCount, i = 0; i < currentCriteria.Length; cell++, i++)
             {
-                if (cell == 13)
+                if (cell == 13 + newColumnCount)
                 {
                     price[cell] = originalPrice + originalPrice * (currentCriteria[0] / 100);
                     continue;
                 }
 
-                var notNds = double.Parse(price[13].ToString());
+                var notNds = double.Parse(price[13 + newColumnCount].ToString());
                 price[cell] = (notNds + originalPrice * (currentCriteria[i] / 100)) * nds;
             }
         }
