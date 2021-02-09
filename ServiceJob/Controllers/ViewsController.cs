@@ -79,7 +79,8 @@ namespace ServiceJob.Controllers
                 var responseRead = fileProcessing.ReadFileJvnlp(memoryStream, fileJvnlp.FileName);
                 _newColumnCount = fileProcessing.NewColumnCount;
                 if (responseRead.Count == 0)
-                    throw new Exception("Ошибка в чтении файла excel. Файл должен содержать листы 'Главный лист со позициями для расчёта' и 'Лист с исключенными позициями'");
+                    throw new Exception(
+                        "Ошибка в чтении файла excel. Файл должен содержать листы 'Главный лист со позициями для расчёта' и 'Лист с исключенными позициями'");
                 AllTableJvnlp.Add(responseRead[(int) JvnlpLists.JVNLP]);
                 AllTableJvnlp.Add(responseRead[(int) JvnlpLists.Excluded]);
                 NewDateUpdate = fileProcessing.NewDateUpdate;
@@ -546,15 +547,18 @@ namespace ServiceJob.Controllers
                         new FileInfo(@$"{Directory.GetCurrentDirectory()}\JVNLP_.xlsx"));
                 var sheetJvnlp = newBookExcel.Workbook.Worksheets[1];
                 sheetJvnlp.Cells["A1"].Value = headerText;
-                sheetJvnlp.Cells["A4"].LoadFromArrays(drugsJvnlp.ToArray());
+                if (drugsJvnlp.Count > 0)
+                    sheetJvnlp.Cells["A4"].LoadFromArrays(drugsJvnlp.ToArray());
 
                 var sheetIncJvnlp = newBookExcel.Workbook.Worksheets[2];
                 sheetIncJvnlp.Cells["A1"].Value = headerText;
-                sheetIncJvnlp.Cells["A4"].LoadFromArrays(drugsIncJvnlp.ToArray());
+                if (drugsIncJvnlp.Count > 0)
+                    sheetIncJvnlp.Cells["A4"].LoadFromArrays(drugsIncJvnlp.ToArray());
 
                 var sheetExJvnlp = newBookExcel.Workbook.Worksheets[3];
                 sheetExJvnlp.Cells["A1"].Value = headerText;
-                sheetExJvnlp.Cells["A3"].LoadFromArrays(drugsExJvnlp.ToArray());
+                if (drugsExJvnlp.Count > 0)
+                    sheetExJvnlp.Cells["A3"].LoadFromArrays(drugsExJvnlp.ToArray());
 
                 const string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                 HttpContext.Response.ContentType = contentType;
@@ -563,7 +567,6 @@ namespace ServiceJob.Controllers
                 {
                     FileDownloadName = nameFile
                 };
-
 
 
                 return fileContentResult;
