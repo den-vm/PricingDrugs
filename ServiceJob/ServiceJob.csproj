@@ -8,12 +8,17 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <LangVersion>latest</LangVersion>
     <NoWin32Manifest>true</NoWin32Manifest>
+    <UserSecretsId>d63bef2c-7b95-4ffa-9e70-7da3fa9139f7</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="TempUploadsFile\**" />
     <Compile Remove="wwwroot\images\**" />
+    <Content Remove="TempUploadsFile\**" />
     <Content Remove="wwwroot\images\**" />
+    <EmbeddedResource Remove="TempUploadsFile\**" />
     <EmbeddedResource Remove="wwwroot\images\**" />
+    <None Remove="TempUploadsFile\**" />
     <None Remove="wwwroot\images\**" />
   </ItemGroup>
 
@@ -24,9 +29,6 @@
 
   <ItemGroup>
     <Content Include="JVNLP_.xlsx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="NDrugsReestr.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -51,10 +53,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="TempUploadsFile\" />
   </ItemGroup>
 
 </Project>

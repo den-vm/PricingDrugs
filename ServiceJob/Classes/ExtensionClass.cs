@@ -76,9 +76,9 @@ namespace ServiceJob.Classes
 
         public static string GetNameSelection(this double originalPrice)
         {
-            if (originalPrice <= 50.0d) return "before50on";
+            if (originalPrice <= 100.0d) return "before50on";
 
-            if (originalPrice > 50.0d && originalPrice <= 500.0d) return "after50before500on";
+            if (originalPrice > 100.0d && originalPrice <= 500.0d) return "after50before500on";
 
             return originalPrice > 500.0d ? "after500" : "";
         }
